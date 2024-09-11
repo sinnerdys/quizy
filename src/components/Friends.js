@@ -9,7 +9,10 @@ function Friends() {
     { id: 2, name: 'James', reward: 100 },
     { id: 3, name: 'BIG_BOSS', reward: 100 },
     { id: 4, name: 'morris', reward: 100 },
-    { id: 5, name: 'Woody25', reward: 100 }
+    { id: 5, name: 'Woody25', reward: 100 },
+    { id: 6, name: 'Woody25', reward: 100 },
+    { id: 7, name: 'Woody25', reward: 100 },
+    { id: 8, name: 'Woody25', reward: 100 }
   ];
 
   return (
@@ -21,8 +24,8 @@ function Friends() {
       </div>
 
       {/* Список друзей */}
+      <div className="friends-list-title"><h3>22 friends</h3></div>
       <div className="friends-list-section">
-        <h3>22 friends</h3>
         <ul className="friends-list">
           {friends.map(friend => (
             <li key={friend.id} className="friend-item">

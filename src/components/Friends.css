@@ -24,9 +24,17 @@
   margin: 0;
 }
 
+.friends-list-title {
+  text-align: left; /* Выровнять текст по левому краю */
+  margin-bottom: 15px;
+}
+
 /* Секция списка друзей */
 .friends-list-section {
   text-align: left;
+  flex-grow: 1; /* Раздел будет занимать все оставшееся место */
+  overflow-y: auto; /* Включаем вертикальный скролл */
+  max-height: calc(100vh - 350px); /* Ограничиваем высоту для списка друзей */
 }
 
 .friends-list-section h3 {
@@ -92,8 +100,15 @@
     height: 22px;
   }
 
-/* Кнопка приглашения прибита к низу */
-.invite-button {
+  .invite-button-container {
+    width: 100%;
+    position: fixed;
+    bottom: 70px; /* Прибиваем кнопку над нижней панелью */
+    left: 0;
+    padding: 20px;
+  }
+  
+  .invite-button {
     width: 100%;
     padding: 15px;
     background-color: #284286;
@@ -102,15 +117,4 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 20px;
-
-  }
-  
-  .invite-button:hover {
-    background-color: #009ACD;
-  }
-  
-  /* Контейнер для кнопки закреплен внизу */
-  .invite-button-container {
-    width: 100%;
   }

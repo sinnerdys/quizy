@@ -46,7 +46,7 @@ function Home() {
                 <span className="task-reward">+{task.reward} $QUIZY</span>
               </div>
               <button className="task-button" onClick={() => completeTask(task.reward)}>
-                Complete
+                Open
               </button>
             </li>
           ))}

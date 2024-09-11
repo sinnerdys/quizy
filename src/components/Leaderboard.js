@@ -21,6 +21,8 @@ function Leaderboard() {
     { id: 5, name: 'morris', tokens: 78421555, rank: 5 },
     { id: 6, name: 'Digazer', tokens: 24215521, rank: 6 },
     { id: 7, name: 'Woody25', tokens: 12464873, rank: 7 },
+    { id: 8, name: 'Woody25', tokens: 12464873, rank: 8 },
+    { id: 9, name: 'Woody25', tokens: 12464873, rank: 9 },
     // Добавь еще игроков для полного списка
   ];
 

@@ -1,17 +1,11 @@
-/* Общие стили */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #1E1E2C;
-    color: white;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .leaderboard {
+.leaderboard {
     padding: 20px;
-    text-align: center;
   }
   
+.leaderboard h3 {
+  margin-bottom: 15px;
+}
+
   /* Заголовок */
   .leaderboard-title {
     font-size: 24px;
@@ -26,7 +20,7 @@ body {
     padding: 15px;
     margin-bottom: 20px;
     border-radius: 8px;
-    background-color: #2A2A40;
+    background-color: #192955;
   }
   
   .user-info {
@@ -37,7 +31,7 @@ body {
   .user-icon {
     width: 35px;
     height: 35px;
-    background-color: #33334D;
+    background-color: #2F4FA4;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -50,6 +44,7 @@ body {
   .user-details {
     display: flex;
     flex-direction: column;
+    text-align: left; /* Выровнять текст по левому краю */
   }
   
   .user-name {
@@ -64,6 +59,7 @@ body {
   .user-rank {
     font-size: 16px;
     color: #ADC3FF;
+    text-align: right; /* Ранг будет выровнен по правому краю */
   }
   
   /* Топ-100 игроков */
@@ -79,12 +75,16 @@ body {
   
   .player-item {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Имя слева, баланс справа */
     align-items: center;
     padding: 15px;
     margin-bottom: 10px;
     border-radius: 8px;
-    background-color: #2A2A40;
+    border: #284286 2px solid;
+  }
+  
+  .player-name, .player-tokens {
+    text-align: left; /* Для имени и баланса — выравнивание текста влево */
   }
   
   .player-info {
@@ -95,7 +95,7 @@ body {
   .player-icon {
     width: 35px;
     height: 35px;
-    background-color: #33334D;
+    background-color: #2F4FA4;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -108,6 +108,7 @@ body {
   .player-details {
     display: flex;
     flex-direction: column;
+    text-align: left; /* Выровнять текст по левому краю */
   }
   
   .player-name {
@@ -125,6 +126,7 @@ body {
     color: #ADC3FF;
     display: flex;
     align-items: center;
+    text-align: right; /* Выровнять ранг или медаль по правому краю */
   }
   
   .medal-icon {
