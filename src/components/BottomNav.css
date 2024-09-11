@@ -1,0 +1,26 @@
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #112558;
+    padding: 10px 0;
+    border-top: 1px solid #333;
+  }
+  
+  .nav-link {
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+  }
+  
+  .icon {
+    font-size: 24px;
+  }
+  
+  .nav-link.active {
+    color: #00BFFF;
+  }

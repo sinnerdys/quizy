@@ -1,0 +1,116 @@
+
+/* Заголовок с логотипом */
+.header-f {
+  text-align: center;
+  padding: 20px;
+  border: #284286 2px solid;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.quizy-logo {
+
+  margin-bottom: 10px;
+}
+
+.friends {
+    padding: 20px;
+    text-align: center;
+}
+
+.header p {
+  color: #FFFFFF;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Секция списка друзей */
+.friends-list-section {
+  text-align: left;
+}
+
+.friends-list-section h3 {
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+
+.friends-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.friend-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: #284286 2px solid;
+}
+
+.friend-info {
+  display: flex;
+  align-items: center;
+}
+
+.friend-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #2F4FA4;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+.friend-name {
+  font-size: 16px;
+}
+
+.friend-reward {
+  color: #ADC3FF;
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.reward-text {
+    font-size: 16px;
+    color: #ADC3FF;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  .reward-logo {
+    width: 14px; /* Размер логотипа */
+    height: 22px;
+  }
+
+/* Кнопка приглашения прибита к низу */
+.invite-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #284286;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+
+  }
+  
+  .invite-button:hover {
+    background-color: #009ACD;
+  }
+  
+  /* Контейнер для кнопки закреплен внизу */
+  .invite-button-container {
+    width: 100%;
+  }
