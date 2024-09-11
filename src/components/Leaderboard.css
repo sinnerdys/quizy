@@ -1,0 +1,135 @@
+/* Общие стили */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #1E1E2C;
+    color: white;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .leaderboard {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Заголовок */
+  .leaderboard-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Текущий пользователь */
+  .current-user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #2A2A40;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #33334D;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    margin-right: 15px;
+  }
+  
+  .user-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .user-name {
+    font-size: 16px;
+  }
+  
+  .user-tokens {
+    font-size: 14px;
+    color: #ADC3FF;
+  }
+  
+  .user-rank {
+    font-size: 16px;
+    color: #ADC3FF;
+  }
+  
+  /* Топ-100 игроков */
+  .top-players {
+    margin-top: 20px;
+  }
+  
+  .players-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .player-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #2A2A40;
+  }
+  
+  .player-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .player-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #33334D;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 18px;
+    margin-right: 15px;
+  }
+  
+  .player-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .player-name {
+    font-size: 16px;
+  }
+  
+  .player-tokens {
+    font-size: 14px;
+    color: #ADC3FF;
+  }
+  
+  /* Ранг игрока */
+  .player-rank {
+    font-size: 16px;
+    color: #ADC3FF;
+    display: flex;
+    align-items: center;
+  }
+  
+  .medal-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+  }
+  
