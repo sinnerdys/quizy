@@ -62,6 +62,9 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
+    flex-grow: 1; /* Раздел будет занимать все оставшееся место */
+    overflow-y: auto; /* Включаем вертикальный скролл */
+    max-height: calc(100vh - 420px); /* Ограничиваем высоту для списка друзей */
   }
   
   .task-item {
@@ -108,7 +111,6 @@ body {
 .see-more-container {
   display: flex;
   justify-content: center; /* Выровнять по горизонтали */
-  margin-top: 10px; /* Добавить отступ сверху */
 }
 
 .see-more-button {

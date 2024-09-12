@@ -34,7 +34,7 @@
   text-align: left;
   flex-grow: 1; /* Раздел будет занимать все оставшееся место */
   overflow-y: auto; /* Включаем вертикальный скролл */
-  max-height: calc(100vh - 350px); /* Ограничиваем высоту для списка друзей */
+  max-height: calc(100vh - 370px); /* Ограничиваем высоту для списка друзей */
 }
 
 .friends-list-section h3 {

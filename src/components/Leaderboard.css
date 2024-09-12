@@ -71,6 +71,9 @@
     list-style: none;
     padding: 0;
     margin: 0;
+    flex-grow: 1; /* Раздел будет занимать все оставшееся место */
+    overflow-y: auto; /* Включаем вертикальный скролл */
+    max-height: calc(100vh - 280px); /* Ограничиваем высоту для списка друзей */
   }
   
   .player-item {
