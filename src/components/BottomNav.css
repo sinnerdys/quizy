@@ -1,26 +1,55 @@
 .bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #112558;
-    padding: 10px 0;
-    border-top: 1px solid #333;
-  }
-  
-  .nav-link {
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    font-size: 12px;
-  }
-  
-  .icon {
-    font-size: 24px;
-  }
-  
-  .nav-link.active {
-    color: #00BFFF;
-  }
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #112558;
+  padding: 10px 0;
+  border-top: 1px solid #333;
+}
+
+/* Общие стили для ссылок */
+.nav-link {
+  color: #C0C5E0; /* Цвет текста для неактивного состояния */
+  text-align: center;
+  text-decoration: none;
+  font-size: 12px;
+  flex-grow: 1; /* Равномерное распределение ширины */
+  display: flex; /* Flexbox для упорядочивания иконок и текста */
+  flex-direction: column; /* Вертикальное расположение */
+  justify-content: center; /* Центрируем иконки и текст по вертикали */
+  align-items: center; /* Центрируем иконки и текст по горизонтали */
+}
+
+.nav-link.active {
+  color: white; /* Цвет текста для активного состояния */
+}
+
+/* Иконки */
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px; /* Размер иконки */
+  height: 40px;
+  background-color: transparent;
+  margin-bottom: 5px; /* Отступ между иконкой и текстом */
+}
+
+.icon-svg {
+  width: 24px; /* Размер SVG-иконки */
+  height: 24px;
+  fill: #C0C5E0; /* Цвет для неактивных иконок */
+}
+
+/* Стиль для активного состояния (синий квадрат под иконкой) */
+.nav-link.active .icon {
+  background-color: #1a345a; /* Фон для активной иконки */
+  border-radius: 8px; /* Скругленные углы */
+}
+
+.nav-link.active .icon-svg {
+  fill: white; /* Цвет активной иконки — белый */
+}
