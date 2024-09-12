@@ -23,9 +23,6 @@ function App() {
       // Устанавливаем кастомный цвет для нижней панели (фон приложения)
       window.Telegram.WebApp.setBackgroundColor('#112558'); // Замени на нужный тебе цвет для нижней панели
 
-      // Отключаем "резиновую" прокрутку
-      window.Telegram.WebApp.disablePullToRefresh(); 
-
       // Отключаем вертикальные свайпы, если необходимо
       window.Telegram.WebApp.disableVerticalSwipes(); 
     }
