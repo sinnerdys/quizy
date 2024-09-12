@@ -9,19 +9,34 @@ import './App.css';
 
 function App() {
   const [loading, setLoading] = useState(true);
-
-  // Хук для перенаправления
+  const [hasRedirected, setHasRedirected] = useState(false); // Состояние для отслеживания перенаправления
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Таймер на 2 секунды, чтобы скрыть прелоадер
+    // Проверяем, что Telegram WebApp доступен
+    if (window.Telegram.WebApp) {
+      window.Telegram.WebApp.expand(); // Расширяем приложение на всю высоту
+
+      // Устанавливаем кастомный цвет для шапки
+      window.Telegram.WebApp.setHeaderColor('#000305'); // Замени на нужный тебе цвет в HEX формате
+
+      // Отключаем вертикальные свайпы, если необходимо
+      window.Telegram.WebApp.disableVerticalSwipes(); 
+    }
+
+    // Таймер на 2 секунды для прелоадера
     const timer = setTimeout(() => {
-      setLoading(false); // Прелоадер исчезнет через 2 секунды
-      navigate('/'); // Перенаправляем на Home
+      setLoading(false); // Прелоадер исчезает через 2 секунды
+
+      // Только если мы ещё не перенаправляли, перенаправляем на Home
+      if (!hasRedirected) {
+        navigate('/'); // Перенаправляем на Home
+        setHasRedirected(true); // Обновляем состояние, чтобы предотвратить повторное перенаправление
+      }
     }, 2000);
 
-    return () => clearTimeout(timer); // Очистка таймера
-  }, [navigate]);
+    return () => clearTimeout(timer); // Очистка таймера при размонтировании
+  }, [navigate, hasRedirected]);
 
   return (
     <div className="App">
