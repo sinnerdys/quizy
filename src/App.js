@@ -18,7 +18,10 @@ function App() {
       window.Telegram.WebApp.expand(); // Расширяем приложение на всю высоту
 
       // Устанавливаем кастомный цвет для шапки
-      window.Telegram.WebApp.setHeaderColor('#000305'); // Замени на нужный тебе цвет в HEX формате
+      window.Telegram.WebApp.setHeaderColor('#112558'); // Замени на нужный тебе цвет в HEX формате
+
+      // Устанавливаем кастомный цвет для нижней панели (фон приложения)
+      window.Telegram.WebApp.setBackgroundColor('#112558'); // Замени на нужный тебе цвет для нижней панели
 
       // Отключаем вертикальные свайпы, если необходимо
       window.Telegram.WebApp.disableVerticalSwipes(); 
