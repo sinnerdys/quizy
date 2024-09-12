@@ -1,0 +1,22 @@
+.preloader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Занимает весь экран */
+    background-color: #112558; /* Темно-синий фон */
+  }
+  
+  .spinner {
+    border: 8px solid #C0C5E0; /* Light grey */
+    border-top: 8px solid #284286; /* Синий цвет */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
