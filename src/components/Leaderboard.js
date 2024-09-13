@@ -5,26 +5,13 @@ import medalSilver from '../assets/medal-silver.png'; // Импорт иконк
 import medalBronze from '../assets/medal-bronze.png'; // Импорт иконки медали (бронза)
 
 function Leaderboard() {
-  // Состояние для текущего пользователя
   const [currentUser, setCurrentUser] = useState({
     name: 'Loading...',
-    tokens: 100756,
-    rank: 2421591
+    tokens: 0,
+    rank: '...',
   });
 
-  // Топ-100 игроков
-  const topPlayers = [
-    { id: 1, name: 'Demon', tokens: 102456756, rank: 1, medal: 'gold' },
-    { id: 2, name: 'James', tokens: 101455426, rank: 2, medal: 'silver' },
-    { id: 3, name: 'BIG_BOSS', tokens: 97421224, rank: 3, medal: 'bronze' },
-    { id: 4, name: 'QUARK', tokens: 8425127, rank: 4 },
-    { id: 5, name: 'morris', tokens: 78421555, rank: 5 },
-    { id: 6, name: 'Digazer', tokens: 24215521, rank: 6 },
-    { id: 7, name: 'Woody25', tokens: 12464873, rank: 7 },
-    { id: 8, name: 'Woody25', tokens: 12464873, rank: 8 },
-    { id: 9, name: 'Woody25', tokens: 12464873, rank: 9 },
-    // Добавь еще игроков для полного списка
-  ];
+  const [topPlayers, setTopPlayers] = useState([]); // Состояние для топ-игроков
 
   // Функция для отображения медали, если игрок в топ-3
   const getMedal = (medal) => {
@@ -34,16 +21,29 @@ function Leaderboard() {
     return null;
   };
 
-  // Получение данных пользователя с Telegram WebApp API
+  // Функция для получения данных с Firebase функции
+  const fetchLeaderboardData = async () => {
+    try {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getLeaderboard');
+      const players = await response.json();
+      setTopPlayers(players);
+    } catch (error) {
+      console.error('Error fetching leaderboard data:', error);
+    }
+  };
+
+  // Получение данных текущего пользователя с Telegram WebApp API
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe?.user || {}; // Получение информации о пользователе
 
     setCurrentUser({
       name: user.username || 'Anonymous', // Если нет username, отображаем "Anonymous"
-      tokens: 100756, // Количество токенов по умолчанию
-      rank: 2421591 // Место в рейтинге по умолчанию
+      tokens: 0, // Здесь вы можете получить данные о токенах из базы данных Firebase, если они там хранятся
+      rank: '...', // Ранг будет рассчитан позже
     });
+
+    fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
   }, []);
 
   return (

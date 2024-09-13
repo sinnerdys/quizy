@@ -24,7 +24,7 @@ function App() {
       const user = window.Telegram.WebApp.initDataUnsafe.user;
       if (user) {
         console.log('User data from Telegram:', user); 
-        // Сохраняем данные пользователя вместе с балансом
+        // Сохраняем данные пользователя вместе с балансом, но только один раз
         saveUserToFirebase(user, balance);  
       } else {
         console.log('No user data from Telegram WebApp'); 
@@ -39,7 +39,7 @@ function App() {
     }, 2000);
 
     return () => clearTimeout(preloaderTimer);
-  }, [balance]);  // Следим за изменением баланса
+  }, []);  // Убираем баланс из зависимостей, чтобы эффект не запускался снова
 
   // Функция для сохранения данных пользователя в Firebase
   const saveUserToFirebase = async (user, balance) => {
@@ -74,7 +74,7 @@ function App() {
   const handleContinue = () => {
     updateBalance(100); // Добавляем награду за ежедневное посещение
     setShowDailyReward(false);
-    navigate('/');
+    navigate('/'); // Переход на Home
   };
 
   return (
