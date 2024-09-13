@@ -15,18 +15,23 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (window.Telegram.WebApp) {
-      // Расширяем приложение и настраиваем цвета
+    if (window.Telegram && window.Telegram.WebApp) {
+      // Telegram WebApp environment
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.setHeaderColor('#112558');
       window.Telegram.WebApp.setBackgroundColor('#112558');
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      // Получение данных пользователя из Telegram WebApp
-      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      // Проверяем, есть ли данные пользователя
+      const user = window.Telegram.WebApp.initDataUnsafe.user;
       if (user) {
+        console.log('User data from Telegram:', user); // Выводим данные пользователя для проверки
         saveUserToFirebase(user);  // Сохраняем данные пользователя в Firebase
+      } else {
+        console.log('No user data from Telegram WebApp'); // Если данных пользователя нет
       }
+    } else {
+      console.log('Not running in Telegram WebApp'); // Приложение не запущено в окружении Telegram WebApp
     }
 
     const preloaderTimer = setTimeout(() => {
@@ -48,17 +53,13 @@ function App() {
         body: JSON.stringify({
           userId: user.id,
           firstName: user.first_name,
-          lastName: user.last_name,
-          username: user.username,
+          lastName: user.last_name || '', // Если нет last_name, указываем пустую строку
+          username: user.username || '', // Если нет username, указываем пустую строку
         }),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log('User data saved successfully:', result);
-      } else {
-        console.error('Error saving user data:', response.statusText);
-      }
+      const result = await response.json();
+      console.log('User data saved successfully:', result);
     } catch (error) {
       console.error('Error saving user data:', error);
     }
@@ -71,9 +72,9 @@ function App() {
 
   // Функция для перехода с DailyReward на Home
   const handleContinue = () => {
-    updateBalance(100); // Добавляем награду за ежедневное посещение
-    setShowDailyReward(false); // Скрываем DailyReward
-    navigate('/'); // Переходим на Home
+    updateBalance(100);
+    setShowDailyReward(false);
+    navigate('/');
   };
 
   return (
