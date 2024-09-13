@@ -37,10 +37,10 @@ function Leaderboard() {
       }
 
       const players = await response.json();
-      
-      // Если данные пусты или неверны, устанавливаем пустой массив
+
+      // Если данные пусты или некорректны, устанавливаем пустой массив
       if (!players || !Array.isArray(players)) {
-        setTopPlayers([]);
+        setTopPlayers([]); // Защита от пустых или неверных данных
       } else {
         setTopPlayers(players);
       }
