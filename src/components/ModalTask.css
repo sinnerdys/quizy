@@ -1,0 +1,106 @@
+/* src/components/ModalTask.css */
+.modal-task-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: flex-end; /* Выравниваем модальное окно к низу */
+    align-items: flex-end; /* Размещаем модальное окно у нижней части */
+    z-index: 1000;
+    opacity: 0; /* Начальная прозрачность для плавного появления */
+    transition: opacity 0.3s ease; /* Плавное появление overlay */
+  }
+  
+  .modal-task-overlay.open {
+    opacity: 1; /* Плавный переход на полную видимость */
+  }
+  
+  .modal-task {
+    background-color: #091533;
+    padding: 20px;
+    border-radius: 10px 10px 0 0; /* Скругленные углы только сверху */
+    width: 100%; /* Растягиваем на всю ширину экрана */
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); /* Тень сверху */
+    z-index: 1100; /* Задаем больший z-index, чтобы перекрыть меню */
+    transform: translateY(100%); /* Начальная позиция - скрыта внизу */
+    opacity: 0; /* Прозрачность для плавного появления */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Плавное появление модального окна */
+  }
+  
+  .modal-task.open {
+    transform: translateY(0); /* Позиция при отображении */
+    opacity: 1; /* Полная видимость */
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .modal-logo-container {
+    margin-bottom: 20px;
+  }
+  
+  .modal-logo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .modal-task h2 {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 10px;
+  }
+  
+  .modal-task p {
+    font-size: 16px;
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  .reward-info {
+    font-size: 18px;
+    color: #ADC3FF;
+    margin-bottom: 20px;
+  }
+  
+  .subscribe-button, .check-task-button {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .subscribe-button {
+    background-color: #284286;
+    color: white;
+  }
+  
+  .subscribe-button:hover {
+    background-color: #1a3069;
+  }
+  
+  .check-task-button {
+    background-color: #009ACD;
+    color: white;
+  }
+  
+  .check-task-button:hover {
+    background-color: #007BB5;
+  }
+  

@@ -1,25 +1,25 @@
 // src/components/DailyReward.js
 import React, { useState } from 'react';
-import Confetti from 'react-confetti'; // Импортируем библиотеку для конфетти
-import './DailyReward.css'; // Стили для экрана ежедневных наград
-import logo from '../assets/logo.png'; // Импортируем логотип
+import Confetti from 'react-confetti';
+import './DailyReward.css';
+import logo from '../assets/logo.png';
 
 function DailyReward({ onContinue }) {
   const [showConfetti, setShowConfetti] = useState(false);
 
   const handleContinue = () => {
-    setShowConfetti(true); // Показываем конфетти
+    setShowConfetti(true);
 
-    // Через 5 секунд вызываем функцию для перехода на экран Home
+    // Показываем конфетти 3 секунды, потом вызываем onContinue
     setTimeout(() => {
-      setShowConfetti(false); // Останавливаем конфетти
-      onContinue(); // Вызываем функцию перехода на Home
-    }, 3000); // Через 5 секунд
+      setShowConfetti(false);
+      onContinue(); // Переходим на Home и обновляем баланс
+    }, 3000);
   };
 
   return (
     <div className="daily-reward">
-      {/* Блок с логотипом и наградой по центру */}
+      {/* Логотип и награда */}
       <div className="reward-center-content">
         <div className="reward-logo-container">
           <img src={logo} alt="QUIZY Logo" className="reward-logo-daily" />
@@ -28,7 +28,7 @@ function DailyReward({ onContinue }) {
         <h2>Your daily rewards</h2>
       </div>
 
-      {/* Нижний блок с текстом и кнопкой */}
+      {/* Текст и кнопка внизу */}
       <div className="bottom-section">
         <p>Come back tomorrow for check-in next day. Skipping a day resets your streak.</p>
         <button className="continue-button" onClick={handleContinue}>

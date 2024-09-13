@@ -1,26 +1,69 @@
 import React, { useState } from 'react';
 import './Home.css'; // стили для мобильной версии
 import logo from '../assets/logo.png'; // Импорт логотипа
+import ModalTask from './ModalTask'; // Импортируем компонент модального окна
 
-function Home() {
-  const [balance, setBalance] = useState(0); // начальный баланс токенов
+function Home({ balance }) {
   const [showMoreTasks, setShowMoreTasks] = useState(false); // состояние для показа дополнительных задач
+  const [selectedTask, setSelectedTask] = useState(null); // состояние для выбранного задания
+  const [isModalOpen, setIsModalOpen] = useState(false); // состояние для отображения модального окна
 
+  // Каждая задача теперь содержит описание и ссылку для подписки
   const tasks = [
-    { id: 1, title: 'Join QUIZY CHANNEL', reward: 500 },
-    { id: 2, title: 'Join QUIZY COMMUNITY', reward: 500 },
-    { id: 3, title: 'Subscribe to QUIZY (X)', reward: 500 },
-    { id: 4, title: 'Follow QUIZY on Twitter', reward: 500 },
-    { id: 5, title: 'Share QUIZY with friends', reward: 500 },
-    { id: 6, title: 'Complete QUIZY Challenge', reward: 500 }
+    { 
+      id: 1, 
+      title: 'Join QUIZY CHANNEL', 
+      description: 'Subscribe to our official channel on Telegram to receive updates.', 
+      reward: 500, 
+      subscribeUrl: 'https://t.me/quizy_channel' 
+    },
+    { 
+      id: 2, 
+      title: 'Join QUIZY COMMUNITY', 
+      description: 'Join our Telegram community and participate in discussions.', 
+      reward: 500, 
+      subscribeUrl: 'https://t.me/quizy_community' 
+    },
+    { 
+      id: 3, 
+      title: 'Subscribe to QUIZY (X)', 
+      description: 'Follow QUIZY on X for the latest updates.', 
+      reward: 500, 
+      subscribeUrl: 'https://x.com/quizy' 
+    },
+    { 
+      id: 4, 
+      title: 'Follow QUIZY on Twitter', 
+      description: 'Follow us on Twitter for more updates.', 
+      reward: 500, 
+      subscribeUrl: 'https://twitter.com/quizy' 
+    },
+    { 
+      id: 5, 
+      title: 'Share QUIZY with friends', 
+      description: 'Share QUIZY with your friends and earn rewards.', 
+      reward: 500, 
+      subscribeUrl: 'https://t.me/quizy_invite' 
+    },
+    { 
+      id: 6, 
+      title: 'Complete QUIZY Challenge', 
+      description: 'Complete the QUIZY challenge and earn rewards.', 
+      reward: 500, 
+      subscribeUrl: 'https://t.me/quizy_challenge' 
+    }
   ];
 
   // Показываем только 4 задачи по умолчанию, остальные по нажатию кнопки "See more tasks"
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
 
-  // Обновляем баланс при выполнении задачи
-  const completeTask = (reward) => {
-    setBalance(balance + reward);
+  const handleTaskOpen = (task) => {
+    setSelectedTask(task); // Устанавливаем выбранное задание
+    setIsModalOpen(true); // Открываем модальное окно
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Закрываем модальное окно
   };
 
   return (
@@ -45,7 +88,7 @@ function Home() {
                 <span className="task-title">{task.title}</span>
                 <span className="task-reward">+{task.reward} $QUIZY</span>
               </div>
-              <button className="task-button" onClick={() => completeTask(task.reward)}>
+              <button className="task-button" onClick={() => handleTaskOpen(task)}>
                 Open
               </button>
             </li>
@@ -62,6 +105,9 @@ function Home() {
           </button>
         </div>
       </div>
+
+      {/* Модальное окно */}
+      {isModalOpen && <ModalTask task={selectedTask} onClose={handleCloseModal} />}
     </div>
   );
 }

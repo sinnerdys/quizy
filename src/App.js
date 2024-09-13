@@ -5,57 +5,57 @@ import Leaderboard from './components/Leaderboard';
 import Friends from './components/Friends';
 import BottomNav from './components/BottomNav';
 import Preloader from './components/Preloader';
-import DailyReward from './components/DailyReward'; // Импортируем DailyReward
+import DailyReward from './components/DailyReward';
 import './App.css';
 
 function App() {
-  const [loading, setLoading] = useState(true);
-  const [hasRedirected, setHasRedirected] = useState(false); // Состояние для отслеживания перенаправления
-  const [showDailyReward, setShowDailyReward] = useState(true); // Для отображения экрана наград
+  const [loading, setLoading] = useState(true); // Состояние для прелоадера
+  const [showDailyReward, setShowDailyReward] = useState(false); // Состояние для DailyReward
+  const [balance, setBalance] = useState(0); // Состояние для баланса
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Проверяем, что Telegram WebApp доступен
     if (window.Telegram.WebApp) {
-      window.Telegram.WebApp.expand(); // Расширяем приложение на всю высоту
-
-      // Устанавливаем кастомный цвет для шапки
+      window.Telegram.WebApp.expand();
       window.Telegram.WebApp.setHeaderColor('#112558');
-
-      // Устанавливаем кастомный цвет для нижней панели
       window.Telegram.WebApp.setBackgroundColor('#112558');
-
-      // Отключаем вертикальные свайпы, если необходимо
-      window.Telegram.WebApp.disableVerticalSwipes(); 
+      window.Telegram.WebApp.disableVerticalSwipes();
     }
 
-    // Таймер на 2 секунды для прелоадера
-    const timer = setTimeout(() => {
-      setLoading(false); // Прелоадер исчезает через 2 секунды
+    const preloaderTimer = setTimeout(() => {
+      setLoading(false);
+      setShowDailyReward(true);
     }, 2000);
 
-    return () => clearTimeout(timer); // Очистка таймера при размонтировании
+    return () => clearTimeout(preloaderTimer);
   }, []);
 
+  // Функция для обновления баланса
+  const updateBalance = (amount) => {
+    setBalance((prevBalance) => prevBalance + amount);
+  };
+
+  // Функция для перехода с DailyReward на Home
   const handleContinue = () => {
-    setShowDailyReward(false); // Скрываем экран наград
-    navigate('/'); // Перенаправляем на Home
+    updateBalance(100); // Добавляем награду за ежедневное посещение
+    setShowDailyReward(false); // Скрываем DailyReward
+    navigate('/'); // Переходим на Home
   };
 
   return (
     <div className="App">
       {loading ? (
-        <Preloader />  // Если загружается — показываем прелоадер
+        <Preloader />
       ) : showDailyReward ? (
-        <DailyReward onContinue={handleContinue} /> // Показываем экран наград
+        <DailyReward onContinue={handleContinue} />
       ) : (
         <>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home balance={balance} updateBalance={updateBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/friends" element={<Friends />} />
           </Routes>
-          <BottomNav /> {/* Навигация внизу */}
+          <BottomNav />
         </>
       )}
     </div>
