@@ -11,27 +11,26 @@ import './App.css';
 function App() {
   const [loading, setLoading] = useState(true);
   const [showDailyReward, setShowDailyReward] = useState(false);
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(0); // Баланс пользователя
   const navigate = useNavigate();
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
-      // Telegram WebApp environment
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.setHeaderColor('#112558');
       window.Telegram.WebApp.setBackgroundColor('#112558');
       window.Telegram.WebApp.disableVerticalSwipes();
 
-      // Проверяем, есть ли данные пользователя
       const user = window.Telegram.WebApp.initDataUnsafe.user;
       if (user) {
-        console.log('User data from Telegram:', user); // Выводим данные пользователя для проверки
-        saveUserToFirebase(user);  // Сохраняем данные пользователя в Firebase
+        console.log('User data from Telegram:', user); 
+        // Сохраняем данные пользователя вместе с балансом
+        saveUserToFirebase(user, balance);  
       } else {
-        console.log('No user data from Telegram WebApp'); // Если данных пользователя нет
+        console.log('No user data from Telegram WebApp'); 
       }
     } else {
-      console.log('Not running in Telegram WebApp'); // Приложение не запущено в окружении Telegram WebApp
+      console.log('Not running in Telegram WebApp'); 
     }
 
     const preloaderTimer = setTimeout(() => {
@@ -40,10 +39,10 @@ function App() {
     }, 2000);
 
     return () => clearTimeout(preloaderTimer);
-  }, []);
+  }, [balance]);  // Следим за изменением баланса
 
   // Функция для сохранения данных пользователя в Firebase
-  const saveUserToFirebase = async (user) => {
+  const saveUserToFirebase = async (user, balance) => {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
@@ -53,8 +52,9 @@ function App() {
         body: JSON.stringify({
           userId: user.id,
           firstName: user.first_name,
-          lastName: user.last_name || '', // Если нет last_name, указываем пустую строку
-          username: user.username || '', // Если нет username, указываем пустую строку
+          lastName: user.last_name || '',
+          username: user.username || '',
+          balance: balance,  // Передаем баланс
         }),
       });
 
@@ -72,7 +72,7 @@ function App() {
 
   // Функция для перехода с DailyReward на Home
   const handleContinue = () => {
-    updateBalance(100);
+    updateBalance(100); // Добавляем награду за ежедневное посещение
     setShowDailyReward(false);
     navigate('/');
   };
