@@ -37,7 +37,14 @@ function Leaderboard() {
       }
 
       const players = await response.json();
-      setTopPlayers(players);
+      
+      // Если данные пусты или неверны, устанавливаем пустой массив
+      if (!players || !Array.isArray(players)) {
+        setTopPlayers([]);
+      } else {
+        setTopPlayers(players);
+      }
+
     } catch (error) {
       console.error('Error fetching leaderboard data:', error);
       setError('Failed to fetch leaderboard');
@@ -83,21 +90,25 @@ function Leaderboard() {
       <div className="top-players">
         <h3>Top-100 Players</h3>
         <ul className="players-list">
-          {topPlayers.map((player, index) => (
-            <li key={index} className="player-item">
-              <div className="player-info">
-                <div className="player-icon">{player.username.charAt(0)}</div>
-                <div className="player-details">
-                  <span className="player-name">{player.username}</span>
-                  <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
+          {topPlayers && topPlayers.length > 0 ? (
+            topPlayers.map((player, index) => (
+              <li key={index} className="player-item">
+                <div className="player-info">
+                  <div className="player-icon">{player.username.charAt(0)}</div>
+                  <div className="player-details">
+                    <span className="player-name">{player.username}</span>
+                    <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
+                  </div>
                 </div>
-              </div>
-              <div className="player-rank">
-                {getMedal(index + 1)}
-                {index >= 3 && <span>#{index + 1}</span>}
-              </div>
-            </li>
-          ))}
+                <div className="player-rank">
+                  {getMedal(index + 1)}
+                  {index >= 3 && <span>#{index + 1}</span>}
+                </div>
+              </li>
+            ))
+          ) : (
+            <li>No players available</li> // Отображаем сообщение, если игроков нет
+          )}
         </ul>
       </div>
     </div>
