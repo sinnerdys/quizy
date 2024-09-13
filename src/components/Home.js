@@ -3,7 +3,7 @@ import './Home.css'; // стили для мобильной версии
 import logo from '../assets/logo.png'; // Импорт логотипа
 
 function Home() {
-  const [balance, setBalance] = useState(50000); // начальный баланс токенов
+  const [balance, setBalance] = useState(0); // начальный баланс токенов
   const [showMoreTasks, setShowMoreTasks] = useState(false); // состояние для показа дополнительных задач
 
   const tasks = [
