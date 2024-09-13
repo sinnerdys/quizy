@@ -37,14 +37,12 @@ function Leaderboard() {
       }
 
       const players = await response.json();
-
-      // Если данные пусты или некорректны, устанавливаем пустой массив
-      if (!players || !Array.isArray(players)) {
-        setTopPlayers([]); // Защита от пустых или неверных данных
-      } else {
+      // Убедимся, что данные являются массивом
+      if (Array.isArray(players)) {
         setTopPlayers(players);
+      } else {
+        setTopPlayers([]); // Если данные не массив, установим пустой массив
       }
-
     } catch (error) {
       console.error('Error fetching leaderboard data:', error);
       setError('Failed to fetch leaderboard');
@@ -90,7 +88,7 @@ function Leaderboard() {
       <div className="top-players">
         <h3>Top-100 Players</h3>
         <ul className="players-list">
-          {topPlayers && topPlayers.length > 0 ? (
+          {topPlayers.length > 0 ? (
             topPlayers.map((player, index) => (
               <li key={index} className="player-item">
                 <div className="player-info">
