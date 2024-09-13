@@ -9,17 +9,24 @@ import DailyReward from './components/DailyReward';
 import './App.css';
 
 function App() {
-  const [loading, setLoading] = useState(true); // Состояние для прелоадера
-  const [showDailyReward, setShowDailyReward] = useState(false); // Состояние для DailyReward
-  const [balance, setBalance] = useState(0); // Состояние для баланса
+  const [loading, setLoading] = useState(true);
+  const [showDailyReward, setShowDailyReward] = useState(false);
+  const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (window.Telegram.WebApp) {
+      // Расширяем приложение и настраиваем цвета
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.setHeaderColor('#112558');
       window.Telegram.WebApp.setBackgroundColor('#112558');
       window.Telegram.WebApp.disableVerticalSwipes();
+
+      // Получение данных пользователя из Telegram WebApp
+      const user = window.Telegram.WebApp.initDataUnsafe?.user;
+      if (user) {
+        saveUserToFirebase(user);  // Сохраняем данные пользователя в Firebase
+      }
     }
 
     const preloaderTimer = setTimeout(() => {
@@ -29,6 +36,33 @@ function App() {
 
     return () => clearTimeout(preloaderTimer);
   }, []);
+
+  // Функция для сохранения данных пользователя в Firebase
+  const saveUserToFirebase = async (user) => {
+    try {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          username: user.username,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('User data saved successfully:', result);
+      } else {
+        console.error('Error saving user data:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error saving user data:', error);
+    }
+  };
 
   // Функция для обновления баланса
   const updateBalance = (amount) => {
