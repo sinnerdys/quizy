@@ -11,7 +11,7 @@ import './App.css';
 function App() {
   const [loading, setLoading] = useState(true);
   const [showDailyReward, setShowDailyReward] = useState(false);
-  const [balance, setBalance] = useState(0); // Баланс пользователя
+  const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,14 +23,13 @@ function App() {
 
       const user = window.Telegram.WebApp.initDataUnsafe.user;
       if (user) {
-        console.log('User data from Telegram:', user); 
-        // Сохраняем данные пользователя вместе с балансом, но только один раз
-        saveUserToFirebase(user, balance);  
+        console.log('User data from Telegram:', user);
+        saveUserToFirebase(user, balance);
       } else {
-        console.log('No user data from Telegram WebApp'); 
+        console.log('No user data from Telegram WebApp');
       }
     } else {
-      console.log('Not running in Telegram WebApp'); 
+      console.log('Not running in Telegram WebApp');
     }
 
     const preloaderTimer = setTimeout(() => {
@@ -39,7 +38,7 @@ function App() {
     }, 2000);
 
     return () => clearTimeout(preloaderTimer);
-  }, []);  // Убираем баланс из зависимостей, чтобы эффект не запускался снова
+  }, []);
 
   // Функция для сохранения данных пользователя в Firebase
   const saveUserToFirebase = async (user, balance) => {
@@ -54,7 +53,7 @@ function App() {
           firstName: user.first_name,
           lastName: user.last_name || '',
           username: user.username || '',
-          balance: balance,  // Передаем баланс
+          balance: balance,
         }),
       });
 
@@ -72,9 +71,9 @@ function App() {
 
   // Функция для перехода с DailyReward на Home
   const handleContinue = () => {
-    updateBalance(100); // Добавляем награду за ежедневное посещение
+    updateBalance(100);
     setShowDailyReward(false);
-    navigate('/'); // Переход на Home
+    navigate('/');
   };
 
   return (
