@@ -5,7 +5,11 @@ import medalSilver from '../assets/medal-silver.png'; // Импорт иконк
 import medalBronze from '../assets/medal-bronze.png'; // Импорт иконки медали (бронза)
 
 function Leaderboard() {
-  const [currentUser, setCurrentUser] = useState(null); // Изначально данные пустые
+  const [currentUser, setCurrentUser] = useState({
+    name: '',
+    balance: 0,
+    rank: 0,
+  });
   const [topPlayers, setTopPlayers] = useState([]); // Начальное состояние - пустой массив
   const [error, setError] = useState(null); // Состояние для ошибки
 
@@ -32,10 +36,9 @@ function Leaderboard() {
       }
 
       const userData = await response.json();
-      console.log('Current user data:', userData); // Отладка
 
       // Найти позицию пользователя в рейтинге
-      const rank = topPlayers.findIndex(player => player.userId === userId) + 1 || 'Not ranked';
+      const rank = topPlayers.findIndex((player) => player.userId === userId) + 1 || 'Not ranked';
 
       setCurrentUser({
         name: userData.username || 'Anonymous',
@@ -95,21 +98,19 @@ function Leaderboard() {
       <h1 className="leaderboard-title">Leaderboard</h1>
 
       {/* Информация о текущем пользователе */}
-      {currentUser && (
-        <div className="current-user">
-          <div className="user-info">
-            <div className="user-icon">{currentUser.name.charAt(0)}</div>
-            <div className="user-details">
-              <span className="user-name">{currentUser.name}</span>
-              <span className="user-balance">{currentUser.balance.toLocaleString()} $QUIZY</span>
-            </div>
-          </div>
-          <div className="user-rank">
-            {getMedal(currentUser.rank)}
-            {currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
+      <div className="current-user">
+        <div className="user-info">
+          <div className="user-icon">{currentUser.name.charAt(0)}</div>
+          <div className="user-details">
+            <span className="user-name">{currentUser.name}</span>
+            <span className="user-balance">{currentUser.balance.toLocaleString()} $QUIZY</span>
           </div>
         </div>
-      )}
+        <div className="user-rank">
+          {getMedal(currentUser.rank)}
+          {currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
+        </div>
+      </div>
 
       {/* Список топ-100 игроков */}
       <div className="top-players">
