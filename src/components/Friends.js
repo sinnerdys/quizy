@@ -79,11 +79,11 @@ function Friends() {
     // Текст сообщения с реферальной ссылкой
     const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: https://t.me/your_bot_username?start=${referralCode}`;
 
-    if (tg.sendData) {
-      // Используем tg.sendData для передачи данных боту
-      tg.sendData(messageText);
+    if (tg.canSendText) {
+      // Встроенная функция для отправки сообщения
+      tg.sendText(messageText);
     } else {
-      console.error("Telegram WebApp API не поддерживает функцию sendData");
+      console.error("Telegram WebApp API не поддерживает функцию sendText");
     }
   };
 
