@@ -25,6 +25,7 @@ function Leaderboard() {
   // Функция для получения данных текущего пользователя напрямую из базы данных
   const fetchCurrentUserData = async (userId) => {
     try {
+      console.log('Fetching current user data...');
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${userId}`, {
         method: 'GET',
         headers: {
@@ -37,6 +38,7 @@ function Leaderboard() {
       }
 
       const userData = await response.json();
+      console.log('Current user data:', userData);
 
       // Устанавливаем данные текущего пользователя
       setCurrentUser({
@@ -53,6 +55,7 @@ function Leaderboard() {
   // Функция для получения данных топ-игроков с Firebase
   const fetchLeaderboardData = async () => {
     try {
+      console.log('Fetching leaderboard data...');
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getLeaderboard', {
         method: 'GET',
         headers: {
@@ -65,6 +68,7 @@ function Leaderboard() {
       }
 
       const players = await response.json();
+      console.log('Leaderboard data:', players);
 
       if (Array.isArray(players)) {
         setTopPlayers(players);
@@ -83,11 +87,14 @@ function Leaderboard() {
   const updateCurrentUserFromLeaderboard = (userId, players) => {
     const currentPlayer = players.find((player) => player.userId === userId);
     if (currentPlayer) {
+      console.log('Updating current user from leaderboard:', currentPlayer);
       setCurrentUser({
         name: currentPlayer.username || 'Anonymous',
         balance: currentPlayer.balance || 0,
         rank: currentPlayer.rank || 'Not ranked', // Используем ранг из данных топ-100
       });
+    } else {
+      console.log('Current user not found in leaderboard.');
     }
   };
 
