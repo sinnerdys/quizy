@@ -79,6 +79,18 @@ function Leaderboard() {
     }
   };
 
+  // Обновляем данные текущего пользователя на основе топ-100
+  const updateCurrentUserFromLeaderboard = (userId, players) => {
+    const currentPlayer = players.find((player) => player.userId === userId);
+    if (currentPlayer) {
+      setCurrentUser({
+        name: currentPlayer.username || 'Anonymous',
+        balance: currentPlayer.balance || 0,
+        rank: currentPlayer.rank || 'Not ranked',
+      });
+    }
+  };
+
   // Получение данных текущего пользователя с Telegram WebApp API и данных из Firebase
   useEffect(() => {
     const fetchData = async () => {
@@ -88,20 +100,8 @@ function Leaderboard() {
       console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
 
       const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
-
-      // Проверяем, есть ли текущий пользователь в топ-100
-      const currentPlayerInTop = players.find(player => player.userId === user.id);
-      if (currentPlayerInTop) {
-        // Обновляем данные текущего пользователя на основе топ-100
-        setCurrentUser({
-          name: currentPlayerInTop.username || 'Anonymous',
-          balance: currentPlayerInTop.balance || 0,
-          rank: currentPlayerInTop.rank || 'Not ranked', // Устанавливаем ранг из списка топ-100
-        });
-      } else {
-        // Если текущий пользователь не в топ-100, запросим его данные напрямую
-        await fetchCurrentUserData(user.id);
-      }
+      updateCurrentUserFromLeaderboard(user.id, players); // Обновляем данные текущего пользователя, если он в топ-100
+      await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
 
       setLoading(false); // Отключаем состояние загрузки после получения данных
     };
@@ -140,8 +140,8 @@ function Leaderboard() {
         <h3>Top-100 Players</h3>
         {!loading && (
           <ul className="players-list">
-            {topPlayers.map((player, index) => (
-              <li key={index} className="player-item">
+            {topPlayers.map((player) => (
+              <li key={player.userId} className="player-item">
                 <div className="player-info">
                   <div className="player-icon">{player.username.charAt(0)}</div>
                   <div className="player-details">
