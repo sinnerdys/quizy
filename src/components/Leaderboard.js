@@ -79,21 +79,20 @@ function Leaderboard() {
     }
   };
 
-// Обновляем данные текущего пользователя на основе топ-100
-const updateCurrentUserFromLeaderboard = (userId, players) => {
-  const currentPlayer = players.find((player) => player.userId === userId);
-  if (currentPlayer) {
-    setCurrentUser({
-      name: currentPlayer.username || 'Anonymous',
-      balance: currentPlayer.balance || 0,
-      rank: currentPlayer.rank || 'Not ranked', // Используем ранг из данных топ-100
-    });
-  }
-};
+  // Обновляем данные текущего пользователя на основе топ-100
+  const updateCurrentUserFromLeaderboard = (userId, players) => {
+    const currentPlayer = players.find((player) => player.userId === userId);
+    if (currentPlayer) {
+      setCurrentUser({
+        name: currentPlayer.username || 'Anonymous',
+        balance: currentPlayer.balance || 0,
+        rank: currentPlayer.rank || 'Not ranked', // Используем ранг из данных топ-100
+      });
+    }
+  };
 
-// Функция для получения данных текущего пользователя с Telegram WebApp API и данных из Firebase
-useEffect(() => {
-  const fetchData = async () => {
+  // Функция для обновления данных при фокусе на экране
+  const handleFocus = async () => {
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe?.user || {};
 
@@ -102,12 +101,20 @@ useEffect(() => {
     const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
     updateCurrentUserFromLeaderboard(user.id, players); // Обновляем данные текущего пользователя, если он в топ-100
     await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
-
-    setLoading(false); // Отключаем состояние загрузки после получения данных
   };
 
-  fetchData();
-}, []);
+  // Используем useEffect для обработки фокуса на экране
+  useEffect(() => {
+    const tg = window.Telegram.WebApp;
+
+    // Устанавливаем обработчик события "фокус" для обновления данных
+    tg.onEvent('viewportChanged', handleFocus);
+
+    // Очищаем обработчик при размонтировании компонента
+    return () => {
+      tg.offEvent('viewportChanged', handleFocus);
+    };
+  }, []);
 
   if (error) {
     return <div className="error-message">{error}</div>;
