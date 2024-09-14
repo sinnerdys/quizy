@@ -5,12 +5,7 @@ import medalSilver from '../assets/medal-silver.png'; // Импорт иконк
 import medalBronze from '../assets/medal-bronze.png'; // Импорт иконки медали (бронза)
 
 function Leaderboard() {
-  const [currentUser, setCurrentUser] = useState({
-    name: 'Loading...',
-    balance: 0,
-    rank: '...',
-  });
-
+  const [currentUser, setCurrentUser] = useState(null); // Изначально данные пустые
   const [topPlayers, setTopPlayers] = useState([]); // Начальное состояние - пустой массив
   const [error, setError] = useState(null); // Состояние для ошибки
 
@@ -39,10 +34,13 @@ function Leaderboard() {
       const userData = await response.json();
       console.log('Current user data:', userData); // Отладка
 
+      // Найти позицию пользователя в рейтинге
+      const rank = topPlayers.findIndex(player => player.userId === userId) + 1 || 'Not ranked';
+
       setCurrentUser({
         name: userData.username || 'Anonymous',
         balance: userData.balance || 0,
-        rank: userData.rank || '...', // Ранг должен быть вычислен или получен
+        rank,
       });
     } catch (error) {
       console.error('Error fetching current user data:', error);
@@ -66,7 +64,6 @@ function Leaderboard() {
 
       const players = await response.json();
 
-      // Убедимся, что данные являются массивом
       if (Array.isArray(players)) {
         setTopPlayers(players);
       }
@@ -83,8 +80,9 @@ function Leaderboard() {
 
     console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
 
-    fetchCurrentUserData(user.id); // Получаем данные текущего пользователя из Firebase
-    fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
+    fetchLeaderboardData().then(() => {
+      fetchCurrentUserData(user.id); // Получаем данные текущего пользователя после загрузки лидеров
+    });
   }, []);
 
   if (error) {
@@ -97,16 +95,21 @@ function Leaderboard() {
       <h1 className="leaderboard-title">Leaderboard</h1>
 
       {/* Информация о текущем пользователе */}
-      <div className="current-user">
-        <div className="user-info">
-          <div className="user-icon">{currentUser.name.charAt(0)}</div>
-          <div className="user-details">
-            <span className="user-name">{currentUser.name}</span>
-            <span className="user-balance">{currentUser.balance.toLocaleString()} $QUIZY</span>
+      {currentUser && (
+        <div className="current-user">
+          <div className="user-info">
+            <div className="user-icon">{currentUser.name.charAt(0)}</div>
+            <div className="user-details">
+              <span className="user-name">{currentUser.name}</span>
+              <span className="user-balance">{currentUser.balance.toLocaleString()} $QUIZY</span>
+            </div>
+          </div>
+          <div className="user-rank">
+            {getMedal(currentUser.rank)}
+            {currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
           </div>
         </div>
-        <div className="user-rank">#{currentUser.rank}</div>
-      </div>
+      )}
 
       {/* Список топ-100 игроков */}
       <div className="top-players">
