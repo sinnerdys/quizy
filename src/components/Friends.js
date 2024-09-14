@@ -3,7 +3,6 @@ import './Friends.css'; // Стили для экрана друзей
 import logo from '../assets/quizy_logo.png'; // Импорт логотипа
 import token from '../assets/token.png'; // Импорт логотипа токена (или иконки)
 
-// Генерация реферального кода для текущего пользователя
 function Friends() {
   const [referralCode, setReferralCode] = useState(''); // Состояние для реферального кода
   const [friends, setFriends] = useState([]); // Список друзей
@@ -77,16 +76,19 @@ function Friends() {
     const tg = window.Telegram.WebApp;
 
     // Текст сообщения с реферальной ссылкой
-    const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: https://t.me/your_bot_username?start=${referralCode}`;
+    const referralLink = `https://t.me/your_bot_username?start=${referralCode}`;
+    const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: ${referralLink}`;
 
-    // Используем метод shareText, который поддерживается Telegram WebApp API
-    if (tg.canSendText) {
-      tg.sendData(messageText); // Отправка сообщения через WebApp
-    } else if (tg.shareText) {
-      tg.shareText(messageText); // Альтернативный метод shareText для открытия диалога Telegram
-    } else {
-      console.error("Telegram WebApp API не поддерживает функцию sendText или shareText");
-    }
+    // Открываем диалог для отправки сообщения
+    tg.openTelegramShareDialog(messageText, {
+      link: referralLink, // Это ссылка, которую можно отправить
+      success: () => {
+        console.log('Invitation shared successfully!');
+      },
+      error: (err) => {
+        console.error('Error sharing invitation:', err);
+      },
+    });
   };
 
   if (loading) {
