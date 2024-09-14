@@ -11,7 +11,7 @@ function Leaderboard() {
     rank: '...',
   });
 
-  const [topPlayers, setTopPlayers] = useState([]); // Состояние для топ-игроков
+  const [topPlayers, setTopPlayers] = useState([]); // Начальное состояние - пустой массив
   const [error, setError] = useState(null); // Состояние для ошибки
 
   // Функция для отображения медали, если игрок в топ-3
@@ -37,11 +37,28 @@ function Leaderboard() {
       }
 
       const players = await response.json();
+
       // Убедимся, что данные являются массивом
       if (Array.isArray(players)) {
         setTopPlayers(players);
-      } else {
-        setTopPlayers([]); // Если данные не массив, установим пустой массив
+
+        // Поиск текущего пользователя в списке игроков для обновления его баланса и ранга
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe?.user || {};
+        const currentPlayer = players.find((p) => p.userId === user.id);
+
+        if (currentPlayer) {
+          setCurrentUser({
+            name: currentPlayer.username || 'Anonymous',
+            balance: currentPlayer.balance,
+            rank: players.findIndex((p) => p.userId === user.id) + 1,
+          });
+        } else {
+          setCurrentUser((prev) => ({
+            ...prev,
+            rank: 'Not ranked', // Пользователь не найден в топ-100
+          }));
+        }
       }
     } catch (error) {
       console.error('Error fetching leaderboard data:', error);
@@ -51,15 +68,6 @@ function Leaderboard() {
 
   // Получение данных текущего пользователя с Telegram WebApp API
   useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    const user = tg.initDataUnsafe?.user || {}; // Получение информации о пользователе
-
-    setCurrentUser({
-      name: user.username || 'Anonymous', // Если нет username, отображаем "Anonymous"
-      balance: 0, // Здесь можно получить данные о токенах из базы данных Firebase
-      rank: '...', // Ранг будет рассчитан позже
-    });
-
     fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
   }, []);
 
@@ -88,25 +96,21 @@ function Leaderboard() {
       <div className="top-players">
         <h3>Top-100 Players</h3>
         <ul className="players-list">
-          {topPlayers.length > 0 ? (
-            topPlayers.map((player, index) => (
-              <li key={index} className="player-item">
-                <div className="player-info">
-                  <div className="player-icon">{player.username.charAt(0)}</div>
-                  <div className="player-details">
-                    <span className="player-name">{player.username}</span>
-                    <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
-                  </div>
+          {topPlayers.map((player, index) => (
+            <li key={index} className="player-item">
+              <div className="player-info">
+                <div className="player-icon">{player.username.charAt(0)}</div>
+                <div className="player-details">
+                  <span className="player-name">{player.username}</span>
+                  <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
                 </div>
-                <div className="player-rank">
-                  {getMedal(index + 1)}
-                  {index >= 3 && <span>#{index + 1}</span>}
-                </div>
-              </li>
-            ))
-          ) : (
-            <li>No players available</li> // Отображаем сообщение, если игроков нет
-          )}
+              </div>
+              <div className="player-rank">
+                {getMedal(index + 1)}
+                {index >= 3 && <span>#{index + 1}</span>}
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
