@@ -12,6 +12,7 @@ function Leaderboard() {
   });
   const [topPlayers, setTopPlayers] = useState([]); // Начальное состояние - пустой массив
   const [error, setError] = useState(null); // Состояние для ошибки
+  const [loading, setLoading] = useState(true); // Состояние для индикации загрузки
 
   // Функция для отображения медали, если игрок в топ-3
   const getMedal = (rank) => {
@@ -22,7 +23,7 @@ function Leaderboard() {
   };
 
   // Функция для получения данных текущего пользователя с Firebase
-  const fetchCurrentUserData = async (userId) => {
+  const fetchCurrentUserData = async (userId, players) => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${userId}`, {
         method: 'GET',
@@ -38,7 +39,7 @@ function Leaderboard() {
       const userData = await response.json();
 
       // Найти позицию пользователя в рейтинге
-      const rank = topPlayers.findIndex((player) => player.userId === userId) + 1 || 'Not ranked';
+      const rank = players.findIndex((player) => player.userId === userId) + 1 || 'Not ranked';
 
       setCurrentUser({
         name: userData.username || 'Anonymous',
@@ -69,23 +70,32 @@ function Leaderboard() {
 
       if (Array.isArray(players)) {
         setTopPlayers(players);
+        return players;
       }
+
+      return [];
     } catch (error) {
       console.error('Error fetching leaderboard data:', error);
       setError('Failed to fetch leaderboard');
+      return [];
     }
   };
 
   // Получение данных текущего пользователя с Telegram WebApp API и данных из Firebase
   useEffect(() => {
-    const tg = window.Telegram.WebApp;
-    const user = tg.initDataUnsafe?.user || {};
+    const fetchData = async () => {
+      const tg = window.Telegram.WebApp;
+      const user = tg.initDataUnsafe?.user || {};
 
-    console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
+      console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
 
-    fetchLeaderboardData().then(() => {
-      fetchCurrentUserData(user.id); // Получаем данные текущего пользователя после загрузки лидеров
-    });
+      const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
+      await fetchCurrentUserData(user.id, players); // Получаем данные текущего пользователя после загрузки лидеров
+
+      setLoading(false); // Отключаем состояние загрузки после получения данных
+    };
+
+    fetchData();
   }, []);
 
   if (error) {
@@ -98,40 +108,44 @@ function Leaderboard() {
       <h1 className="leaderboard-title">Leaderboard</h1>
 
       {/* Информация о текущем пользователе */}
-      <div className="current-user">
-        <div className="user-info">
-          <div className="user-icon">{currentUser.name.charAt(0)}</div>
-          <div className="user-details">
-            <span className="user-name">{currentUser.name}</span>
-            <span className="user-balance">{currentUser.balance.toLocaleString()} $QUIZY</span>
+      {!loading && currentUser && (
+        <div className="current-user">
+          <div className="user-info">
+            <div className="user-icon">{currentUser.name.charAt(0)}</div>
+            <div className="user-details">
+              <span className="user-name">{currentUser.name}</span>
+              <span className="user-balance">{currentUser.balance.toLocaleString()} $QUIZY</span>
+            </div>
+          </div>
+          <div className="user-rank">
+            {getMedal(currentUser.rank)}
+            {currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
           </div>
         </div>
-        <div className="user-rank">
-          {getMedal(currentUser.rank)}
-          {currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
-        </div>
-      </div>
+      )}
 
       {/* Список топ-100 игроков */}
       <div className="top-players">
         <h3>Top-100 Players</h3>
-        <ul className="players-list">
-          {topPlayers.map((player, index) => (
-            <li key={index} className="player-item">
-              <div className="player-info">
-                <div className="player-icon">{player.username.charAt(0)}</div>
-                <div className="player-details">
-                  <span className="player-name">{player.username}</span>
-                  <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
+        {!loading && (
+          <ul className="players-list">
+            {topPlayers.map((player, index) => (
+              <li key={index} className="player-item">
+                <div className="player-info">
+                  <div className="player-icon">{player.username.charAt(0)}</div>
+                  <div className="player-details">
+                    <span className="player-name">{player.username}</span>
+                    <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
+                  </div>
                 </div>
-              </div>
-              <div className="player-rank">
-                {getMedal(index + 1)}
-                {index >= 3 && <span>#{index + 1}</span>}
-              </div>
-            </li>
-          ))}
-        </ul>
+                <div className="player-rank">
+                  {getMedal(index + 1)}
+                  {index >= 3 && <span>#{index + 1}</span>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
