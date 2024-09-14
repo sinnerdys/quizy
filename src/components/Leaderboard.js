@@ -119,8 +119,7 @@ function Leaderboard() {
           </div>
           <div className="user-rank">
             {/* Проверка на отображение медали и ранга */}
-            {getMedal(currentUser.rank)}
-            {currentUser.rank && currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
+            {getMedal(currentUser.rank) || <span>#{currentUser.rank}</span>}
           </div>
         </div>
       )}
@@ -140,8 +139,7 @@ function Leaderboard() {
                   </div>
                 </div>
                 <div className="player-rank">
-                  {getMedal(index + 1)}
-                  {index >= 3 && <span>#{index + 1}</span>}
+                  {getMedal(index + 1) || <span>#{index + 1}</span>}
                 </div>
               </li>
             ))}
