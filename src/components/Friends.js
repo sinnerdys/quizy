@@ -79,11 +79,13 @@ function Friends() {
     // Текст сообщения с реферальной ссылкой
     const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: https://t.me/your_bot_username?start=${referralCode}`;
 
+    // Используем метод shareText, который поддерживается Telegram WebApp API
     if (tg.canSendText) {
-      // Встроенная функция для отправки сообщения
-      tg.sendText(messageText);
+      tg.sendData(messageText); // Отправка сообщения через WebApp
+    } else if (tg.shareText) {
+      tg.shareText(messageText); // Альтернативный метод shareText для открытия диалога Telegram
     } else {
-      console.error("Telegram WebApp API не поддерживает функцию sendText");
+      console.error("Telegram WebApp API не поддерживает функцию sendText или shareText");
     }
   };
 
