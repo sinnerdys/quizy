@@ -79,17 +79,17 @@ function Leaderboard() {
     }
   };
 
-  // Обновляем данные текущего пользователя на основе топ-100
-  const updateCurrentUserFromLeaderboard = (userId, players) => {
-    const currentPlayer = players.find((player) => player.userId === userId);
-    if (currentPlayer) {
-      setCurrentUser({
-        name: currentPlayer.username || 'Anonymous',
-        balance: currentPlayer.balance || 0,
-        rank: currentPlayer.rank || 'Not ranked',
-      });
-    }
-  };
+// Обновляем данные текущего пользователя на основе топ-100
+const updateCurrentUserFromLeaderboard = (userId, players) => {
+  const currentPlayer = players.find((player) => player.userId === userId);
+  if (currentPlayer) {
+    setCurrentUser({
+      name: currentPlayer.username || 'Anonymous',
+      balance: currentPlayer.balance || 0,
+      rank: currentPlayer.rank || 'Not ranked', // Используем ранг из данных топ-100
+    });
+  }
+};
 
   // Получение данных текущего пользователя с Telegram WebApp API и данных из Firebase
   useEffect(() => {
