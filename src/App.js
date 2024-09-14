@@ -11,8 +11,9 @@ import './App.css';
 function App() {
   const [loading, setLoading] = useState(true);
   const [showDailyReward, setShowDailyReward] = useState(false);
-  const [balance, setBalance] = useState(null); // Устанавливаем начальное значение как null, чтобы не было 0
+  const [balance, setBalance] = useState(null); // Устанавливаем начальное значение как null
   const [user, setUser] = useState(null); // Сохраняем данные пользователя
+  const [referralCode, setReferralCode] = useState(null); // Состояние для реферального кода
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,9 +24,12 @@ function App() {
       window.Telegram.WebApp.disableVerticalSwipes();
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;
+      const referralParam = window.Telegram.WebApp.initDataUnsafe.start_param; // Получаем реферальный код из start_param
+
       if (telegramUser) {
         console.log('User data from Telegram:', telegramUser);
         setUser(telegramUser); // Сохраняем пользователя в состоянии
+        setReferralCode(referralParam); // Сохраняем реферальный код (если есть)
         fetchUserData(telegramUser); // Загружаем данные пользователя из Firebase
       } else {
         console.log('No user data from Telegram WebApp');
@@ -73,6 +77,7 @@ function App() {
           lastName: user.last_name || '',
           username: user.username || '',
           balance: balance, // Сохраняем текущий баланс
+          referralCode, // Передаем реферальный код
         }),
       });
 
