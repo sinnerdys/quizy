@@ -22,11 +22,10 @@ function Leaderboard() {
     return null;
   };
 
-  // Функция для получения данных текущего пользователя напрямую из базы данных
-  const fetchCurrentUserData = async (userId) => {
+  // Функция для получения данных текущего пользователя с рангом с бэкенда
+  const fetchCurrentUserWithRank = async (userId) => {
     try {
-      console.log('Fetching current user data...');
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${userId}`, {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentUserWithRank?userId=${userId}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -34,20 +33,19 @@ function Leaderboard() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch user data');
+        throw new Error('Failed to fetch current user data with rank');
       }
 
       const userData = await response.json();
-      console.log('Current user data:', userData);
 
       // Устанавливаем данные текущего пользователя
       setCurrentUser({
         name: userData.username || 'Anonymous',
         balance: userData.balance || 0,
-        rank: userData.rank || 'Not ranked', // Получаем ранг напрямую из базы данных
+        rank: userData.rank || 'Not ranked', // Получаем ранг напрямую из бэкенда
       });
     } catch (error) {
-      console.error('Error fetching current user data:', error);
+      console.error('Error fetching current user data with rank:', error);
       setError('Failed to fetch current user data');
     }
   };
@@ -55,7 +53,6 @@ function Leaderboard() {
   // Функция для получения данных топ-игроков с Firebase
   const fetchLeaderboardData = async () => {
     try {
-      console.log('Fetching leaderboard data...');
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getLeaderboard', {
         method: 'GET',
         headers: {
@@ -68,7 +65,6 @@ function Leaderboard() {
       }
 
       const players = await response.json();
-      console.log('Leaderboard data:', players);
 
       if (Array.isArray(players)) {
         setTopPlayers(players);
@@ -83,21 +79,6 @@ function Leaderboard() {
     }
   };
 
-  // Обновляем данные текущего пользователя на основе топ-100
-  const updateCurrentUserFromLeaderboard = (userId, players) => {
-    const currentPlayer = players.find((player) => player.userId === userId);
-    if (currentPlayer) {
-      console.log('Updating current user from leaderboard:', currentPlayer);
-      setCurrentUser({
-        name: currentPlayer.username || 'Anonymous',
-        balance: currentPlayer.balance || 0,
-        rank: currentPlayer.rank || 'Not ranked', // Используем ранг из данных топ-100
-      });
-    } else {
-      console.log('Current user not found in leaderboard.');
-    }
-  };
-
   // Получение данных текущего пользователя с Telegram WebApp API и данных из Firebase
   useEffect(() => {
     const fetchData = async () => {
@@ -106,9 +87,8 @@ function Leaderboard() {
 
       console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
 
-      const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
-      updateCurrentUserFromLeaderboard(user.id, players); // Обновляем данные текущего пользователя, если он в топ-100
-      await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
+      await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
+      await fetchCurrentUserWithRank(user.id); // Получаем данные текущего пользователя с рангом из новой функции
 
       setLoading(false); // Отключаем состояние загрузки после получения данных
     };
