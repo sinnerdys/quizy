@@ -11,7 +11,7 @@ import './App.css';
 function App() {
   const [loading, setLoading] = useState(true);
   const [showDailyReward, setShowDailyReward] = useState(false);
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(null); // Устанавливаем начальное значение как null, чтобы не было 0
   const [user, setUser] = useState(null); // Сохраняем данные пользователя
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ function App() {
       if (telegramUser) {
         console.log('User data from Telegram:', telegramUser);
         setUser(telegramUser); // Сохраняем пользователя в состоянии
-        saveUserToFirebase(telegramUser, balance); // Сохраняем данные пользователя
+        fetchUserData(telegramUser); // Загружаем данные пользователя из Firebase
       } else {
         console.log('No user data from Telegram WebApp');
       }
@@ -42,6 +42,23 @@ function App() {
     return () => clearTimeout(preloaderTimer);
   }, []);
 
+  // Функция для загрузки данных пользователя из Firebase
+  const fetchUserData = async (user) => {
+    try {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${user.id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
+
+      const userData = await response.json();
+      setBalance(userData.balance); // Устанавливаем баланс из базы данных
+      console.log('User data fetched successfully:', userData);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setBalance(0); // В случае ошибки устанавливаем 0 как начальный баланс
+    }
+  };
+
   // Функция для сохранения данных пользователя в Firebase
   const saveUserToFirebase = async (user, balance) => {
     try {
@@ -55,7 +72,7 @@ function App() {
           firstName: user.first_name,
           lastName: user.last_name || '',
           username: user.username || '',
-          balance: balance,
+          balance: balance, // Сохраняем текущий баланс
         }),
       });
 
@@ -84,11 +101,14 @@ function App() {
     navigate('/'); // Переход на Home
   };
 
+  if (balance === null || loading) {
+    // Показываем preloader, пока не загружены данные пользователя
+    return <Preloader />;
+  }
+
   return (
     <div className="App">
-      {loading ? (
-        <Preloader />
-      ) : showDailyReward ? (
+      {showDailyReward ? (
         <DailyReward onContinue={handleContinue} />
       ) : (
         <>
