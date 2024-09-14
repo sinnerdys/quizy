@@ -3,25 +3,39 @@ import './Friends.css'; // Стили для экрана друзей
 import logo from '../assets/quizy_logo.png'; // Импорт логотипа
 import token from '../assets/token.png'; // Импорт логотипа токена (или иконки)
 
+// Генерация реферального кода для текущего пользователя
 function Friends() {
   const [referralCode, setReferralCode] = useState(''); // Состояние для реферального кода
   const [friends, setFriends] = useState([]); // Список друзей
+  const [loading, setLoading] = useState(true); // Состояние загрузки
 
-  // Генерация реферального кода для текущего пользователя
+  // Получение реферального кода из базы или генерация нового
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe?.user || {};
 
-    // Пример генерации реферального кода
+    const fetchReferralCode = async (userId) => {
+      try {
+        const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getReferralCode?userId=${userId}`);
+        const data = await response.json();
+
+        if (data.referralCode) {
+          setReferralCode(data.referralCode); // Используем существующий код
+        } else {
+          const generatedCode = generateReferralCode(userId); // Генерация нового кода
+          setReferralCode(generatedCode);
+          saveReferralCode(userId, generatedCode); // Сохранение нового кода в базе
+        }
+      } catch (error) {
+        console.error('Ошибка получения реферального кода:', error);
+      }
+    };
+
     const generateReferralCode = (userId) => {
       return Math.random().toString(36).substring(2, 12) + userId; // Создаем уникальный код с userId
     };
 
-    const generatedCode = generateReferralCode(user.id);
-    setReferralCode(generatedCode);
-
-    // Отправляем код на сервер, чтобы сохранить его в базе данных
-    const saveReferralCode = async () => {
+    const saveReferralCode = async (userId, referralCode) => {
       try {
         await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveReferralCode', {
           method: 'POST',
@@ -29,8 +43,8 @@ function Friends() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            userId: user.id,
-            referralCode: generatedCode,
+            userId,
+            referralCode,
           }),
         });
       } catch (error) {
@@ -38,7 +52,24 @@ function Friends() {
       }
     };
 
-    saveReferralCode();
+    if (user.id) {
+      fetchReferralCode(user.id);
+    }
+
+    // Загрузка списка друзей с сервера
+    const fetchFriends = async () => {
+      try {
+        const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserFriends?userId=${user.id}`);
+        const friendsData = await response.json();
+        setFriends(friendsData);
+      } catch (error) {
+        console.error('Ошибка получения списка друзей:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFriends();
   }, []);
 
   // Обработчик нажатия на кнопку "Invite friends"
@@ -46,19 +77,19 @@ function Friends() {
     const tg = window.Telegram.WebApp;
 
     // Текст сообщения с реферальной ссылкой
-    const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: https://t.me/your_bot_username?startapp=${referralCode}`;
+    const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: https://t.me/your_bot_username?start=${referralCode}`;
 
-    // Вызов встроенного метода для открытия поп-апа в Telegram
-    tg.shareText(messageText, {
-      link: `https://t.me/your_bot_username?startapp=${referralCode}`,
-      success: () => {
-        console.log('Invitation shared successfully!');
-      },
-      error: (err) => {
-        console.error('Error sharing invitation:', err);
-      },
-    });
+    if (tg.sendData) {
+      // Используем tg.sendData для передачи данных боту
+      tg.sendData(messageText);
+    } else {
+      console.error("Telegram WebApp API не поддерживает функцию sendData");
+    }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="friends">
