@@ -125,8 +125,11 @@ function Friends() {
           {friends.map(friend => (
             <li key={friend.id} className="friend-item">
               <div className="friend-info">
-                <div className="friend-icon">{friend.name.charAt(0)}</div>
-                <span className="friend-name">{friend.name}</span>
+                <div className="friend-icon">
+                  {/* Используем friend.username вместо friend.name */}
+                  {friend.username ? friend.username.charAt(0) : 'N/A'}
+                </div>
+                <span className="friend-name">{friend.username || 'Unknown Friend'}</span>
               </div>
               <div className="friend-reward">
                 <span className="reward-text">+{friend.reward}</span>
