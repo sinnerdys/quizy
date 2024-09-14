@@ -79,35 +79,35 @@ function Leaderboard() {
     }
   };
 
-  // Обновляем данные текущего пользователя на основе топ-100
-  const updateCurrentUserFromLeaderboard = (userId, players) => {
-    const currentPlayer = players.find((player) => player.userId === userId);
-    if (currentPlayer) {
-      setCurrentUser({
-        name: currentPlayer.username || 'Anonymous',
-        balance: currentPlayer.balance || 0,
-        rank: currentPlayer.rank || 'Not ranked', // Используем ранг из данных топ-100
-      });
-    }
+// Обновляем данные текущего пользователя на основе топ-100
+const updateCurrentUserFromLeaderboard = (userId, players) => {
+  const currentPlayer = players.find((player) => player.userId === userId);
+  if (currentPlayer) {
+    setCurrentUser({
+      name: currentPlayer.username || 'Anonymous',
+      balance: currentPlayer.balance || 0,
+      rank: currentPlayer.rank || 'Not ranked', // Используем ранг из данных топ-100
+    });
+  }
+};
+
+// Функция для получения данных текущего пользователя с Telegram WebApp API и данных из Firebase
+useEffect(() => {
+  const fetchData = async () => {
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe?.user || {};
+
+    console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
+
+    const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
+    updateCurrentUserFromLeaderboard(user.id, players); // Обновляем данные текущего пользователя, если он в топ-100
+    await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
+
+    setLoading(false); // Отключаем состояние загрузки после получения данных
   };
 
-  // Получение данных текущего пользователя с Telegram WebApp API и данных из Firebase
-  useEffect(() => {
-    const fetchData = async () => {
-      const tg = window.Telegram.WebApp;
-      const user = tg.initDataUnsafe?.user || {};
-
-      console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
-
-      const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
-      updateCurrentUserFromLeaderboard(user.id, players); // Обновляем данные текущего пользователя, если он в топ-100
-      await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
-
-      setLoading(false); // Отключаем состояние загрузки после получения данных
-    };
-
-    fetchData();
-  }, []);
+  fetchData();
+}, []);
 
   if (error) {
     return <div className="error-message">{error}</div>;
