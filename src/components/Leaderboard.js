@@ -98,29 +98,22 @@ function Leaderboard() {
     }
   };
 
-  // Функция для обновления данных при фокусе на экране
-  const handleFocus = async () => {
-    const tg = window.Telegram.WebApp;
-    const user = tg.initDataUnsafe?.user || {};
-
-    console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
-
-    const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
-    updateCurrentUserFromLeaderboard(user.id, players); // Обновляем данные текущего пользователя, если он в топ-100
-    await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
-  };
-
-  // Используем useEffect для обработки фокуса на экране
+  // Получение данных текущего пользователя с Telegram WebApp API и данных из Firebase
   useEffect(() => {
-    const tg = window.Telegram.WebApp;
+    const fetchData = async () => {
+      const tg = window.Telegram.WebApp;
+      const user = tg.initDataUnsafe?.user || {};
 
-    // Устанавливаем обработчик события "фокус" для обновления данных
-    tg.onEvent('viewportChanged', handleFocus);
+      console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
 
-    // Очищаем обработчик при размонтировании компонента
-    return () => {
-      tg.offEvent('viewportChanged', handleFocus);
+      const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
+      updateCurrentUserFromLeaderboard(user.id, players); // Обновляем данные текущего пользователя, если он в топ-100
+      await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
+
+      setLoading(false); // Отключаем состояние загрузки после получения данных
     };
+
+    fetchData();
   }, []);
 
   if (error) {
