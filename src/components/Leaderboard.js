@@ -39,7 +39,7 @@ function Leaderboard() {
       const userData = await response.json();
 
       // Найти позицию пользователя в рейтинге
-      const rank = players.findIndex((player) => player.userId === userId) + 1 || 'Not ranked';
+      const rank = players.findIndex((player) => player.userId === userId) + 1;
 
       setCurrentUser({
         name: userData.username || 'Anonymous',
@@ -118,6 +118,7 @@ function Leaderboard() {
             </div>
           </div>
           <div className="user-rank">
+            {/* Проверка на отображение медали и ранга */}
             {getMedal(currentUser.rank)}
             {currentUser.rank && currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
           </div>
