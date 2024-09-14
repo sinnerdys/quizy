@@ -8,7 +8,7 @@ function Leaderboard() {
   const [currentUser, setCurrentUser] = useState({
     name: '',
     balance: 0,
-    rank: 0,
+    rank: 'Not ranked', // Изначально устанавливаем "Not ranked"
   });
   const [topPlayers, setTopPlayers] = useState([]); // Начальное состояние - пустой массив
   const [error, setError] = useState(null); // Состояние для ошибки
@@ -22,8 +22,8 @@ function Leaderboard() {
     return null;
   };
 
-  // Функция для получения данных текущего пользователя с Firebase
-  const fetchCurrentUserData = async (userId, players) => {
+  // Функция для получения данных текущего пользователя напрямую из базы данных
+  const fetchCurrentUserData = async (userId) => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${userId}`, {
         method: 'GET',
@@ -38,13 +38,11 @@ function Leaderboard() {
 
       const userData = await response.json();
 
-      // Найти позицию пользователя в рейтинге
-      const rank = players.findIndex((player) => player.userId === userId) + 1;
-
+      // Устанавливаем данные текущего пользователя
       setCurrentUser({
         name: userData.username || 'Anonymous',
         balance: userData.balance || 0,
-        rank: rank > 0 ? rank : 'Not ranked', // Если ранг найден, устанавливаем его, иначе "Not ranked"
+        rank: userData.rank || 'Not ranked', // Получаем ранг напрямую из базы данных
       });
     } catch (error) {
       console.error('Error fetching current user data:', error);
@@ -89,8 +87,8 @@ function Leaderboard() {
 
       console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
 
-      const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
-      await fetchCurrentUserData(user.id, players); // Получаем данные текущего пользователя после загрузки лидеров
+      await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
+      await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
 
       setLoading(false); // Отключаем состояние загрузки после получения данных
     };
