@@ -44,7 +44,7 @@ function Leaderboard() {
       setCurrentUser({
         name: userData.username || 'Anonymous',
         balance: userData.balance || 0,
-        rank,
+        rank: rank > 0 ? rank : 'Not ranked', // Если ранг найден, устанавливаем его, иначе "Not ranked"
       });
     } catch (error) {
       console.error('Error fetching current user data:', error);
@@ -119,7 +119,7 @@ function Leaderboard() {
           </div>
           <div className="user-rank">
             {getMedal(currentUser.rank)}
-            {currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
+            {currentUser.rank && currentUser.rank > 3 && <span>#{currentUser.rank}</span>}
           </div>
         </div>
       )}
