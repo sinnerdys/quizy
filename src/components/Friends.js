@@ -79,16 +79,8 @@ function Friends() {
     const referralLink = `https://t.me/your_bot_username?start=${referralCode}`;
     const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: ${referralLink}`;
 
-    // Открываем диалог для отправки сообщения
-    tg.openTelegramShareDialog(messageText, {
-      link: referralLink, // Это ссылка, которую можно отправить
-      success: () => {
-        console.log('Invitation shared successfully!');
-      },
-      error: (err) => {
-        console.error('Error sharing invitation:', err);
-      },
-    });
+    // Используем openLink для открытия Telegram с заранее сгенерированной ссылкой
+    tg.openLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
   };
 
   if (loading) {
