@@ -87,8 +87,21 @@ function Leaderboard() {
 
       console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
 
-      await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
-      await fetchCurrentUserData(user.id); // Получаем данные текущего пользователя напрямую из базы данных
+      const players = await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
+
+      // Проверяем, есть ли текущий пользователь в топ-100
+      const currentPlayerInTop = players.find(player => player.userId === user.id);
+      if (currentPlayerInTop) {
+        // Обновляем данные текущего пользователя на основе топ-100
+        setCurrentUser({
+          name: currentPlayerInTop.username || 'Anonymous',
+          balance: currentPlayerInTop.balance || 0,
+          rank: currentPlayerInTop.rank || 'Not ranked', // Устанавливаем ранг из списка топ-100
+        });
+      } else {
+        // Если текущий пользователь не в топ-100, запросим его данные напрямую
+        await fetchCurrentUserData(user.id);
+      }
 
       setLoading(false); // Отключаем состояние загрузки после получения данных
     };
@@ -137,7 +150,7 @@ function Leaderboard() {
                   </div>
                 </div>
                 <div className="player-rank">
-                  {getMedal(index + 1) || <span>#{index + 1}</span>}
+                  {getMedal(player.rank) || <span>#{player.rank}</span>}
                 </div>
               </li>
             ))}
