@@ -9,25 +9,24 @@ function Home({ userId }) {
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true); // Добавляем состояние загрузки
+  const [loading, setLoading] = useState(true);
 
-  // Получение данных пользователя (баланс + задачи)
   const fetchUserData = async () => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
       const data = await response.json();
       setBalance(data.balance);
-      setTasks(data.tasks || []); // Убедитесь, что данные задач всегда в массиве
-      setLoading(false); // Отключаем состояние загрузки
+      setTasks(data.tasks || []); 
+      setLoading(false); 
     } catch (error) {
       console.error('Error fetching user data:', error);
-      setLoading(false); // Отключаем состояние загрузки даже при ошибке
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     if (userId) {
-      fetchUserData(); // Получаем данные при загрузке компонента
+      fetchUserData(); 
     }
   }, [userId]);
 
@@ -50,7 +49,7 @@ function Home({ userId }) {
 
       const result = await response.json();
       if (result.success) {
-        fetchUserData(); // Обновляем данные после завершения задания
+        fetchUserData(); 
         alert('Task successfully completed!');
       } else {
         alert('Failed to complete task. Try again.');
@@ -60,11 +59,10 @@ function Home({ userId }) {
     }
   };
 
-  // Показываем только 4 задачи по умолчанию
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
 
   if (loading) {
-    return <div>Loading...</div>; // Показываем индикатор загрузки
+    return <div>Loading...</div>;
   }
 
   return (

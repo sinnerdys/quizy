@@ -118,7 +118,7 @@ function App() {
       ) : (
         <>
           <Routes>
-            <Route path="/" element={<Home balance={balance} updateBalance={updateBalance} />} />
+            <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/friends" element={<Friends />} />
           </Routes>
