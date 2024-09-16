@@ -137,13 +137,13 @@ body {
 /* Стили для всплывающего алерта */
 .alert {
   position: fixed;
-  top: 0; /* Прилепляем к самому верху */
-  left: 0;
-  right: 0;
+  top: 15px; /* Отступ сверху */
+  left: 10px; /* Отступ слева */
+  right: 10px; /* Отступ справа */
   background-color: #182c5f;
   color: white;
-  padding: 15px 20px;
-  border-radius: 0; /* Убираем скругление для алерта на всю ширину */
+  padding: 15px 20px; /* Паддинг для контента внутри */
+  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 10px;
