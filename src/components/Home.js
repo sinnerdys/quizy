@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './Home.css';
-import logo from '../assets/logo.png';
-import ModalTask from './ModalTask';
+import './Home.css'; // стили для мобильной версии
+import logo from '../assets/logo.png'; // Импорт логотипа
+import ModalTask from './ModalTask'; // Импортируем компонент модального окна
 
 function Home({ userId }) {
   const [balance, setBalance] = useState(0);
@@ -10,28 +10,23 @@ function Home({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
 
-  // Если userId undefined, не продолжаем выполнение
-  if (!userId) {
-    console.error('User ID is not provided');
-    return <div>Error: User ID is missing</div>;
-  }
-
+  // Получение данных пользователя (баланс + задачи)
   const fetchUserData = async () => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch user data');
-      }
       const data = await response.json();
       setBalance(data.balance);
-      setTasks(data.tasks || []);
+      setTasks(data.tasks || []); // Убедитесь, что данные задач всегда в массиве
     } catch (error) {
       console.error('Error fetching user data:', error);
     }
   };
 
+  // useEffect всегда вызывается, а проверка userId внутри
   useEffect(() => {
-    fetchUserData();
+    if (userId) {
+      fetchUserData(); // Получаем данные только если userId определен
+    }
   }, [userId]);
 
   const handleTaskOpen = (task) => {
@@ -50,9 +45,10 @@ function Home({ userId }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, taskId }),
       });
+
       const result = await response.json();
       if (result.success) {
-        fetchUserData();
+        fetchUserData(); // Обновляем данные после завершения задания
         alert('Task successfully completed!');
       } else {
         alert('Failed to complete task. Try again.');
@@ -62,6 +58,7 @@ function Home({ userId }) {
     }
   };
 
+  // Показываем только 4 задачи по умолчанию
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
 
   return (
@@ -80,13 +77,17 @@ function Home({ userId }) {
       <div className="tasks-section">
         <h3>Tasks</h3>
         <ul className="task-list">
-          {displayedTasks.map((task) => (
+          {displayedTasks.map(task => (
             <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
               <div className="task-info">
                 <span className="task-title">{task.title}</span>
                 <span className="task-reward">+{task.reward} $QUIZY</span>
               </div>
-              <button className="task-button" onClick={() => handleTaskOpen(task)} disabled={task.completed}>
+              <button
+                className="task-button"
+                onClick={() => handleTaskOpen(task)}
+                disabled={task.completed}
+              >
                 {task.completed ? 'Completed' : 'Open'}
               </button>
             </li>
@@ -100,7 +101,13 @@ function Home({ userId }) {
         </div>
       </div>
 
-      {isModalOpen && <ModalTask task={selectedTask} onComplete={handleTaskComplete} onClose={handleCloseModal} />}
+      {isModalOpen && (
+        <ModalTask
+          task={selectedTask}
+          onComplete={handleTaskComplete}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 }
