@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './Home.css'; // Стили для мобильной версии
+import './Home.css'; // стили для мобильной версии
 import logo from '../assets/logo.png'; // Импорт логотипа
 import ModalTask from './ModalTask'; // Импортируем компонент модального окна
 
-function Home({ userId }) {
-  const [balance, setBalance] = useState(0); // Баланс пользователя
+function Home({ userId, balance, updateBalance }) {
   const [tasks, setTasks] = useState([]); // Список задач
   const [showMoreTasks, setShowMoreTasks] = useState(false); // Состояние для показа всех задач
   const [selectedTask, setSelectedTask] = useState(null); // Выбранное задание для модального окна
@@ -18,14 +17,13 @@ function Home({ userId }) {
       const data = await response.json();
       
       if (response.ok) {
-        setBalance(data.balance || 0); // Обновляем баланс
         setTasks(data.tasks || []); // Обновляем задачи
       } else {
-        setError('Failed to load user data'); // Ошибка при загрузке данных
+        setError('Failed to load user tasks');
       }
     } catch (err) {
-      console.error('Error fetching user data:', err);
-      setError('Error fetching user data');
+      console.error('Error fetching user tasks:', err);
+      setError('Error fetching tasks');
     }
   };
 
@@ -36,18 +34,15 @@ function Home({ userId }) {
     }
   }, [userId]);
 
-  // Открытие модального окна с выбранным заданием
   const handleTaskOpen = (task) => {
     setSelectedTask(task);
     setIsModalOpen(true);
   };
 
-  // Закрытие модального окна
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-  // Выполнение задачи и обновление данных
   const handleTaskComplete = async (taskId) => {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
@@ -59,6 +54,7 @@ function Home({ userId }) {
       const result = await response.json();
       if (result.success) {
         fetchUserData(); // Обновляем данные после выполнения задания
+        updateBalance(result.reward); // Обновляем баланс пользователя
         alert('Task successfully completed!');
       } else {
         alert('Failed to complete task. Try again.');
@@ -68,7 +64,6 @@ function Home({ userId }) {
     }
   };
 
-  // Показываем только 4 задачи по умолчанию
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
 
   return (
@@ -112,7 +107,6 @@ function Home({ userId }) {
         </div>
       </div>
 
-      {/* Модальное окно */}
       {isModalOpen && (
         <ModalTask
           task={selectedTask}
