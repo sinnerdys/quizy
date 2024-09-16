@@ -69,7 +69,7 @@ body {
 
 /* Стиль задачи */
 .task-item {
-  border: #284286 2px dashed; /* Прерывистый бордер */
+  border: #284286 2px solid; /* Прерывистый бордер */
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
@@ -106,18 +106,18 @@ body {
 
 /* Стили завершенных заданий */
 .task-completed {
-  background-color: #142D50;
-  border-color: #142D50;
+  border-color: #284286;
   border-style: dashed; /* Прерывистый бордер для завершенного задания */
 }
 
 .task-completed .task-button {
   background-color: #182C5F; /* Цвет кнопки для завершенных заданий */
+  width: 75px;
 }
 
 .completed-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Контейнер для кнопки "See more tasks" */
