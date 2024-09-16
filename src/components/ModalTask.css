@@ -23,7 +23,7 @@
   padding: 20px;
   border-radius: 10px 10px 0 0;
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
   text-align: center;
   position: relative;
   box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
@@ -43,21 +43,23 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #284286; /* Синий фон */
+  background-color: #182c5f; /* Синий фон */
   border: none;
   color: white;
   cursor: pointer;
   border-radius: 50%; /* Круглая форма */
-  width: 40px;
-  height: 40px;
+  width: 30px; /* Уменьшаем размер */
+  height: 30px; /* Уменьшаем размер */
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0;
 }
 
+/* Стиль для SVG внутри кнопки */
 .close-button svg {
-  width: 24px;
-  height: 24px;
+  width: 16px; /* Уменьшаем размер SVG */
+  height: 16px; /* Уменьшаем размер SVG */
   stroke: white;
 }
 
