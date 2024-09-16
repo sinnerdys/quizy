@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './Home.css'; // стили для мобильной версии
 import logo from '../assets/logo.png'; // Импорт логотипа
 import ModalTask from './ModalTask'; // Импортируем компонент модального окна
-import { getDatabase, ref, onValue } from 'firebase/database'; // Импорт Firebase методов
 
 function Home({ userId }) {
   const [balance, setBalance] = useState(0);
@@ -10,29 +9,7 @@ function Home({ userId }) {
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    if (userId) {
-      const db = getDatabase();
-      const balanceRef = ref(db, `users/${userId}/balance`);
-
-      // Слушаем изменения баланса в реальном времени
-      const unsubscribe = onValue(balanceRef, (snapshot) => {
-        const newBalance = snapshot.val();
-        if (newBalance !== null) {
-          setBalance(newBalance);
-        }
-      });
-
-      // Получаем данные задач
-      fetchUserData();
-
-      return () => {
-        // Отписываемся от слушателя изменений при размонтировании компонента
-        unsubscribe();
-      };
-    }
-  }, [userId]);
+  const [loading, setLoading] = useState(true); // Добавляем состояние загрузки
 
   // Получение данных пользователя (баланс + задачи)
   const fetchUserData = async () => {
@@ -41,10 +18,18 @@ function Home({ userId }) {
       const data = await response.json();
       setBalance(data.balance);
       setTasks(data.tasks || []); // Убедитесь, что данные задач всегда в массиве
+      setLoading(false); // Отключаем состояние загрузки
     } catch (error) {
       console.error('Error fetching user data:', error);
+      setLoading(false); // Отключаем состояние загрузки даже при ошибке
     }
   };
+
+  useEffect(() => {
+    if (userId) {
+      fetchUserData(); // Получаем данные при загрузке компонента
+    }
+  }, [userId]);
 
   const handleTaskOpen = (task) => {
     setSelectedTask(task);
@@ -77,6 +62,10 @@ function Home({ userId }) {
 
   // Показываем только 4 задачи по умолчанию
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
+
+  if (loading) {
+    return <div>Loading...</div>; // Показываем индикатор загрузки
+  }
 
   return (
     <div className="home">
