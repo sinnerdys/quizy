@@ -14,39 +14,29 @@ function ModalTask({ task, onComplete, onClose }) {
       }, 10);
     }
 
-    // Закрытие при нажатии на overlay
-    const handleOverlayClick = (e) => {
-      if (e.target === overlay) {
-        onClose(); // Закрываем модальное окно
-      }
-    };
-
-    overlay.addEventListener('click', handleOverlayClick);
-
     return () => {
       if (overlay && modal) {
         overlay.classList.remove('open');
         modal.classList.remove('open');
-        overlay.removeEventListener('click', handleOverlayClick);
       }
     };
-  }, [onClose]);
+  }, []);
 
   const handleSubscribe = () => {
     window.open(task.subscribeUrl, '_blank');
   };
 
   const handleCheckTask = () => {
-    onComplete(task.id); // Проверяем выполнение задания
+    // Выполняем задание и закрываем модальное окно
+    onComplete(task.id);
   };
 
   return (
-    <div className="modal-task-overlay">
-      <div className="modal-task">
+    <div className="modal-task-overlay" onClick={onClose}> {/* Закрытие при нажатии вне модального окна */}
+      <div className="modal-task" onClick={(e) => e.stopPropagation()}> {/* Остановка распространения клика */}
         <button className="close-button" onClick={onClose}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="icon icon-tabler icon-tabler-x">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M18 6l-12 12" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 6L6 18" />
             <path d="M6 6l12 12" />
           </svg>
         </button>

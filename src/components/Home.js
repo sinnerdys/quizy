@@ -11,6 +11,7 @@ function Home({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAlert, setShowAlert] = useState(false); // Состояние для отображения алерта
 
   const fetchUserData = async () => {
     try {
@@ -51,7 +52,16 @@ function Home({ userId }) {
       const result = await response.json();
       if (result.success) {
         fetchUserData(); 
-        alert('Task successfully completed!');
+
+        // Показываем алерт после завершения задачи
+        setShowAlert(true);
+
+        // Закрываем модальное окно и оставляем алерт на 1 секунду
+        setIsModalOpen(false);
+
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000); // Аллерт будет показываться 3 секунды
       } else {
         alert('Failed to complete task. Try again.');
       }
@@ -68,6 +78,14 @@ function Home({ userId }) {
 
   return (
     <div className="home">
+      {/* Всплывающий алерт */}
+      {showAlert && (
+        <div className="alert">
+          <img src={completedIcon} alt="Completed" className="alert-icon" />
+          <span>Task successfully completed!</span>
+        </div>
+      )}
+
       <div className="header">
         <h2>QUIZY GAMES COMING SOON!</h2>
       </div>

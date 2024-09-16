@@ -41,8 +41,8 @@
 /* Стиль для кнопки закрытия с круглым синим фоном */
 .close-button {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   background-color: #182c5f; /* Синий фон */
   border: none;
   color: white;
@@ -53,6 +53,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 6px;
   padding: 0;
 }
 
