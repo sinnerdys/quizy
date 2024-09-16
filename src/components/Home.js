@@ -1,43 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import './Home.css'; // стили для мобильной версии
+import './Home.css'; // Стили для мобильной версии
 import logo from '../assets/logo.png'; // Импорт логотипа
 import ModalTask from './ModalTask'; // Импортируем компонент модального окна
 
 function Home({ userId }) {
-  const [balance, setBalance] = useState(0);
-  const [showMoreTasks, setShowMoreTasks] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [balance, setBalance] = useState(0); // Баланс пользователя
+  const [tasks, setTasks] = useState([]); // Список задач
+  const [showMoreTasks, setShowMoreTasks] = useState(false); // Состояние для показа всех задач
+  const [selectedTask, setSelectedTask] = useState(null); // Выбранное задание для модального окна
+  const [isModalOpen, setIsModalOpen] = useState(false); // Состояние модального окна
+  const [error, setError] = useState(null); // Ошибки загрузки данных
 
-  // Получение данных пользователя (баланс + задачи)
+  // Получение данных пользователя (баланс и задачи)
   const fetchUserData = async () => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
       const data = await response.json();
-      setBalance(data.balance);
-      setTasks(data.tasks || []); // Убедитесь, что данные задач всегда в массиве
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+      
+      if (response.ok) {
+        setBalance(data.balance || 0); // Обновляем баланс
+        setTasks(data.tasks || []); // Обновляем задачи
+      } else {
+        setError('Failed to load user data'); // Ошибка при загрузке данных
+      }
+    } catch (err) {
+      console.error('Error fetching user data:', err);
+      setError('Error fetching user data');
     }
   };
 
-  // useEffect всегда вызывается, а проверка userId внутри
+  // useEffect для загрузки данных при изменении userId
   useEffect(() => {
     if (userId) {
-      fetchUserData(); // Получаем данные только если userId определен
+      fetchUserData();
     }
   }, [userId]);
 
+  // Открытие модального окна с выбранным заданием
   const handleTaskOpen = (task) => {
     setSelectedTask(task);
     setIsModalOpen(true);
   };
 
+  // Закрытие модального окна
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
+  // Выполнение задачи и обновление данных
   const handleTaskComplete = async (taskId) => {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
@@ -48,7 +58,7 @@ function Home({ userId }) {
 
       const result = await response.json();
       if (result.success) {
-        fetchUserData(); // Обновляем данные после завершения задания
+        fetchUserData(); // Обновляем данные после выполнения задания
         alert('Task successfully completed!');
       } else {
         alert('Failed to complete task. Try again.');
@@ -76,8 +86,9 @@ function Home({ userId }) {
 
       <div className="tasks-section">
         <h3>Tasks</h3>
+        {error && <div className="error-message">{error}</div>}
         <ul className="task-list">
-          {displayedTasks.map(task => (
+          {displayedTasks.map((task) => (
             <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
               <div className="task-info">
                 <span className="task-title">{task.title}</span>
@@ -101,6 +112,7 @@ function Home({ userId }) {
         </div>
       </div>
 
+      {/* Модальное окно */}
       {isModalOpen && (
         <ModalTask
           task={selectedTask}
