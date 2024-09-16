@@ -13,7 +13,7 @@ function Home({ userId }) {
   // Получение данных пользователя (баланс + задачи)
   const fetchUserData = async () => {
     try {
-      const response = await fetch(`https://your-backend-url/getUserAndTasks?userId=${userId}`);
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
       const data = await response.json();
       setBalance(data.balance);
       setTasks(data.tasks);
@@ -37,7 +37,7 @@ function Home({ userId }) {
 
   const handleTaskComplete = async (taskId) => {
     try {
-      const response = await fetch(`https://your-backend-url/completeTask`, {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, taskId }),
