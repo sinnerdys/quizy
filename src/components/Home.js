@@ -2,37 +2,49 @@ import React, { useState, useEffect } from 'react';
 import './Home.css'; // стили для мобильной версии
 import logo from '../assets/logo.png'; // Импорт логотипа
 import ModalTask from './ModalTask'; // Импортируем компонент модального окна
+import { getDatabase, ref, onValue } from 'firebase/database'; // Импорт Firebase методов
 
-function Home({ userId, balance, updateBalance }) {
-  const [tasks, setTasks] = useState([]); // Список задач
-  const [showMoreTasks, setShowMoreTasks] = useState(false); // Состояние для показа всех задач
-  const [selectedTask, setSelectedTask] = useState(null); // Выбранное задание для модального окна
-  const [isModalOpen, setIsModalOpen] = useState(false); // Состояние модального окна
-  const [error, setError] = useState(null); // Ошибки загрузки данных
+function Home({ userId }) {
+  const [balance, setBalance] = useState(0);
+  const [showMoreTasks, setShowMoreTasks] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tasks, setTasks] = useState([]);
 
-  // Получение данных пользователя (баланс и задачи)
+  useEffect(() => {
+    if (userId) {
+      const db = getDatabase();
+      const balanceRef = ref(db, `users/${userId}/balance`);
+
+      // Слушаем изменения баланса в реальном времени
+      const unsubscribe = onValue(balanceRef, (snapshot) => {
+        const newBalance = snapshot.val();
+        if (newBalance !== null) {
+          setBalance(newBalance);
+        }
+      });
+
+      // Получаем данные задач
+      fetchUserData();
+
+      return () => {
+        // Отписываемся от слушателя изменений при размонтировании компонента
+        unsubscribe();
+      };
+    }
+  }, [userId]);
+
+  // Получение данных пользователя (баланс + задачи)
   const fetchUserData = async () => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
       const data = await response.json();
-      
-      if (response.ok) {
-        setTasks(data.tasks || []); // Обновляем задачи
-      } else {
-        setError('Failed to load user tasks');
-      }
-    } catch (err) {
-      console.error('Error fetching user tasks:', err);
-      setError('Error fetching tasks');
+      setBalance(data.balance);
+      setTasks(data.tasks || []); // Убедитесь, что данные задач всегда в массиве
+    } catch (error) {
+      console.error('Error fetching user data:', error);
     }
   };
-
-  // useEffect для загрузки данных при изменении userId
-  useEffect(() => {
-    if (userId) {
-      fetchUserData();
-    }
-  }, [userId]);
 
   const handleTaskOpen = (task) => {
     setSelectedTask(task);
@@ -53,8 +65,7 @@ function Home({ userId, balance, updateBalance }) {
 
       const result = await response.json();
       if (result.success) {
-        fetchUserData(); // Обновляем данные после выполнения задания
-        updateBalance(result.reward); // Обновляем баланс пользователя
+        fetchUserData(); // Обновляем данные после завершения задания
         alert('Task successfully completed!');
       } else {
         alert('Failed to complete task. Try again.');
@@ -64,6 +75,7 @@ function Home({ userId, balance, updateBalance }) {
     }
   };
 
+  // Показываем только 4 задачи по умолчанию
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
 
   return (
@@ -81,9 +93,8 @@ function Home({ userId, balance, updateBalance }) {
 
       <div className="tasks-section">
         <h3>Tasks</h3>
-        {error && <div className="error-message">{error}</div>}
         <ul className="task-list">
-          {displayedTasks.map((task) => (
+          {displayedTasks.map(task => (
             <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
               <div className="task-info">
                 <span className="task-title">{task.title}</span>
