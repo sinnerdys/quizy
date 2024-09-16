@@ -89,21 +89,26 @@ function App() {
   };
 
   // Функция для обновления баланса
-  const updateBalance = (amount) => {
+  const updateBalance = async (amount) => {
     setBalance((prevBalance) => {
       const newBalance = prevBalance + amount;
-      if (user) {
-        saveUserToFirebase(user, newBalance); // Сохраняем новый баланс в Firebase
-      }
       return newBalance;
     });
+
+    if (user) {
+      await saveUserToFirebase(user, balance + amount); // Сохраняем новый баланс в Firebase
+    }
   };
 
   // Функция для перехода с DailyReward на Home
-  const handleContinue = () => {
-    updateBalance(100); // Обновляем баланс
-    setShowDailyReward(false);
-    navigate('/'); // Переход на Home
+  const handleContinue = async () => {
+    try {
+      await updateBalance(100); // Обновляем баланс и ждем, пока данные сохранятся
+      setShowDailyReward(false);
+      navigate('/'); // Переход на Home
+    } catch (error) {
+      console.error('Error during saving user data or balance update:', error);
+    }
   };
 
   if (balance === null || loading) {
