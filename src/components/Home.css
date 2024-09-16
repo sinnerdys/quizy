@@ -1,116 +1,129 @@
 /* Общие стили */
 body {
-    font-family: 'Arial', sans-serif;
-    background-color: #1E1E2C;
-    color: white;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .header {
-    background-color: #284286;
-    border-radius: 8px;
-    font-size: 16px;
-    width: 80%;
-    padding: 10px;
-    margin: 0 auto;
-    margin-bottom: 30px;
-  }
-  
-  /* Контейнеры */
-  .home {
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .logo-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-    margin-top: 20px;
-  }
-  
-  .logo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-  }
-  
-  /* Баланс */
-  .balance {
-    padding: 15px;
-    border-radius: 8px;
-  }
-  
-  .balance h2 {
-    font-size: 32px;
-    margin: 0;
-  }
-  
-  /* Секция задач */
-  .tasks-section {
-    border-radius: 8px;
-    text-align: left;
-  }
-  
-  .tasks-section h3 {
-    font-size: 20px;
-    margin-bottom: 15px;
-  }
-  
-  .task-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1; /* Раздел будет занимать все оставшееся место */
-    overflow-y: auto; /* Включаем вертикальный скролл */
-    max-height: calc(100vh - 420px); /* Ограничиваем высоту для списка друзей */
-  }
-  
-  .task-item {
-    border: #284286 2px solid;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  /* Название и награда располагаются друг под другом */
-  .task-info {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .task-title {
-    font-size: 16px;
-    color: #FFFFFF;
-    margin-bottom: 5px;
-  }
-  
-  .task-reward {
-    color: #00BFFF;
-    font-weight: bold;
-  }
-  
-  /* Кнопка завершения */
-  .task-button {
-    background-color: #284286;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  background-color: #1E1E2C;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
 
-  
+.header {
+  background-color: #284286;
+  border-radius: 8px;
+  font-size: 16px;
+  width: 80%;
+  padding: 10px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+}
+
+/* Контейнеры */
+.home {
+  padding: 20px;
+  text-align: center;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+/* Баланс */
+.balance {
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.balance h2 {
+  font-size: 32px;
+  margin: 0;
+}
+
+/* Секция задач */
+.tasks-section {
+  border-radius: 8px;
+  text-align: left;
+}
+
+.tasks-section h3 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 420px);
+}
+
+/* Стиль задачи */
+.task-item {
+  border: #284286 2px dashed; /* Прерывистый бордер */
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.task-title {
+  font-size: 16px;
+  color: #FFFFFF;
+  margin-bottom: 5px;
+}
+
+.task-reward {
+  color: #00BFFF;
+  font-weight: bold;
+}
+
+.task-button {
+  background-color: #284286;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Стили завершенных заданий */
+.task-completed {
+  background-color: #142D50;
+  border-color: #142D50;
+  border-style: dashed; /* Прерывистый бордер для завершенного задания */
+}
+
+.task-completed .task-button {
+  background-color: #182C5F; /* Цвет кнопки для завершенных заданий */
+}
+
+.completed-icon {
+  width: 24px;
+  height: 24px;
+}
+
 /* Контейнер для кнопки "See more tasks" */
 .see-more-container {
   display: flex;
-  justify-content: center; /* Выровнять по горизонтали */
+  justify-content: center;
 }
 
 .see-more-button {
@@ -119,8 +132,4 @@ body {
   color: white;
   font-size: 16px;
   cursor: pointer;
-  display: inline-block;
 }
-  
- 
-  

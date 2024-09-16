@@ -14,7 +14,7 @@ function DailyReward({ onContinue }) {
     setTimeout(() => {
       setShowConfetti(false);
       onContinue(); // Переходим на Home и обновляем баланс
-    }, 3000);
+    }, 4000);
   };
 
   return (

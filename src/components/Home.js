@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css'; // стили для мобильной версии
 import logo from '../assets/logo.png'; // Импорт логотипа
+import completedIcon from '../assets/completedIcon.png'; // Импорт иконки завершенного задания
 import ModalTask from './ModalTask'; // Импортируем компонент модального окна
 
 function Home({ userId }) {
@@ -92,7 +93,9 @@ function Home({ userId }) {
                 onClick={() => handleTaskOpen(task)}
                 disabled={task.completed}
               >
-                {task.completed ? 'Completed' : 'Open'}
+                {task.completed 
+                  ? <img src={completedIcon} alt="Completed" className="completed-icon" />
+                  : 'Open'}
               </button>
             </li>
           ))}
