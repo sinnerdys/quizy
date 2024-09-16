@@ -8,7 +8,14 @@ function Home({ userId }) {
   const [showMoreTasks, setShowMoreTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState([]); // Инициализируем пустым массивом
+  const [loading, setLoading] = useState(true); // Добавляем состояние загрузки
+
+  // Проверяем, что userId существует
+  if (!userId) {
+    console.error('User ID is undefined!');
+    return <div>Error: User ID is not defined.</div>;
+  }
 
   // Получение данных пользователя (баланс + задачи)
   const fetchUserData = async () => {
@@ -16,15 +23,17 @@ function Home({ userId }) {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
       const data = await response.json();
       setBalance(data.balance);
-      setTasks(data.tasks);
+      setTasks(data.tasks || []); // Убедитесь, что tasks всегда будет массивом
+      setLoading(false); // Отключаем индикатор загрузки
     } catch (error) {
       console.error('Error fetching user data:', error);
+      setLoading(false); // Отключаем индикатор загрузки при ошибке
     }
   };
 
   useEffect(() => {
     fetchUserData(); // Получаем данные при загрузке компонента
-  }, []);
+  }, [userId]); // Следим за изменением userId
 
   const handleTaskOpen = (task) => {
     setSelectedTask(task);
@@ -58,6 +67,10 @@ function Home({ userId }) {
   // Показываем только 4 задачи по умолчанию
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
 
+  if (loading) {
+    return <div>Loading...</div>; // Показать индикатор загрузки
+  }
+
   return (
     <div className="home">
       <div className="header">
@@ -74,7 +87,7 @@ function Home({ userId }) {
       <div className="tasks-section">
         <h3>Tasks</h3>
         <ul className="task-list">
-          {displayedTasks.map(task => (
+          {displayedTasks.map((task) => (
             <li key={task.id} className="task-item">
               <div className={`task-info ${task.completed ? 'task-completed' : ''}`}>
                 <span className="task-title">{task.title}</span>
