@@ -1,70 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css'; // стили для мобильной версии
 import logo from '../assets/logo.png'; // Импорт логотипа
 import ModalTask from './ModalTask'; // Импортируем компонент модального окна
 
-function Home({ balance }) {
-  const [showMoreTasks, setShowMoreTasks] = useState(false); // состояние для показа дополнительных задач
-  const [selectedTask, setSelectedTask] = useState(null); // состояние для выбранного задания
-  const [isModalOpen, setIsModalOpen] = useState(false); // состояние для отображения модального окна
+function Home({ userId }) {
+  const [balance, setBalance] = useState(0);
+  const [showMoreTasks, setShowMoreTasks] = useState(false);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tasks, setTasks] = useState([]);
 
-  // Каждая задача теперь содержит описание и ссылку для подписки
-  const tasks = [
-    { 
-      id: 1, 
-      title: 'Join QUIZY CHANNEL', 
-      description: 'Subscribe to our official channel on Telegram to receive updates.', 
-      reward: 500, 
-      subscribeUrl: 'https://t.me/quizy_channel' 
-    },
-    { 
-      id: 2, 
-      title: 'Join QUIZY COMMUNITY', 
-      description: 'Join our Telegram community and participate in discussions.', 
-      reward: 500, 
-      subscribeUrl: 'https://t.me/quizy_community' 
-    },
-    { 
-      id: 3, 
-      title: 'Subscribe to QUIZY (X)', 
-      description: 'Follow QUIZY on X for the latest updates.', 
-      reward: 500, 
-      subscribeUrl: 'https://x.com/quizy' 
-    },
-    { 
-      id: 4, 
-      title: 'Follow QUIZY on Twitter', 
-      description: 'Follow us on Twitter for more updates.', 
-      reward: 500, 
-      subscribeUrl: 'https://twitter.com/quizy' 
-    },
-    { 
-      id: 5, 
-      title: 'Share QUIZY with friends', 
-      description: 'Share QUIZY with your friends and earn rewards.', 
-      reward: 500, 
-      subscribeUrl: 'https://t.me/quizy_invite' 
-    },
-    { 
-      id: 6, 
-      title: 'Complete QUIZY Challenge', 
-      description: 'Complete the QUIZY challenge and earn rewards.', 
-      reward: 500, 
-      subscribeUrl: 'https://t.me/quizy_challenge' 
+  // Получение данных пользователя (баланс + задачи)
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch(`https://your-backend-url/getUserAndTasks?userId=${userId}`);
+      const data = await response.json();
+      setBalance(data.balance);
+      setTasks(data.tasks);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
     }
-  ];
+  };
 
-  // Показываем только 4 задачи по умолчанию, остальные по нажатию кнопки "See more tasks"
-  const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
+  useEffect(() => {
+    fetchUserData(); // Получаем данные при загрузке компонента
+  }, []);
 
   const handleTaskOpen = (task) => {
-    setSelectedTask(task); // Устанавливаем выбранное задание
-    setIsModalOpen(true); // Открываем модальное окно
+    setSelectedTask(task);
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false); // Закрываем модальное окно
+    setIsModalOpen(false);
   };
+
+  const handleTaskComplete = async (taskId) => {
+    try {
+      const response = await fetch(`https://your-backend-url/completeTask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, taskId }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        fetchUserData(); // Обновляем данные после завершения задания
+        alert('Task successfully completed!');
+      } else {
+        alert('Failed to complete task. Try again.');
+      }
+    } catch (error) {
+      console.error('Error completing task:', error);
+    }
+  };
+
+  // Показываем только 4 задачи по умолчанию
+  const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
 
   return (
     <div className="home">
@@ -84,30 +76,36 @@ function Home({ balance }) {
         <ul className="task-list">
           {displayedTasks.map(task => (
             <li key={task.id} className="task-item">
-              <div className="task-info">
+              <div className={`task-info ${task.completed ? 'task-completed' : ''}`}>
                 <span className="task-title">{task.title}</span>
                 <span className="task-reward">+{task.reward} $QUIZY</span>
               </div>
-              <button className="task-button" onClick={() => handleTaskOpen(task)}>
-                Open
+              <button
+                className="task-button"
+                onClick={() => handleTaskOpen(task)}
+                disabled={task.completed}
+              >
+                {task.completed ? 'Completed' : 'Open'}
               </button>
             </li>
           ))}
         </ul>
 
-        {/* Новый контейнер для выравнивания кнопки по центру */}
         <div className="see-more-container">
-          <button 
-            className="see-more-button" 
-            onClick={() => setShowMoreTasks(!showMoreTasks)}
-          >
+          <button className="see-more-button" onClick={() => setShowMoreTasks(!showMoreTasks)}>
             {showMoreTasks ? 'Show fewer tasks ▲' : 'See more tasks ▼'}
           </button>
         </div>
       </div>
 
       {/* Модальное окно */}
-      {isModalOpen && <ModalTask task={selectedTask} onClose={handleCloseModal} />}
+      {isModalOpen && (
+        <ModalTask
+          task={selectedTask}
+          onComplete={handleTaskComplete}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 }

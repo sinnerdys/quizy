@@ -1,12 +1,9 @@
-// src/components/ModalTask.js
 import React, { useEffect } from 'react';
 import './ModalTask.css'; // Стили для модального окна
 import logo from '../assets/logo.png'; // Импортируем логотип
 
-function ModalTask({ task, onClose }) {
-  // Для плавного появления модального окна добавим эффект
+function ModalTask({ task, onComplete, onClose }) {
   useEffect(() => {
-    // Когда модальное окно открыто, добавляем класс 'open' для плавного появления
     const overlay = document.querySelector('.modal-task-overlay');
     const modal = document.querySelector('.modal-task');
 
@@ -14,10 +11,9 @@ function ModalTask({ task, onClose }) {
       setTimeout(() => {
         overlay.classList.add('open');
         modal.classList.add('open');
-      }, 10); // Добавляем небольшой тайм-аут, чтобы анимация сработала правильно
+      }, 10);
     }
 
-    // Убираем класс 'open' при закрытии окна
     return () => {
       if (overlay && modal) {
         overlay.classList.remove('open');
@@ -27,13 +23,11 @@ function ModalTask({ task, onClose }) {
   }, []);
 
   const handleSubscribe = () => {
-    // Переход на ссылку подписки
     window.open(task.subscribeUrl, '_blank');
   };
 
   const handleCheckTask = () => {
-    // Логика проверки выполнения задания
-    alert('Checking task...'); // Здесь будет проверка
+    onComplete(task.id); // Проверяем выполнение задания
   };
 
   return (
