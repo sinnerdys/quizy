@@ -11,12 +11,6 @@ function Home({ userId }) {
   const [tasks, setTasks] = useState([]); // Инициализируем пустым массивом
   const [loading, setLoading] = useState(true); // Добавляем состояние загрузки
 
-  // Проверяем, что userId существует
-  if (!userId) {
-    console.error('User ID is undefined!');
-    return <div>Error: User ID is not defined.</div>;
-  }
-
   // Получение данных пользователя (баланс + задачи)
   const fetchUserData = async () => {
     try {
@@ -32,7 +26,9 @@ function Home({ userId }) {
   };
 
   useEffect(() => {
-    fetchUserData(); // Получаем данные при загрузке компонента
+    if (userId) {
+      fetchUserData(); // Получаем данные при загрузке компонента, только если есть userId
+    }
   }, [userId]); // Следим за изменением userId
 
   const handleTaskOpen = (task) => {
@@ -66,6 +62,11 @@ function Home({ userId }) {
 
   // Показываем только 4 задачи по умолчанию
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
+
+  // Возвращаем сообщение, если userId не определен
+  if (!userId) {
+    return <div>Error: User ID is not defined.</div>;
+  }
 
   if (loading) {
     return <div>Loading...</div>; // Показать индикатор загрузки
