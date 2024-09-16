@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import './Home.css'; // стили для мобильной версии
-import logo from '../assets/logo.png'; // Импорт логотипа
-import ModalTask from './ModalTask'; // Импортируем компонент модального окна
+import './Home.css';
+import logo from '../assets/logo.png';
+import ModalTask from './ModalTask';
 
 function Home({ userId }) {
   const [balance, setBalance] = useState(0);
   const [showMoreTasks, setShowMoreTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([]); // Инициализируем пустым массивом
-  const [loading, setLoading] = useState(true); // Добавляем состояние загрузки
+  const [tasks, setTasks] = useState([]);
 
-  // Получение данных пользователя (баланс + задачи)
+  // Если userId undefined, не продолжаем выполнение
+  if (!userId) {
+    console.error('User ID is not provided');
+    return <div>Error: User ID is missing</div>;
+  }
+
   const fetchUserData = async () => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch user data');
+      }
       const data = await response.json();
       setBalance(data.balance);
-      setTasks(data.tasks || []); // Убедитесь, что tasks всегда будет массивом
-      setLoading(false); // Отключаем индикатор загрузки
+      setTasks(data.tasks || []);
     } catch (error) {
       console.error('Error fetching user data:', error);
-      setLoading(false); // Отключаем индикатор загрузки при ошибке
     }
   };
 
   useEffect(() => {
-    if (userId) {
-      fetchUserData(); // Получаем данные при загрузке компонента, только если есть userId
-    }
-  }, [userId]); // Следим за изменением userId
+    fetchUserData();
+  }, [userId]);
 
   const handleTaskOpen = (task) => {
     setSelectedTask(task);
@@ -42,15 +45,14 @@ function Home({ userId }) {
 
   const handleTaskComplete = async (taskId) => {
     try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask`, {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, taskId }),
       });
-
       const result = await response.json();
       if (result.success) {
-        fetchUserData(); // Обновляем данные после завершения задания
+        fetchUserData();
         alert('Task successfully completed!');
       } else {
         alert('Failed to complete task. Try again.');
@@ -60,17 +62,7 @@ function Home({ userId }) {
     }
   };
 
-  // Показываем только 4 задачи по умолчанию
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
-
-  // Возвращаем сообщение, если userId не определен
-  if (!userId) {
-    return <div>Error: User ID is not defined.</div>;
-  }
-
-  if (loading) {
-    return <div>Loading...</div>; // Показать индикатор загрузки
-  }
 
   return (
     <div className="home">
@@ -89,16 +81,12 @@ function Home({ userId }) {
         <h3>Tasks</h3>
         <ul className="task-list">
           {displayedTasks.map((task) => (
-            <li key={task.id} className="task-item">
-              <div className={`task-info ${task.completed ? 'task-completed' : ''}`}>
+            <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
+              <div className="task-info">
                 <span className="task-title">{task.title}</span>
                 <span className="task-reward">+{task.reward} $QUIZY</span>
               </div>
-              <button
-                className="task-button"
-                onClick={() => handleTaskOpen(task)}
-                disabled={task.completed}
-              >
+              <button className="task-button" onClick={() => handleTaskOpen(task)} disabled={task.completed}>
                 {task.completed ? 'Completed' : 'Open'}
               </button>
             </li>
@@ -112,14 +100,7 @@ function Home({ userId }) {
         </div>
       </div>
 
-      {/* Модальное окно */}
-      {isModalOpen && (
-        <ModalTask
-          task={selectedTask}
-          onComplete={handleTaskComplete}
-          onClose={handleCloseModal}
-        />
-      )}
+      {isModalOpen && <ModalTask task={selectedTask} onComplete={handleTaskComplete} onClose={handleCloseModal} />}
     </div>
   );
 }
