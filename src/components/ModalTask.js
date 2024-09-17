@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ModalTask.css'; // Стили для модального окна
 import logo from '../assets/logo.png'; // Импортируем логотип
 
 function ModalTask({ task, onComplete, onClose }) {
+  const [checkingSubscription, setCheckingSubscription] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [hasClickedSubscribe, setHasClickedSubscribe] = useState(false); // Добавляем состояние
+  const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
     const overlay = document.querySelector('.modal-task-overlay');
     const modal = document.querySelector('.modal-task');
@@ -24,22 +29,43 @@ function ModalTask({ task, onComplete, onClose }) {
 
   const handleSubscribe = () => {
     window.open(task.subscribeUrl, '_blank');
+    setHasClickedSubscribe(true); // Пользователь нажал на кнопку "Subscribe"
   };
 
-  const handleCheckTask = () => {
-    // Выполняем задание и закрываем модальное окно
-    onComplete(task.id);
+  const checkSubscription = async () => {
+    setCheckingSubscription(true);
+    try {
+      const response = await fetch('https://your-firebase-function-url/checkSubscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: window.Telegram.WebApp.initDataUnsafe.user.id, // Получаем ID пользователя Telegram
+          channelUrl: task.subscribeUrl,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success && result.isSubscribed) {
+        setIsSubscribed(true);
+        setErrorMessage("");
+        onComplete(task.id); // Если подписан, выполняем задание
+      } else {
+        setErrorMessage("You are not subscribed to the channel.");
+      }
+    } catch (error) {
+      console.error('Error checking subscription:', error);
+      setErrorMessage("Failed to check subscription.");
+    } finally {
+      setCheckingSubscription(false);
+    }
   };
 
   return (
-    <div className="modal-task-overlay" onClick={onClose}> {/* Закрытие при нажатии вне модального окна */}
-      <div className="modal-task" onClick={(e) => e.stopPropagation()}> {/* Остановка распространения клика */}
-        <button className="close-button" onClick={onClose}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 6L6 18" />
-            <path d="M6 6l12 12" />
-          </svg>
-        </button>
+    <div className="modal-task-overlay">
+      <div className="modal-task">
+        <button className="close-button" onClick={onClose}>✕</button>
         <div className="modal-logo-container">
           <img src={logo} alt="QUIZY Logo" className="modal-logo" />
         </div>
@@ -48,8 +74,33 @@ function ModalTask({ task, onComplete, onClose }) {
         <div className="reward-info">
           <span>+{task.reward} $QUIZY</span>
         </div>
-        <button className="subscribe-button" onClick={handleSubscribe}>Subscribe</button>
-        <button className="check-task-button" onClick={handleCheckTask}>Check task</button>
+
+        {/* Если это задание на подписку, отображаем кнопку для подписки и проверки */}
+        {task.type === "subscribe" && !isSubscribed && (
+          <>
+            <button className="subscribe-button" onClick={handleSubscribe}>
+              Subscribe
+            </button>
+
+            {/* Кнопка Check Task становится доступной только после нажатия на Subscribe */}
+            <button
+              className="check-task-button"
+              onClick={checkSubscription}
+              disabled={!hasClickedSubscribe || checkingSubscription}
+            >
+              {checkingSubscription ? 'Checking...' : 'Check task'}
+            </button>
+
+            {errorMessage && <p className="error-message">{errorMessage}</p>}
+          </>
+        )}
+
+        {/* Если это не задание на подписку или уже подписан */}
+        {(task.type !== "subscribe" || isSubscribed) && (
+          <button className="check-task-button" onClick={() => onComplete(task.id)}>
+            Complete Task
+          </button>
+        )}
       </div>
     </div>
   );
