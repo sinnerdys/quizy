@@ -2,16 +2,10 @@ import React, { useEffect, useState } from 'react';
 import './ModalTask.css'; // Стили для модального окна
 import logo from '../assets/logo.png'; // Импортируем логотип
 
-function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавили showAlert как пропс
+function ModalTask({ task, onComplete, onClose, showAlert }) { 
   const [checkingSubscription, setCheckingSubscription] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [subscribeClicked, setSubscribeClicked] = useState(false); // Отслеживание нажатия на "Подписаться"
-
-  // Логирование данных задачи
-  useEffect(() => {
-    console.log('Task Type:', task.type);
-    console.log('Task Data:', task);
-  }, [task]);
+  const [subscribeClicked, setSubscribeClicked] = useState(false); 
 
   useEffect(() => {
     const overlay = document.querySelector('.modal-task-overlay');
@@ -24,7 +18,6 @@ function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавил
       }, 10);
     }
 
-    // Закрытие модального окна при клике вне его области
     const handleClickOutside = (event) => {
       if (event.target === overlay) {
         onClose();
@@ -43,52 +36,41 @@ function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавил
   }, [onClose]);
 
   const handleSubscribe = () => {
-    window.open(task.subscribeUrl, '_blank'); // Открываем ссылку для подписки
-    setSubscribeClicked(true); // Устанавливаем флаг, что пользователь нажал на "Подписаться"
+    window.open(task.subscribeUrl, '_blank'); 
+    setSubscribeClicked(true); 
   };
 
   const checkSubscription = async () => {
     setCheckingSubscription(true);
     try {
-      console.log('Checking subscription for userId:', window.Telegram.WebApp.initDataUnsafe.user.id);
-      console.log('Checking channel URL:', task.subscribeUrl);
-
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/checkSubscription', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: window.Telegram.WebApp.initDataUnsafe.user.id, // Получаем ID пользователя Telegram
+          userId: window.Telegram.WebApp.initDataUnsafe.user.id, 
           channelUrl: task.subscribeUrl,
         }),
       });
 
       const result = await response.json();
-      console.log('Check Subscription Result:', result);
 
       if (result.success && result.isSubscribed) {
         setIsSubscribed(true);
-        console.log('User is subscribed, completing task.');
-        onComplete(task.id); // Выполняем задание
-        onClose(); // Закрываем модальное окно после успешного выполнения задания
+        onComplete(task.id); 
+        onClose(); 
       } else {
-        // В случае ошибки вызываем showAlert из Home.js, закрываем модальное окно
-        showAlert("You are not subscribed to the channel.");
-        setCheckingSubscription(false); // Сбрасываем проверку
-        setTimeout(() => {
-          showAlert(""); // Сбрасываем сообщение после 3 секунд
-        }, 3000);
-        onClose(); // Закрываем модальное окно при ошибке
+        // Вызов алерта с флагом ошибки (неуспешный алерт)
+        showAlert("You are not subscribed to the channel.", false); 
+        onClose();
       }
     } catch (error) {
-      console.error('Error checking subscription:', error);
-      showAlert("Failed to check subscription. Try again."); // Показываем алерт при ошибке запроса
-      setCheckingSubscription(false); // Сбрасываем проверку
-      setTimeout(() => {
-        showAlert(""); // Сбрасываем сообщение после 3 секунд
-      }, 3000);
-      onClose(); // Закрываем модальное окно при ошибке
+      // Вызов алерта с сообщением об ошибке
+      showAlert("Failed to check subscription. Try again.", false); 
+      onClose();
+    } finally {
+      setCheckingSubscription(false);
     }
   };
 
@@ -105,23 +87,21 @@ function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавил
           <span>+{task.reward} $QUIZY</span>
         </div>
 
-        {/* Если это задание на подписку, отображаем обе кнопки */}
         {task.type === "subscribe" && !isSubscribed && (
           <>
             <button className="subscribe-button" onClick={handleSubscribe}>
               Subscribe
             </button>
             <button
-              className={`check-task-button ${!subscribeClicked ? 'disabled' : ''}`} // Меняем стиль, если кнопка не активна
+              className={`check-task-button ${!subscribeClicked ? 'disabled' : ''}`} 
               onClick={checkSubscription}
-              disabled={!subscribeClicked || checkingSubscription} // Отключаем кнопку до нажатия на "Subscribe"
+              disabled={!subscribeClicked || checkingSubscription} 
             >
               {checkingSubscription ? 'Checking...' : 'Check Task'}
             </button>
           </>
         )}
 
-        {/* Если задание не требует подписки или уже подписан */}
         {(task.type !== "subscribe" || isSubscribed) && (
           <button className="check-task-button" onClick={() => onComplete(task.id)}>
             Complete Task

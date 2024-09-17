@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import './Home.css'; // стили для мобильной версии
-import logo from '../assets/logo.png'; // Импорт логотипа
-import completedIcon from '../assets/completedIcon.png'; // Импорт иконки завершенного задания
-import ModalTask from './ModalTask'; // Импортируем компонент модального окна
+import './Home.css'; 
+import logo from '../assets/logo.png'; 
+import completedIcon from '../assets/completedIcon.png'; 
+import ModalTask from './ModalTask'; 
 
 function Home({ userId }) {
   const [balance, setBalance] = useState(0);
@@ -11,9 +11,9 @@ function Home({ userId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAlert, setShowAlert] = useState(false); // Состояние для отображения алерта
-  const [alertMessage, setAlertMessage] = useState(""); // Состояние для текста алерта
-  const [isSuccessAlert, setIsSuccessAlert] = useState(false); // Состояние для определения типа алерта (успешный/неуспешный)
+  const [showAlert, setShowAlert] = useState(false); 
+  const [alertMessage, setAlertMessage] = useState(""); 
+  const [isSuccessAlert, setIsSuccessAlert] = useState(false); 
 
   const fetchUserData = async () => {
     try {
@@ -43,6 +43,16 @@ function Home({ userId }) {
     setIsModalOpen(false);
   };
 
+  const showAlertMessage = (message, isSuccess) => {
+    setAlertMessage(message);
+    setIsSuccessAlert(isSuccess);
+    setShowAlert(true);
+
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 3000);
+  };
+
   const handleTaskComplete = async (taskId) => {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
@@ -55,31 +65,13 @@ function Home({ userId }) {
       if (result.success) {
         fetchUserData(); 
 
-        setAlertMessage("Task successfully completed!");
-        setIsSuccessAlert(true); // Успешный алерт
-        setShowAlert(true);
-
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000); // Аллерт будет показываться 3 секунды
+        showAlertMessage("Task successfully completed!", true);
       } else {
-        setAlertMessage("Failed to complete task. Try again.");
-        setIsSuccessAlert(false); // Неуспешный алерт
-        setShowAlert(true);
-
-        setTimeout(() => {
-          setShowAlert(false);
-        }, 3000); // Аллерт будет показываться 3 секунды
+        showAlertMessage("Failed to complete task. Try again.", false);
       }
     } catch (error) {
       console.error('Error completing task:', error);
-      setAlertMessage("Failed to complete task. Try again.");
-      setIsSuccessAlert(false); // Неуспешный алерт
-      setShowAlert(true);
-
-      setTimeout(() => {
-        setShowAlert(false);
-      }, 3000); // Аллерт будет показываться 3 секунды
+      showAlertMessage("Failed to complete task. Try again.", false);
     }
   };
 
@@ -87,10 +79,8 @@ function Home({ userId }) {
 
   return (
     <div className="home">
-      {/* Всплывающий алерт */}
       {showAlert && (
         <div className="alert">
-          {/* Отображаем иконку только для успешного выполнения */}
           {isSuccessAlert && <img src={completedIcon} alt="Completed" className="alert-icon" />}
           <span>{alertMessage}</span>
         </div>
@@ -141,7 +131,7 @@ function Home({ userId }) {
           task={selectedTask}
           onComplete={handleTaskComplete}
           onClose={handleCloseModal}
-          showAlert={setAlertMessage} // Передаем функцию для отображения алерта при ошибке
+          showAlert={showAlertMessage} // Передаем функцию для показа алерта
         />
       )}
     </div>
