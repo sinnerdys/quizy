@@ -76,12 +76,18 @@ function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавил
         // В случае ошибки вызываем showAlert из Home.js, закрываем модальное окно
         showAlert("You are not subscribed to the channel.");
         setCheckingSubscription(false); // Сбрасываем проверку
+        setTimeout(() => {
+          showAlert(""); // Сбрасываем сообщение после 3 секунд
+        }, 3000);
         onClose(); // Закрываем модальное окно при ошибке
       }
     } catch (error) {
       console.error('Error checking subscription:', error);
       showAlert("Failed to check subscription. Try again."); // Показываем алерт при ошибке запроса
       setCheckingSubscription(false); // Сбрасываем проверку
+      setTimeout(() => {
+        showAlert(""); // Сбрасываем сообщение после 3 секунд
+      }, 3000);
       onClose(); // Закрываем модальное окно при ошибке
     }
   };
