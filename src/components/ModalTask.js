@@ -5,8 +5,8 @@ import logo from '../assets/logo.png'; // Импортируем логотип
 function ModalTask({ task, onComplete, onClose }) {
   const [checkingSubscription, setCheckingSubscription] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [hasClickedSubscribe, setHasClickedSubscribe] = useState(false); // Добавляем состояние
   const [errorMessage, setErrorMessage] = useState("");
+  const [subscribeClicked, setSubscribeClicked] = useState(false); // Новое состояние
 
   useEffect(() => {
     const overlay = document.querySelector('.modal-task-overlay');
@@ -29,13 +29,13 @@ function ModalTask({ task, onComplete, onClose }) {
 
   const handleSubscribe = () => {
     window.open(task.subscribeUrl, '_blank');
-    setHasClickedSubscribe(true); // Пользователь нажал на кнопку "Subscribe"
+    setSubscribeClicked(true); // Устанавливаем флаг, что пользователь нажал на "Subscribe"
   };
 
   const checkSubscription = async () => {
     setCheckingSubscription(true);
     try {
-      const response = await fetch('https://your-firebase-function-url/checkSubscription', {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/checkSubscription', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,22 +75,17 @@ function ModalTask({ task, onComplete, onClose }) {
           <span>+{task.reward} $QUIZY</span>
         </div>
 
-        {/* Если это задание на подписку, отображаем кнопку для подписки и проверки */}
+        {/* Если это задание на подписку, отображаем кнопку для проверки */}
         {task.type === "subscribe" && !isSubscribed && (
           <>
-            <button className="subscribe-button" onClick={handleSubscribe}>
-              Subscribe
-            </button>
-
-            {/* Кнопка Check Task становится доступной только после нажатия на Subscribe */}
+            <button className="subscribe-button" onClick={handleSubscribe}>Subscribe</button>
             <button
               className="check-task-button"
               onClick={checkSubscription}
-              disabled={!hasClickedSubscribe || checkingSubscription}
+              disabled={!subscribeClicked || checkingSubscription} // Отключаем кнопку, пока не нажата Subscribe
             >
               {checkingSubscription ? 'Checking...' : 'Check task'}
             </button>
-
             {errorMessage && <p className="error-message">{errorMessage}</p>}
           </>
         )}
