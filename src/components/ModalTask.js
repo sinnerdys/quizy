@@ -8,6 +8,12 @@ function ModalTask({ task, onComplete, onClose }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [subscribeClicked, setSubscribeClicked] = useState(false); // Новое состояние для отслеживания нажатия на "Подписаться"
 
+  // Логируем тип задачи
+  useEffect(() => {
+    console.log('Task Type:', task.type);
+    console.log('Task Data:', task);
+  }, [task]);
+
   useEffect(() => {
     const overlay = document.querySelector('.modal-task-overlay');
     const modal = document.querySelector('.modal-task');
@@ -30,11 +36,16 @@ function ModalTask({ task, onComplete, onClose }) {
   const handleSubscribe = () => {
     window.open(task.subscribeUrl, '_blank'); // Открываем ссылку для подписки
     setSubscribeClicked(true); // Устанавливаем флаг, что пользователь нажал на "Подписаться"
+    console.log('Subscribe button clicked.');
   };
 
   const checkSubscription = async () => {
     setCheckingSubscription(true);
     try {
+      // Логируем данные перед отправкой запроса на проверку подписки
+      console.log('Checking subscription for userId:', window.Telegram.WebApp.initDataUnsafe.user.id);
+      console.log('Checking channel URL:', task.subscribeUrl);
+
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/checkSubscription', {
         method: 'POST',
         headers: {
@@ -47,9 +58,12 @@ function ModalTask({ task, onComplete, onClose }) {
       });
 
       const result = await response.json();
+      console.log('Check Subscription Result:', result);
+
       if (result.success && result.isSubscribed) {
         setIsSubscribed(true);
         setErrorMessage("");
+        console.log('User is subscribed, completing task.');
         onComplete(task.id); // Если подписан, выполняем задание
       } else {
         setErrorMessage("You are not subscribed to the channel.");
