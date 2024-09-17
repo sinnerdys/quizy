@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './ModalTask.css'; // Стили для модального окна
 import logo from '../assets/logo.png'; // Импортируем логотип
 
-function ModalTask({ task, onComplete, onClose }) {
+function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавили showAlert как пропс
   const [checkingSubscription, setCheckingSubscription] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [subscribeClicked, setSubscribeClicked] = useState(false); // Новое состояние для отслеживания нажатия на "Подписаться"
+  const [subscribeClicked, setSubscribeClicked] = useState(false); // Отслеживание нажатия на "Подписаться"
 
-  // Логируем тип задачи
+  // Логирование данных задачи
   useEffect(() => {
     console.log('Task Type:', task.type);
     console.log('Task Data:', task);
@@ -36,13 +36,11 @@ function ModalTask({ task, onComplete, onClose }) {
   const handleSubscribe = () => {
     window.open(task.subscribeUrl, '_blank'); // Открываем ссылку для подписки
     setSubscribeClicked(true); // Устанавливаем флаг, что пользователь нажал на "Подписаться"
-    console.log('Subscribe button clicked.');
   };
 
   const checkSubscription = async () => {
     setCheckingSubscription(true);
     try {
-      // Логируем данные перед отправкой запроса на проверку подписки
       console.log('Checking subscription for userId:', window.Telegram.WebApp.initDataUnsafe.user.id);
       console.log('Checking channel URL:', task.subscribeUrl);
 
@@ -64,9 +62,11 @@ function ModalTask({ task, onComplete, onClose }) {
         setIsSubscribed(true);
         setErrorMessage("");
         console.log('User is subscribed, completing task.');
-        onComplete(task.id); // Если подписан, выполняем задание
+        onComplete(task.id); // Выполняем задание
+        onClose(); // Закрываем модальное окно после успешного выполнения задания
       } else {
-        setErrorMessage("You are not subscribed to the channel.");
+        // В случае ошибки вызываем showAlert из Home.js
+        showAlert("Failed to complete task. You are not subscribed to the channel.");
       }
     } catch (error) {
       console.error('Error checking subscription:', error);
@@ -96,7 +96,7 @@ function ModalTask({ task, onComplete, onClose }) {
               Subscribe
             </button>
             <button
-              className="check-task-button"
+              className={`check-task-button ${!subscribeClicked ? 'disabled' : ''}`} // Меняем стиль, если кнопка не активна
               onClick={checkSubscription}
               disabled={!subscribeClicked || checkingSubscription} // Отключаем кнопку до нажатия на "Subscribe"
             >

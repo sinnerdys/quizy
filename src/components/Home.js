@@ -12,6 +12,8 @@ function Home({ userId }) {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAlert, setShowAlert] = useState(false); // Состояние для отображения алерта
+  const [alertMessage, setAlertMessage] = useState(""); // Состояние для текста алерта
+  const [isSuccessAlert, setIsSuccessAlert] = useState(false); // Состояние для определения типа алерта (успешный/неуспешный)
 
   const fetchUserData = async () => {
     try {
@@ -53,36 +55,44 @@ function Home({ userId }) {
       if (result.success) {
         fetchUserData(); 
 
-        // Показываем алерт после завершения задачи
+        setAlertMessage("Task successfully completed!");
+        setIsSuccessAlert(true); // Успешный алерт
         setShowAlert(true);
-
-        // Закрываем модальное окно и оставляем алерт на 1 секунду
-        setIsModalOpen(false);
 
         setTimeout(() => {
           setShowAlert(false);
         }, 3000); // Аллерт будет показываться 3 секунды
       } else {
-        alert('Failed to complete task. Try again.');
+        setAlertMessage("Failed to complete task. Try again.");
+        setIsSuccessAlert(false); // Неуспешный алерт
+        setShowAlert(true);
+
+        setTimeout(() => {
+          setShowAlert(false);
+        }, 3000); // Аллерт будет показываться 3 секунды
       }
     } catch (error) {
       console.error('Error completing task:', error);
+      setAlertMessage("Failed to complete task. Try again.");
+      setIsSuccessAlert(false); // Неуспешный алерт
+      setShowAlert(true);
+
+      setTimeout(() => {
+        setShowAlert(false);
+      }, 3000); // Аллерт будет показываться 3 секунды
     }
   };
 
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="home">
       {/* Всплывающий алерт */}
       {showAlert && (
         <div className="alert">
-          <img src={completedIcon} alt="Completed" className="alert-icon" />
-          <span>Task successfully completed!</span>
+          {/* Отображаем иконку только для успешного выполнения */}
+          {isSuccessAlert && <img src={completedIcon} alt="Completed" className="alert-icon" />}
+          <span>{alertMessage}</span>
         </div>
       )}
 
@@ -131,6 +141,7 @@ function Home({ userId }) {
           task={selectedTask}
           onComplete={handleTaskComplete}
           onClose={handleCloseModal}
+          showAlert={setAlertMessage} // Передаем функцию для отображения алерта при ошибке
         />
       )}
     </div>
