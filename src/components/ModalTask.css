@@ -119,3 +119,18 @@
 .check-task-button:hover {
   background-color: #007BB5;
 }
+
+.check-task-button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.info-message {
+  color: #007BFF;
+  margin-top: 10px;
+}
