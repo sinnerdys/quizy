@@ -20,7 +20,11 @@ function Home({ userId }) {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
       const data = await response.json();
       setBalance(data.balance);
-      setTasks(data.tasks || []); 
+
+      // Сортировка задач: сначала невыполненные, потом выполненные
+      const sortedTasks = data.tasks.sort((a, b) => a.completed - b.completed);
+
+      setTasks(sortedTasks || []); 
       setLoading(false); 
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -131,7 +135,7 @@ function Home({ userId }) {
           task={selectedTask}
           onComplete={handleTaskComplete}
           onClose={handleCloseModal}
-          showAlert={showAlertMessage} // Передаем функцию для показа алерта
+          showAlert={showAlertMessage} 
         />
       )}
     </div>
