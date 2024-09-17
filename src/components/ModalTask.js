@@ -5,7 +5,6 @@ import logo from '../assets/logo.png'; // Импортируем логотип
 function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавили showAlert как пропс
   const [checkingSubscription, setCheckingSubscription] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [subscribeClicked, setSubscribeClicked] = useState(false); // Отслеживание нажатия на "Подписаться"
 
   // Логирование данных задачи
@@ -25,13 +24,23 @@ function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавил
       }, 10);
     }
 
+    // Закрытие модального окна при клике вне его области
+    const handleClickOutside = (event) => {
+      if (event.target === overlay) {
+        onClose();
+      }
+    };
+
+    overlay.addEventListener('click', handleClickOutside);
+
     return () => {
+      overlay.removeEventListener('click', handleClickOutside);
       if (overlay && modal) {
         overlay.classList.remove('open');
         modal.classList.remove('open');
       }
     };
-  }, []);
+  }, [onClose]);
 
   const handleSubscribe = () => {
     window.open(task.subscribeUrl, '_blank'); // Открываем ссылку для подписки
@@ -60,19 +69,20 @@ function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавил
 
       if (result.success && result.isSubscribed) {
         setIsSubscribed(true);
-        setErrorMessage("");
         console.log('User is subscribed, completing task.');
         onComplete(task.id); // Выполняем задание
         onClose(); // Закрываем модальное окно после успешного выполнения задания
       } else {
-        // В случае ошибки вызываем showAlert из Home.js
-        showAlert("Failed to complete task. You are not subscribed to the channel.");
+        // В случае ошибки вызываем showAlert из Home.js, закрываем модальное окно
+        showAlert("You are not subscribed to the channel.");
+        setCheckingSubscription(false); // Сбрасываем проверку
+        onClose(); // Закрываем модальное окно при ошибке
       }
     } catch (error) {
       console.error('Error checking subscription:', error);
-      setErrorMessage("Failed to check subscription.");
-    } finally {
-      setCheckingSubscription(false);
+      showAlert("Failed to check subscription. Try again."); // Показываем алерт при ошибке запроса
+      setCheckingSubscription(false); // Сбрасываем проверку
+      onClose(); // Закрываем модальное окно при ошибке
     }
   };
 
@@ -102,7 +112,6 @@ function ModalTask({ task, onComplete, onClose, showAlert }) { // Добавил
             >
               {checkingSubscription ? 'Checking...' : 'Check Task'}
             </button>
-            {errorMessage && <p className="error-message">{errorMessage}</p>}
           </>
         )}
 
