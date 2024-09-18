@@ -8,11 +8,10 @@ function Leaderboard() {
   const [currentUser, setCurrentUser] = useState({
     name: '',
     balance: 0,
-    rank: 'Not ranked', // Изначально устанавливаем "Not ranked"
+    rank: 'Not ranked',
   });
   const [topPlayers, setTopPlayers] = useState([]); // Начальное состояние - пустой массив
   const [error, setError] = useState(null); // Состояние для ошибки
-  const [loading, setLoading] = useState(true); // Состояние для индикации загрузки
 
   // Функция для отображения медали, если игрок в топ-3
   const getMedal = (rank) => {
@@ -22,78 +21,53 @@ function Leaderboard() {
     return null;
   };
 
-  // Функция для получения данных текущего пользователя с рангом с бэкенда
-  const fetchCurrentUserWithRank = async (userId) => {
+  // Получаем данные пользователя с рангом и данные топ-игроков параллельно
+  const fetchDataParallel = async (userId) => {
     try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentUserWithRank?userId=${userId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const [leaderboardResponse, currentUserResponse] = await Promise.all([
+        fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getLeaderboard', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }),
+        fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentUserWithRank?userId=${userId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }),
+      ]);
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch current user data with rank');
+      if (!leaderboardResponse.ok || !currentUserResponse.ok) {
+        throw new Error('Failed to fetch data');
       }
 
-      const userData = await response.json();
+      const players = await leaderboardResponse.json();
+      const userData = await currentUserResponse.json();
 
-      // Устанавливаем данные текущего пользователя
+      setTopPlayers(players || []); // Обновляем топ игроков
+
+      // Обновляем данные текущего пользователя
       setCurrentUser({
         name: userData.username || 'Anonymous',
         balance: userData.balance || 0,
-        rank: userData.rank || 'Not ranked', // Получаем ранг напрямую из бэкенда
+        rank: userData.rank || 'Not ranked',
       });
     } catch (error) {
-      console.error('Error fetching current user data with rank:', error);
-      setError('Failed to fetch current user data');
+      console.error('Error fetching leaderboard data or current user:', error);
+      setError('Failed to fetch leaderboard or current user data');
     }
   };
 
-  // Функция для получения данных топ-игроков с Firebase
-  const fetchLeaderboardData = async () => {
-    try {
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getLeaderboard', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch leaderboard data');
-      }
-
-      const players = await response.json();
-
-      if (Array.isArray(players)) {
-        setTopPlayers(players);
-        return players;
-      }
-
-      return [];
-    } catch (error) {
-      console.error('Error fetching leaderboard data:', error);
-      setError('Failed to fetch leaderboard');
-      return [];
-    }
-  };
-
-  // Получение данных текущего пользователя с Telegram WebApp API и данных из Firebase
+  // Получение данных с Telegram WebApp API
   useEffect(() => {
-    const fetchData = async () => {
-      const tg = window.Telegram.WebApp;
-      const user = tg.initDataUnsafe?.user || {};
+    const tg = window.Telegram.WebApp;
+    const user = tg.initDataUnsafe?.user || {};
 
-      console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
+    console.log('Current Telegram User ID:', user.id); // Отладка: выводим ID текущего пользователя из Telegram
 
-      await fetchLeaderboardData(); // Получаем данные рейтинга из Firebase
-      await fetchCurrentUserWithRank(user.id); // Получаем данные текущего пользователя с рангом из новой функции
-
-      setLoading(false); // Отключаем состояние загрузки после получения данных
-    };
-
-    fetchData();
+    fetchDataParallel(user.id); // Параллельно получаем данные топ игроков и текущего пользователя
   }, []);
 
   if (error) {
@@ -106,7 +80,7 @@ function Leaderboard() {
       <h1 className="leaderboard-title">Leaderboard</h1>
 
       {/* Информация о текущем пользователе */}
-      {!loading && currentUser && (
+      {currentUser && (
         <div className="current-user">
           <div className="user-info">
             <div className="user-icon">{currentUser.name.charAt(0)}</div>
@@ -125,24 +99,22 @@ function Leaderboard() {
       {/* Список топ-100 игроков */}
       <div className="top-players">
         <h3>Top-100 Players</h3>
-        {!loading && (
-          <ul className="players-list">
-            {topPlayers.map((player) => (
-              <li key={player.userId} className="player-item">
-                <div className="player-info">
-                  <div className="player-icon">{player.username.charAt(0)}</div>
-                  <div className="player-details">
-                    <span className="player-name">{player.username}</span>
-                    <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
-                  </div>
+        <ul className="players-list">
+          {topPlayers.map((player) => (
+            <li key={player.userId} className="player-item">
+              <div className="player-info">
+                <div className="player-icon">{player.username.charAt(0)}</div>
+                <div className="player-details">
+                  <span className="player-name">{player.username}</span>
+                  <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
                 </div>
-                <div className="player-rank">
-                  {getMedal(player.rank) || <span>#{player.rank}</span>}
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+              </div>
+              <div className="player-rank">
+                {getMedal(player.rank) || <span>#{player.rank}</span>}
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
