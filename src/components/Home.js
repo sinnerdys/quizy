@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Home.css'; 
 import logo from '../assets/logo.png'; 
 import completedIcon from '../assets/completedIcon.png'; 
+import failedIcon from '../assets/failedIcon.png'; // Импорт новой иконки
 import ModalTask from './ModalTask'; 
 
 function Home({ userId }) {
@@ -68,7 +69,6 @@ function Home({ userId }) {
       const result = await response.json();
       if (result.success) {
         fetchUserData(); 
-
         showAlertMessage("Task successfully completed!", true);
       } else {
         showAlertMessage("Failed to complete task. Try again.", false);
@@ -85,7 +85,11 @@ function Home({ userId }) {
     <div className="home">
       {showAlert && (
         <div className="alert">
-          {isSuccessAlert && <img src={completedIcon} alt="Completed" className="alert-icon" />}
+          {/* Отображаем разные иконки в зависимости от результата */}
+          {isSuccessAlert 
+            ? <img src={completedIcon} alt="Completed" className="alert-icon" />
+            : <img src={failedIcon} alt="Failed" className="alert-icon" /> /* Иконка для неудачного выполнения */
+          }
           <span>{alertMessage}</span>
         </div>
       )}
