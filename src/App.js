@@ -20,7 +20,6 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Запускаем приложение только один раз при загрузке
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.setHeaderColor('#112558');
@@ -102,9 +101,7 @@ function App() {
       const result = await response.json();
       console.log('User created successfully:', result);
 
-      // Устанавливаем баланс с учетом реферального кода
-      setBalance(referralCode ? 500 : 0); 
-
+      setBalance(referralCode ? 500 : 0); // Устанавливаем баланс нового пользователя
       checkDailyReward(user.id); // Проверяем ежедневную награду для нового пользователя
     } catch (error) {
       console.error('Error creating user:', error);
