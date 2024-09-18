@@ -86,6 +86,9 @@ function Friends() {
         },
         body: JSON.stringify({
           userId,
+          firstName: user.first_name,
+          lastName: user.last_name || '',
+          username: user.username || user.first_name,
           referralCode,
         }),
       });
