@@ -80,12 +80,10 @@ function App() {
         setShowDailyReward(true); // Показываем экран награды
       } else {
         setShowDailyReward(false); // Награда уже получена сегодня или нет
-        // Оставляем пользователя на текущем экране, не перенаправляем на Home сразу
       }
     } catch (error) {
       console.error('Error fetching daily reward data:', error);
       setShowDailyReward(false);
-      // Если возникла ошибка, не перенаправляем, просто остаемся на текущем экране
     }
   };
 
