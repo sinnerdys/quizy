@@ -5,7 +5,7 @@ import completedIcon from '../assets/completedIcon.png';
 import failedIcon from '../assets/failedIcon.png'; 
 import ModalTask from './ModalTask'; 
 
-function Home({ userId, balance, updateBalance }) { // Добавляем функцию updateBalance как пропс
+function Home({ userId, balance, fetchBalance }) { // Добавляем fetchBalance для обновления баланса
   const [showMoreTasks, setShowMoreTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,10 +37,10 @@ function Home({ userId, balance, updateBalance }) { // Добавляем фун
     }
   }, [userId]);
 
-  // Следим за обновлением баланса и перерисовываем компонент, если баланс изменился
+  // Обновляем баланс при возвращении на экран
   useEffect(() => {
-    // Этот эффект будет запускаться каждый раз, когда баланс изменится
-  }, [balance]);
+    fetchBalance(); // Обновляем баланс из базы данных при возврате на экран
+  }, [fetchBalance]); // Зависимость от функции обновления баланса
 
   const handleTaskOpen = (task) => {
     setSelectedTask(task);
@@ -72,7 +72,7 @@ function Home({ userId, balance, updateBalance }) { // Добавляем фун
       const result = await response.json();
       if (result.success) {
         fetchUserTasks(); // Обновляем задачи после завершения задания
-        updateBalance(result.reward); // Обновляем баланс с полученной наградой
+        fetchBalance(); // Обновляем баланс после завершения задания
         showAlertMessage("Task successfully completed!", true);
       } else {
         showAlertMessage("Failed to complete task. Try again.", false);
@@ -107,7 +107,7 @@ function Home({ userId, balance, updateBalance }) { // Добавляем фун
 
       {/* Отображаем баланс сразу, как он был передан */}
       <div className="balance">
-        <h2>{balance.toLocaleString()} $QUIZY</h2>
+        <h2>{!isNaN(balance) ? balance.toLocaleString() : '0'} $QUIZY</h2> {/* Проверка, чтобы баланс был числом */}
       </div>
 
       <div className="tasks-section">

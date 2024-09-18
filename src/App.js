@@ -101,6 +101,13 @@ function App() {
     }
   };
 
+  // Функция для обновления баланса при возврате на экран
+  const fetchBalance = () => {
+    if (user) {
+      fetchUserData(user); // Получаем актуальные данные баланса пользователя
+    }
+  };
+
   // Функция для перехода с DailyReward на Home
   const handleContinue = async () => {
     try {
@@ -124,7 +131,7 @@ function App() {
       ) : (
         <>
           <Routes>
-            <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} />} />
+            <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/friends" element={<Friends />} />
           </Routes>
