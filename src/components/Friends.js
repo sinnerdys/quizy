@@ -15,13 +15,17 @@ function Friends() {
 
     const fetchReferralCode = async (userId) => {
       try {
+        console.log('Запрос на получение реферального кода для пользователя:', userId);
+    
         const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getReferralCode?userId=${userId}`);
         const data = await response.json();
-
+    
         if (data.referralCode) {
+          console.log('Получен существующий реферальный код:', data.referralCode);
           setReferralCode(data.referralCode);
         } else {
           const generatedCode = generateReferralCode(userId);
+          console.log('Создан новый реферальный код:', generatedCode);
           setReferralCode(generatedCode);
           saveReferralCode(userId, generatedCode);
         }
@@ -36,7 +40,9 @@ function Friends() {
 
     const saveReferralCode = async (userId, referralCode) => {
       try {
-        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveReferralCode', {
+        console.log('Сохраняем реферальный код:', referralCode, 'для пользователя:', userId);
+    
+        await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveReferralCode', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -46,12 +52,8 @@ function Friends() {
             referralCode,
           }),
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to save referral code');
-        }
       } catch (error) {
-        console.error('Error saving referral code:', error);
+        console.error('Ошибка при сохранении реферального кода:', error);
       }
     };
 
@@ -108,6 +110,8 @@ function Friends() {
   
 
   const handleInviteFriends = () => {
+    console.log('Текущий реферальный код:', referralCode);
+    
     const tg = window.Telegram.WebApp;
     const referralLink = `https://t.me/Qqzgy_bot/game?startapp=${referralCode}`;
     const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: ${referralLink}`;
