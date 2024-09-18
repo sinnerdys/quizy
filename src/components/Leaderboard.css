@@ -159,6 +159,10 @@
   width: 100px;
 }
 
+.skeleton-text + .skeleton-text {
+  margin-top: 2px; /* Добавляем отступ между ником и балансом */
+}
+
 .skeleton-rank {
   height: 16px;
   width: 50px;
