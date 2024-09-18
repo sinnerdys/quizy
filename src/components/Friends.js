@@ -77,6 +77,8 @@ function Friends() {
     }
   }, []);
 
+  console.log('Отправляем запрос с данными:', { userId, referralCode, firstName: user.first_name, username: user.username }); // Логируем данные перед запросом
+
   const saveUserWithReferral = async (userId, referralCode) => {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
