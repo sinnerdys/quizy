@@ -1,4 +1,3 @@
-// src/components/DailyReward.js
 import React, { useState } from 'react';
 import Confetti from 'react-confetti';
 import './DailyReward.css';
@@ -19,6 +18,11 @@ function DailyReward({ onContinue }) {
 
   return (
     <div className="daily-reward">
+      {/* Анимация заголовка Day 1 */}
+      <div className="day-title">
+        <h1>Day 1</h1>
+      </div>
+
       {/* Логотип и награда */}
       <div className="reward-center-content">
         <div className="reward-logo-container">

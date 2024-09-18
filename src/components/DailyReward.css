@@ -1,73 +1,90 @@
-/* src/components/DailyReward.css */
+/* Анимация появления текста "Day 1" */
+.day-title {
+  margin-top: 20px;
+  animation: fade-in-down 1s ease forwards;
+  opacity: 0; /* Исходное состояние - прозрачное */
+}
+
+@keyframes fade-in-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px); /* Начальное положение - чуть выше */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Конечное положение */
+  }
+}
+
+/* Стили для блока DailyReward */
 .daily-reward {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Разделяем центральный и нижний блок */
-    align-items: center;
-    height: 100vh;
-    background-color: #091533; /* Фоновый цвет */
-    background-image: url('../assets/bg_rewards.png'); /* Фоновое изображение */
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  
-  .reward-center-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-    text-align: center;
-  }
-  
-  .reward-logo-container {
-    margin-bottom: 20px;
-  }
-  
-  .reward-logo-daily {
-    width: 100px;
-    height: 100px;
-  }
-  
-  .daily-reward h1 {
-    font-size: 32px;
-    margin: 0;
-  }
-  
-  .daily-reward h2 {
-    font-size: 24px;
-    margin-top: 10px;
-  }
-  
-  /* Нижний блок с текстом и кнопкой */
-  .bottom-section {
-    width: 100%;
-    padding-bottom: 20px; /* Отступ от нижнего края */
-  }
-  
-  .daily-reward p {
-    font-size: 16px;
-    color: #adb3c1;
-    margin-bottom: 20px;
-  }
-  
-  .continue-button {
-    padding: 15px;
-    background-color: #284286;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-  }
-  
-  .continue-button:hover {
-    background-color: #1a3069;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Разделяем центральный и нижний блок */
+  align-items: center;
+  height: 100vh;
+  background-color: #091533; /* Фоновый цвет */
+  background-image: url('../assets/bg_rewards.png'); /* Фоновое изображение */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.reward-center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.reward-logo-container {
+  margin-bottom: 20px;
+}
+
+.reward-logo-daily {
+  width: 100px;
+  height: 100px;
+}
+
+.daily-reward h1 {
+  font-size: 32px;
+  margin: 0;
+}
+
+.daily-reward h2 {
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+/* Нижний блок с текстом и кнопкой */
+.bottom-section {
+  width: 100%;
+  padding-bottom: 20px; /* Отступ от нижнего края */
+}
+
+.daily-reward p {
+  font-size: 16px;
+  color: #adb3c1;
+  margin-bottom: 20px;
+}
+
+.continue-button {
+  padding: 15px;
+  background-color: #284286;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.continue-button:hover {
+  background-color: #1a3069;
+}
