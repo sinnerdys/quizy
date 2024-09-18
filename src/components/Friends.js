@@ -6,7 +6,6 @@ import token from '../assets/token.png';
 function Friends() {
   const [referralCode, setReferralCode] = useState(''); // Состояние для реферального кода
   const [friends, setFriends] = useState([]); // Список друзей
-  const [loading, setLoading] = useState(true); // Состояние загрузки
 
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -51,29 +50,25 @@ function Friends() {
       }
     };
 
-    // Если приложение открыто с параметром startapp, отправляем его на сервер
+    // Параллельные запросы для получения реферального кода и списка друзей
+    const fetchFriends = async (userId) => {
+      try {
+        const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserFriends?userId=${userId}`);
+        const friendsData = await response.json();
+        setFriends(friendsData);
+      } catch (error) {
+        console.error('Ошибка получения списка друзей:', error);
+      }
+    };
+
     if (user.id) {
       if (startParam) {
         saveUserWithReferral(user.id, startParam); // Если есть реферальный код, сохраняем его
       } else {
         fetchReferralCode(user.id); // Если нет реферального кода, просто получаем/создаем код
       }
+      fetchFriends(user.id); // Загружаем список друзей параллельно
     }
-
-    // Загрузка списка друзей с сервера
-    const fetchFriends = async () => {
-      try {
-        const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserFriends?userId=${user.id}`);
-        const friendsData = await response.json();
-        setFriends(friendsData);
-      } catch (error) {
-        console.error('Ошибка получения списка друзей:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFriends();
   }, []);
 
   // Функция для сохранения пользователя с реферальным кодом
@@ -106,10 +101,6 @@ function Friends() {
     tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="friends">
       {/* Логотип и заголовок */}
@@ -122,21 +113,24 @@ function Friends() {
       <div className="friends-list-title"><h3>My friends</h3></div>
       <div className="friends-list-section">
         <ul className="friends-list">
-          {friends.map(friend => (
-            <li key={friend.id} className="friend-item">
-              <div className="friend-info">
-                <div className="friend-icon">
-                  {/* Используем friend.username вместо friend.name */}
-                  {friend.username ? friend.username.charAt(0) : 'N/A'}
+          {friends.length > 0 ? (
+            friends.map(friend => (
+              <li key={friend.id} className="friend-item">
+                <div className="friend-info">
+                  <div className="friend-icon">
+                    {friend.username ? friend.username.charAt(0) : 'N/A'}
+                  </div>
+                  <span className="friend-name">{friend.username || 'Unknown Friend'}</span>
                 </div>
-                <span className="friend-name">{friend.username || 'Unknown Friend'}</span>
-              </div>
-              <div className="friend-reward">
-                <span className="reward-text">+{friend.reward}</span>
-                <img src={token} alt="QUIZY Token" className="reward-logo" />
-              </div>
-            </li>
-          ))}
+                <div className="friend-reward">
+                  <span className="reward-text">+{friend.reward}</span>
+                  <img src={token} alt="QUIZY Token" className="reward-logo" />
+                </div>
+              </li>
+            ))
+          ) : (
+            <li>No friends yet!</li>
+          )}
         </ul>
       </div>
 
