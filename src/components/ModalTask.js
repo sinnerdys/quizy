@@ -61,12 +61,10 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
         onComplete(task.id); 
         onClose(); 
       } else {
-        // Вызов алерта с флагом ошибки (неуспешный алерт)
         showAlert("You are not subscribed to the channel.", false); 
         onClose();
       }
     } catch (error) {
-      // Вызов алерта с сообщением об ошибке
       showAlert("Failed to check subscription. Try again.", false); 
       onClose();
     } finally {
@@ -77,7 +75,13 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
   return (
     <div className="modal-task-overlay">
       <div className="modal-task">
-        <button className="close-button" onClick={onClose}>✕</button>
+        <button className="close-button" onClick={onClose}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icon-tabler-x">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M18 6l-12 12" />
+            <path d="M6 6l12 12" />
+          </svg>
+        </button>
         <div className="modal-logo-container">
           <img src={logo} alt="QUIZY Logo" className="modal-logo" />
         </div>
