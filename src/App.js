@@ -19,6 +19,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Запускаем приложение только один раз при загрузке
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.expand();
       window.Telegram.WebApp.setHeaderColor('#112558');
@@ -60,7 +61,7 @@ function App() {
       setBalance(userData.balance); // Устанавливаем баланс пользователя из базы данных
       console.log('User data fetched successfully:', userData);
 
-      // Проверяем ежедневную награду
+      // Проверяем ежедневную награду только при запуске
       checkDailyReward(user.id);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -79,12 +80,12 @@ function App() {
         setShowDailyReward(true); // Показываем экран награды
       } else {
         setShowDailyReward(false); // Награда уже получена сегодня или нет
-        navigate('/'); // Перенаправляем на Home, если награда уже получена
+        // Оставляем пользователя на текущем экране, не перенаправляем на Home сразу
       }
     } catch (error) {
       console.error('Error fetching daily reward data:', error);
       setShowDailyReward(false);
-      navigate('/'); // Перенаправляем на Home в случае ошибки
+      // Если возникла ошибка, не перенаправляем, просто остаемся на текущем экране
     }
   };
 
@@ -125,13 +126,6 @@ function App() {
     }
   };
 
-  // Функция для обновления баланса при возврате на экран
-  const fetchBalance = () => {
-    if (user) {
-      fetchUserData(user); // Получаем актуальные данные баланса пользователя
-    }
-  };
-
   // Функция для перехода с DailyReward на Home
   const handleContinue = async () => {
     try {
@@ -139,7 +133,7 @@ function App() {
         await updateBalance(dailyRewardData.rewardAmount); // Обновляем баланс в зависимости от награды
       }
       setShowDailyReward(false);
-      navigate('/'); // Переход на Home
+      navigate('/'); // Переход на Home после получения награды
     } catch (error) {
       console.error('Error during saving user data or balance update:', error);
     }
@@ -162,7 +156,7 @@ function App() {
       ) : (
         <>
           <Routes>
-            <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
+            <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/friends" element={<Friends />} />
           </Routes>
