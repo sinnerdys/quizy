@@ -6,7 +6,7 @@ import failedIcon from '../assets/failedIcon.png';
 import ModalTask from './ModalTask'; 
 
 function Home({ userId }) {
-  const [balance, setBalance] = useState(0); // Баланс загружается сразу
+  const [balance, setBalance] = useState(0);
   const [showMoreTasks, setShowMoreTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,19 +16,28 @@ function Home({ userId }) {
   const [alertMessage, setAlertMessage] = useState(""); 
   const [isSuccessAlert, setIsSuccessAlert] = useState(false); 
 
-  // Функция для получения данных пользователя и задач
-  const fetchUserData = async () => {
+  // Получаем данные пользователя (баланс)
+  const fetchUserBalance = async () => {
     try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${userId}`);
       const data = await response.json();
-      setBalance(data.balance); // Устанавливаем баланс сразу
+      setBalance(data.balance || 0); // Устанавливаем баланс пользователя
+    } catch (error) {
+      console.error('Error fetching user balance:', error);
+    }
+  };
 
-      // Сортировка задач: сначала невыполненные, потом выполненные
+  // Получаем задачи пользователя
+  const fetchUserTasks = async () => {
+    try {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserTasks?userId=${userId}`);
+      const data = await response.json();
+
       const sortedTasks = data.tasks.sort((a, b) => a.completed - b.completed);
       setTasks(sortedTasks || []);
       setTasksLoading(false); // Отключаем загрузку задач
     } catch (error) {
-      console.error('Error fetching user data:', error);
+      console.error('Error fetching user tasks:', error);
       setTasksLoading(false); // Отключаем загрузку при ошибке
     }
   };
@@ -36,7 +45,8 @@ function Home({ userId }) {
   // Загружаем данные после монтирования компонента
   useEffect(() => {
     if (userId) {
-      fetchUserData(); 
+      fetchUserBalance(); // Сначала загружаем баланс
+      fetchUserTasks(); // Затем загружаем задачи
     }
   }, [userId]);
 
@@ -69,7 +79,7 @@ function Home({ userId }) {
 
       const result = await response.json();
       if (result.success) {
-        fetchUserData(); 
+        fetchUserTasks(); // Обновляем задачи после завершения задания
         showAlertMessage("Task successfully completed!", true);
       } else {
         showAlertMessage("Failed to complete task. Try again.", false);
