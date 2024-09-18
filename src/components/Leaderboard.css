@@ -144,7 +144,7 @@
 .skeleton-rank {
   background-color: #182C5F; /* Цвет для скелетона */
   border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite ease-in-out; /* Добавляем анимацию переливания цвета */
+  animation: skeleton-loading 1.5s infinite ease-in-out; /* Анимация переливания цвета */
 }
 
 .skeleton-icon {
@@ -155,13 +155,14 @@
 
 .skeleton-text {
   height: 16px;
-  margin: 5px 0;
+  margin: 0; /* Убираем лишние отступы у скелетона */
   width: 100px;
 }
 
 .skeleton-rank {
   height: 16px;
   width: 50px;
+  margin-left: 10px; /* Чтобы ранг и медаль находились на одном уровне */
 }
 
 /* Анимация для скелетонов */
