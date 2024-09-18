@@ -33,7 +33,7 @@ function App() {
         console.log('User data from Telegram:', telegramUser);
         setUser(telegramUser); // Сохраняем пользователя в состоянии
         setReferralCode(referralParam); // Сохраняем реферальный код (если есть)
-        fetchUserData(telegramUser); // Загружаем данные пользователя из Firebase
+        fetchUserData(telegramUser, referralParam); // Загружаем данные пользователя из Firebase
       } else {
         console.log('No user data from Telegram WebApp');
       }
@@ -50,7 +50,7 @@ function App() {
   }, []);
 
   // Функция для загрузки данных пользователя (включая баланс) из Firebase
-  const fetchUserData = async (user) => {
+  const fetchUserData = async (user, referralCode) => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${user.id}`, {
         method: 'GET',
@@ -63,7 +63,7 @@ function App() {
       if (response.status === 404) {
         // Если пользователь не найден, создаем нового пользователя
         console.log('User not found, creating new user...');
-        await createUser(user);
+        await createUser(user, referralCode);
         return; // Прекращаем выполнение функции, так как новый пользователь уже создан
       }
 
@@ -84,7 +84,7 @@ function App() {
   };
 
   // Функция для создания нового пользователя в Firebase
-  const createUser = async (user) => {
+  const createUser = async (user, referralCode) => {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
