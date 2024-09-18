@@ -11,8 +11,8 @@ import './App.css';
 function App() {
   const [loading, setLoading] = useState(true);
   const [showDailyReward, setShowDailyReward] = useState(false);
-  const [balance, setBalance] = useState(null); // Устанавливаем начальное значение как null
-  const [user, setUser] = useState(null); // Сохраняем данные пользователя
+  const [balance, setBalance] = useState(null); // Начальное значение - null
+  const [user, setUser] = useState(null); // Состояние для данных пользователя
   const [referralCode, setReferralCode] = useState(null); // Состояние для реферального кода
   const navigate = useNavigate();
 
@@ -38,15 +38,16 @@ function App() {
       console.log('Not running in Telegram WebApp');
     }
 
+    // Прелоадер на 2 секунды
     const preloaderTimer = setTimeout(() => {
-      setLoading(false);
-      setShowDailyReward(true);
+      setLoading(false); // Убираем прелоадер
+      setShowDailyReward(true); // Показываем DailyReward
     }, 2000);
 
     return () => clearTimeout(preloaderTimer);
   }, []);
 
-  // Функция для загрузки данных пользователя из Firebase
+  // Функция для загрузки данных пользователя (включая баланс) из Firebase
   const fetchUserData = async (user) => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${user.id}`);
@@ -55,11 +56,11 @@ function App() {
       }
 
       const userData = await response.json();
-      setBalance(userData.balance); // Устанавливаем баланс из базы данных
+      setBalance(userData.balance); // Устанавливаем баланс пользователя из базы данных
       console.log('User data fetched successfully:', userData);
     } catch (error) {
       console.error('Error fetching user data:', error);
-      setBalance(0); // В случае ошибки устанавливаем 0 как начальный баланс
+      setBalance(0); // В случае ошибки устанавливаем баланс 0
     }
   };
 
@@ -96,14 +97,14 @@ function App() {
     });
 
     if (user) {
-      await saveUserToFirebase(user, balance + amount); // Сохраняем новый баланс в Firebase
+      await saveUserToFirebase(user, balance + amount); // Сохраняем обновленный баланс в Firebase
     }
   };
 
   // Функция для перехода с DailyReward на Home
   const handleContinue = async () => {
     try {
-      await updateBalance(100); // Обновляем баланс и ждем, пока данные сохранятся
+      await updateBalance(100); // Обновляем баланс
       setShowDailyReward(false);
       navigate('/'); // Переход на Home
     } catch (error) {
@@ -111,8 +112,8 @@ function App() {
     }
   };
 
+  // Если данные еще загружаются или баланс не установлен, показываем прелоадер
   if (balance === null || loading) {
-    // Показываем preloader, пока не загружены данные пользователя
     return <Preloader />;
   }
 

@@ -5,8 +5,7 @@ import completedIcon from '../assets/completedIcon.png';
 import failedIcon from '../assets/failedIcon.png'; 
 import ModalTask from './ModalTask'; 
 
-function Home({ userId }) {
-  const [balance, setBalance] = useState(0);
+function Home({ userId, balance }) { // Получаем balance из App.js через пропс
   const [showMoreTasks, setShowMoreTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,17 +14,6 @@ function Home({ userId }) {
   const [showAlert, setShowAlert] = useState(false); 
   const [alertMessage, setAlertMessage] = useState(""); 
   const [isSuccessAlert, setIsSuccessAlert] = useState(false); 
-
-  // Получаем данные пользователя (баланс)
-  const fetchUserBalance = async () => {
-    try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${userId}`);
-      const data = await response.json();
-      setBalance(data.balance || 0); // Устанавливаем баланс пользователя
-    } catch (error) {
-      console.error('Error fetching user balance:', error);
-    }
-  };
 
   // Получаем задачи пользователя
   const fetchUserTasks = async () => {
@@ -42,11 +30,10 @@ function Home({ userId }) {
     }
   };
 
-  // Загружаем данные после монтирования компонента
+  // Загружаем задачи после монтирования компонента
   useEffect(() => {
     if (userId) {
-      fetchUserBalance(); // Сначала загружаем баланс
-      fetchUserTasks(); // Затем загружаем задачи
+      fetchUserTasks(); // Загружаем задачи
     }
   }, [userId]);
 
@@ -112,6 +99,7 @@ function Home({ userId }) {
         <img src={logo} alt="QUIZY Logo" className="logo" />
       </div>
 
+      {/* Отображаем баланс сразу, как он был передан */}
       <div className="balance">
         <h2>{balance.toLocaleString()} $QUIZY</h2>
       </div>
