@@ -5,15 +5,17 @@ import logo from '../assets/logo.png';
 
 function DailyReward({ onContinue }) {
   const [showConfetti, setShowConfetti] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // Добавляем состояние для отключения кнопки
 
   const handleContinue = () => {
     setShowConfetti(true);
+    setIsButtonDisabled(true); // Делаем кнопку неактивной после нажатия
 
-    // Показываем конфетти 3 секунды, потом вызываем onContinue
+    // Показываем конфетти 4 секунды, потом вызываем onContinue
     setTimeout(() => {
       setShowConfetti(false);
       onContinue(); // Переходим на Home и обновляем баланс
-    }, 4000);
+    }, 5000);
   };
 
   return (
@@ -35,7 +37,11 @@ function DailyReward({ onContinue }) {
       {/* Текст и кнопка внизу */}
       <div className="bottom-section">
         <p>Come back tomorrow for check-in next day. Skipping a day resets your streak.</p>
-        <button className="continue-button" onClick={handleContinue}>
+        <button
+          className="continue-button"
+          onClick={handleContinue}
+          disabled={isButtonDisabled} // Делаем кнопку неактивной, если она уже была нажата
+        >
           Continue
         </button>
       </div>
