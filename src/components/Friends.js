@@ -77,10 +77,13 @@ function Friends() {
     }
   }, []);
 
-  console.log('Отправляем запрос с данными:', { userId, referralCode, firstName: user.first_name, username: user.username }); // Логируем данные перед запросом
-
   const saveUserWithReferral = async (userId, referralCode) => {
     try {
+      const tg = window.Telegram.WebApp;
+      const user = tg.initDataUnsafe?.user || {};
+  
+      console.log('Отправляем запрос с данными:', { userId, referralCode, firstName: user.first_name, username: user.username }); // Логируем данные перед запросом
+  
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
         headers: {
@@ -94,7 +97,7 @@ function Friends() {
           referralCode,
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error('Failed to save user with referral code');
       }
@@ -102,6 +105,7 @@ function Friends() {
       console.error('Ошибка при сохранении пользователя с реферальным кодом:', error);
     }
   };
+  
 
   const handleInviteFriends = () => {
     const tg = window.Telegram.WebApp;
