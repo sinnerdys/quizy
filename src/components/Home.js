@@ -5,7 +5,7 @@ import completedIcon from '../assets/completedIcon.png';
 import failedIcon from '../assets/failedIcon.png'; 
 import ModalTask from './ModalTask'; 
 
-function Home({ userId, balance }) { // Получаем balance из App.js через пропс
+function Home({ userId, balance, updateBalance }) { // Добавляем функцию updateBalance как пропс
   const [showMoreTasks, setShowMoreTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,6 +37,11 @@ function Home({ userId, balance }) { // Получаем balance из App.js ч�
     }
   }, [userId]);
 
+  // Следим за обновлением баланса и перерисовываем компонент, если баланс изменился
+  useEffect(() => {
+    // Этот эффект будет запускаться каждый раз, когда баланс изменится
+  }, [balance]);
+
   const handleTaskOpen = (task) => {
     setSelectedTask(task);
     setIsModalOpen(true);
@@ -67,6 +72,7 @@ function Home({ userId, balance }) { // Получаем balance из App.js ч�
       const result = await response.json();
       if (result.success) {
         fetchUserTasks(); // Обновляем задачи после завершения задания
+        updateBalance(result.reward); // Обновляем баланс с полученной наградой
         showAlertMessage("Task successfully completed!", true);
       } else {
         showAlertMessage("Failed to complete task. Try again.", false);
