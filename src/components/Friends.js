@@ -4,13 +4,14 @@ import logo from '../assets/quizy_logo.png';
 import token from '../assets/token.png'; 
 
 function Friends() {
-  const [referralCode, setReferralCode] = useState(''); // Состояние для реферального кода
-  const [friends, setFriends] = useState([]); // Список друзей
+  const [referralCode, setReferralCode] = useState(''); 
+  const [friends, setFriends] = useState([]); 
+  const [isLoading, setIsLoading] = useState(true); // Состояние для отображения скелетонов
 
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     const user = tg.initDataUnsafe?.user || {};
-    const startParam = tg.initDataUnsafe?.start_param; // Это и есть параметр startapp
+    const startParam = tg.initDataUnsafe?.start_param;
 
     const fetchReferralCode = async (userId) => {
       try {
@@ -18,11 +19,11 @@ function Friends() {
         const data = await response.json();
 
         if (data.referralCode) {
-          setReferralCode(data.referralCode); // Используем существующий код
+          setReferralCode(data.referralCode);
         } else {
-          const generatedCode = generateReferralCode(userId); // Генерация нового кода
+          const generatedCode = generateReferralCode(userId);
           setReferralCode(generatedCode);
-          saveReferralCode(userId, generatedCode); // Сохранение нового кода в базе
+          saveReferralCode(userId, generatedCode);
         }
       } catch (error) {
         console.error('Ошибка получения реферального кода:', error);
@@ -30,7 +31,7 @@ function Friends() {
     };
 
     const generateReferralCode = (userId) => {
-      return Math.random().toString(36).substring(2, 12) + userId; // Создаем уникальный код с userId
+      return Math.random().toString(36).substring(2, 12) + userId;
     };
 
     const saveReferralCode = async (userId, referralCode) => {
@@ -50,28 +51,28 @@ function Friends() {
       }
     };
 
-    // Параллельные запросы для получения реферального кода и списка друзей
     const fetchFriends = async (userId) => {
       try {
         const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserFriends?userId=${userId}`);
         const friendsData = await response.json();
         setFriends(friendsData);
+        setIsLoading(false); // Отключаем загрузку после получения данных
       } catch (error) {
         console.error('Ошибка получения списка друзей:', error);
+        setIsLoading(false); // Отключаем загрузку при ошибке
       }
     };
 
     if (user.id) {
       if (startParam) {
-        saveUserWithReferral(user.id, startParam); // Если есть реферальный код, сохраняем его
+        saveUserWithReferral(user.id, startParam);
       } else {
-        fetchReferralCode(user.id); // Если нет реферального кода, просто получаем/создаем код
+        fetchReferralCode(user.id);
       }
-      fetchFriends(user.id); // Загружаем список друзей параллельно
+      fetchFriends(user.id);
     }
   }, []);
 
-  // Функция для сохранения пользователя с реферальным кодом
   const saveUserWithReferral = async (userId, referralCode) => {
     try {
       await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
@@ -81,7 +82,7 @@ function Friends() {
         },
         body: JSON.stringify({
           userId,
-          referralCode, // Отправляем реферальный код на сервер
+          referralCode,
         }),
       });
     } catch (error) {
@@ -89,49 +90,49 @@ function Friends() {
     }
   };
 
-  // Обработчик нажатия на кнопку "Invite friends"
   const handleInviteFriends = () => {
     const tg = window.Telegram.WebApp;
-
-    // Текст сообщения с реферальной ссылкой
     const referralLink = `https://t.me/Qqzgy_bot/game?startapp=${referralCode}`;
     const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: ${referralLink}`;
 
-    // Используем openTelegramLink для открытия Telegram с заранее сгенерированной ссылкой
     tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
   };
 
   return (
     <div className="friends">
-      {/* Логотип и заголовок */}
       <div className="header-f">
         <img src={logo} alt="QUIZY Logo" className="quizy-logo" />
         <p>Invite friends and get more rewards</p>
       </div>
 
-      {/* Список друзей */}
       <div className="friends-list-title"><h3>My friends</h3></div>
       <div className="friends-list-section">
         <ul className="friends-list">
-          {/* Отображаем пустой список, пока данные не загружены */}
-          {friends.map(friend => (
-            <li key={friend.id} className="friend-item">
-              <div className="friend-info">
-                <div className="friend-icon">
-                  {friend.username ? friend.username.charAt(0) : 'N/A'}
-                </div>
-                <span className="friend-name">{friend.username || 'Unknown Friend'}</span>
-              </div>
-              <div className="friend-reward">
-                <span className="reward-text">+{friend.reward}</span>
-                <img src={token} alt="QUIZY Token" className="reward-logo" />
-              </div>
-            </li>
-          ))}
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <li key={index} className="friend-item skeleton-friend">
+                  <div className="skeleton-icon skeleton-friend-icon" />
+                  <div className="skeleton-text skeleton-friend-name" />
+                  <div className="skeleton-text skeleton-friend-reward" />
+                </li>
+              ))
+            : friends.map(friend => (
+                <li key={friend.id} className="friend-item">
+                  <div className="friend-info">
+                    <div className="friend-icon">
+                      {friend.username ? friend.username.charAt(0) : 'N/A'}
+                    </div>
+                    <span className="friend-name">{friend.username || 'Unknown Friend'}</span>
+                  </div>
+                  <div className="friend-reward">
+                    <span className="reward-text">+{friend.reward}</span>
+                    <img src={token} alt="QUIZY Token" className="reward-logo" />
+                  </div>
+                </li>
+              ))}
         </ul>
       </div>
 
-      {/* Кнопка для приглашения */}
       <div className="invite-button-container">
         <button className="invite-button" onClick={handleInviteFriends}>Invite friends</button>
       </div>
