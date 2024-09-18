@@ -90,7 +90,7 @@ function App() {
           firstName: user.first_name,
           lastName: user.last_name || '',
           username: user.username || '',
-          balance: 500, // Устанавливаем начальный баланс для нового пользователя
+          balance: referralCode ? 500 : 0, // Если есть реферальный код, добавляем бонус
           referralCode: referralCode || null, // Передаем реферальный код, если есть
         }),
       });
@@ -101,7 +101,10 @@ function App() {
 
       const result = await response.json();
       console.log('User created successfully:', result);
-      setBalance(500); // Устанавливаем начальный баланс для нового пользователя
+
+      // Устанавливаем баланс с учетом реферального кода
+      setBalance(referralCode ? 500 : 0); 
+
       checkDailyReward(user.id); // Проверяем ежедневную награду для нового пользователя
     } catch (error) {
       console.error('Error creating user:', error);
