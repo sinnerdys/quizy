@@ -80,10 +80,12 @@ function App() {
         setShowDailyReward(true); // Показываем экран награды
       } else {
         setShowDailyReward(false); // Награда уже получена сегодня или нет
+        // Оставляем пользователя на текущем экране, не перенаправляем на Home сразу
       }
     } catch (error) {
       console.error('Error fetching daily reward data:', error);
       setShowDailyReward(false);
+      // Если возникла ошибка, не перенаправляем, просто остаемся на текущем экране
     }
   };
 
@@ -124,6 +126,13 @@ function App() {
     }
   };
 
+  // Функция для обновления баланса при возврате на экран
+  const fetchBalance = async () => {
+    if (user) {
+      await fetchUserData(user); // Получаем актуальные данные баланса пользователя
+    }
+  };
+
   // Функция для перехода с DailyReward на Home
   const handleContinue = async () => {
     try {
@@ -154,7 +163,7 @@ function App() {
       ) : (
         <>
           <Routes>
-            <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} />} />
+            <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/friends" element={<Friends />} />
           </Routes>
