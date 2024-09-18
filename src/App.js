@@ -83,7 +83,9 @@ function App() {
       } else {
         // Если награда уже была получена, перенаправляем на Home
         setShowDailyReward(false);
-        navigate('/'); // Перенаправляем на Home
+        if (!hasCheckedDailyReward) {
+          navigate('/'); // Перенаправляем на Home, если награда уже получена
+        }
       }
 
       // Отмечаем, что проверка завершена
@@ -91,7 +93,9 @@ function App() {
     } catch (error) {
       console.error('Error fetching daily reward data:', error);
       setShowDailyReward(false);
-      navigate('/'); // Если возникла ошибка, сразу переходим на Home
+      if (!hasCheckedDailyReward) {
+        navigate('/'); // Если возникла ошибка, сразу переходим на Home
+      }
       setHasCheckedDailyReward(true);
     }
   };
