@@ -15,6 +15,7 @@ function App() {
   const [user, setUser] = useState(null); // Состояние для данных пользователя
   const [referralCode, setReferralCode] = useState(null); // Состояние для реферального кода
   const [dailyRewardData, setDailyRewardData] = useState(null); // Данные для награды
+  const [hasCheckedDailyReward, setHasCheckedDailyReward] = useState(false); // Флаг проверки награды
 
   const navigate = useNavigate();
 
@@ -75,17 +76,23 @@ function App() {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/handleDailyReward?userId=${userId}`);
       const rewardData = await response.json();
 
-      if (rewardData.success && rewardData.canClaimReward) { // Проверяем, доступна ли награда
-        setDailyRewardData(rewardData); // Сохраняем данные награды
-        setShowDailyReward(true); // Показываем экран награды
+      if (rewardData.success && rewardData.canClaimReward) {
+        // Если можно получить награду, показываем экран награды
+        setDailyRewardData(rewardData);
+        setShowDailyReward(true);
       } else {
-        setShowDailyReward(false); // Награда уже получена сегодня или нет
-        // Оставляем пользователя на текущем экране, не перенаправляем на Home сразу
+        // Если награда уже была получена, перенаправляем на Home
+        setShowDailyReward(false);
+        navigate('/'); // Перенаправляем на Home
       }
+
+      // Отмечаем, что проверка завершена
+      setHasCheckedDailyReward(true);
     } catch (error) {
       console.error('Error fetching daily reward data:', error);
       setShowDailyReward(false);
-      // Если возникла ошибка, не перенаправляем, просто остаемся на текущем экране
+      navigate('/'); // Если возникла ошибка, сразу переходим на Home
+      setHasCheckedDailyReward(true);
     }
   };
 
@@ -147,7 +154,7 @@ function App() {
   };
 
   // Если данные еще загружаются или баланс не установлен, показываем прелоадер
-  if (balance === null || loading) {
+  if (balance === null || loading || !hasCheckedDailyReward) {
     return <Preloader />;
   }
 
