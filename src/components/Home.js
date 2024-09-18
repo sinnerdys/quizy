@@ -2,37 +2,38 @@ import React, { useState, useEffect } from 'react';
 import './Home.css'; 
 import logo from '../assets/logo.png'; 
 import completedIcon from '../assets/completedIcon.png'; 
-import failedIcon from '../assets/failedIcon.png'; // Импорт новой иконки
+import failedIcon from '../assets/failedIcon.png'; 
 import ModalTask from './ModalTask'; 
 
 function Home({ userId }) {
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(0); // Баланс загружается сразу
   const [showMoreTasks, setShowMoreTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [tasks, setTasks] = useState([]); // Задачи
+  const [tasksLoading, setTasksLoading] = useState(true); // Состояние загрузки для задач
   const [showAlert, setShowAlert] = useState(false); 
   const [alertMessage, setAlertMessage] = useState(""); 
   const [isSuccessAlert, setIsSuccessAlert] = useState(false); 
 
+  // Функция для получения данных пользователя и задач
   const fetchUserData = async () => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserAndTasks?userId=${userId}`);
       const data = await response.json();
-      setBalance(data.balance);
+      setBalance(data.balance); // Устанавливаем баланс сразу
 
       // Сортировка задач: сначала невыполненные, потом выполненные
       const sortedTasks = data.tasks.sort((a, b) => a.completed - b.completed);
-
-      setTasks(sortedTasks || []); 
-      setLoading(false); 
+      setTasks(sortedTasks || []);
+      setTasksLoading(false); // Отключаем загрузку задач
     } catch (error) {
       console.error('Error fetching user data:', error);
-      setLoading(false);
+      setTasksLoading(false); // Отключаем загрузку при ошибке
     }
   };
 
+  // Загружаем данные после монтирования компонента
   useEffect(() => {
     if (userId) {
       fetchUserData(); 
@@ -79,16 +80,16 @@ function Home({ userId }) {
     }
   };
 
+  // Логика отображения задач
   const displayedTasks = showMoreTasks ? tasks : tasks.slice(0, 4);
 
   return (
     <div className="home">
       {showAlert && (
         <div className="alert">
-          {/* Отображаем разные иконки в зависимости от результата */}
           {isSuccessAlert 
             ? <img src={completedIcon} alt="Completed" className="alert-icon" />
-            : <img src={failedIcon} alt="Failed" className="alert-icon" /> /* Иконка для неудачного выполнения */
+            : <img src={failedIcon} alt="Failed" className="alert-icon" />
           }
           <span>{alertMessage}</span>
         </div>
@@ -108,23 +109,33 @@ function Home({ userId }) {
       <div className="tasks-section">
         <h3>Tasks</h3>
         <ul className="task-list">
-          {displayedTasks.map(task => (
-            <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
-              <div className="task-info">
-                <span className="task-title">{task.title}</span>
-                <span className="task-reward">+{task.reward} $QUIZY</span>
-              </div>
-              <button
-                className="task-button"
-                onClick={() => handleTaskOpen(task)}
-                disabled={task.completed}
-              >
-                {task.completed 
-                  ? <img src={completedIcon} alt="Completed" className="completed-icon" />
-                  : 'Open'}
-              </button>
-            </li>
-          ))}
+          {tasksLoading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <li key={index} className="task-item skeleton-item">
+                  <div className="task-info">
+                    <div className="skeleton-text skeleton-title" />
+                    <div className="skeleton-text skeleton-reward" />
+                  </div>
+                  <div className="skeleton-button" />
+                </li>
+              ))
+            : displayedTasks.map(task => (
+                <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
+                  <div className="task-info">
+                    <span className="task-title">{task.title}</span>
+                    <span className="task-reward">+{task.reward} $QUIZY</span>
+                  </div>
+                  <button
+                    className="task-button"
+                    onClick={() => handleTaskOpen(task)}
+                    disabled={task.completed}
+                  >
+                    {task.completed 
+                      ? <img src={completedIcon} alt="Completed" className="completed-icon" />
+                      : 'Open'}
+                  </button>
+                </li>
+              ))}
         </ul>
 
         <div className="see-more-container">

@@ -177,3 +177,51 @@ body {
     transform: translateY(-100%);
   }
 }
+
+/* Скелетроны */
+.skeleton-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: #182C5F 2px solid; /* Цвет для скелетронов */
+}
+
+.skeleton-text {
+  background-color: #182C5F; /* Цвет для скелетонов */
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite ease-in-out; /* Анимация переливания цвета */
+}
+
+.skeleton-title {
+  width: 100px;
+  height: 16px;
+  margin-bottom: 8px;
+}
+
+.skeleton-reward {
+  width: 60px;
+  height: 16px;
+}
+
+.skeleton-button {
+  width: 75px;
+  height: 35px;
+  background-color: #182C5F;
+  border-radius: 8px;
+}
+
+/* Анимация переливания */
+@keyframes skeleton-loading {
+  0% {
+    background-color: #182C5F;
+  }
+  50% {
+    background-color: #284286;
+  }
+  100% {
+    background-color: #182C5F;
+  }
+}
