@@ -79,10 +79,12 @@ function App() {
         setShowDailyReward(true); // Показываем экран награды
       } else {
         setShowDailyReward(false); // Награда уже получена сегодня или нет
+        navigate('/'); // Перенаправляем на Home, если награда уже получена
       }
     } catch (error) {
       console.error('Error fetching daily reward data:', error);
       setShowDailyReward(false);
+      navigate('/'); // Перенаправляем на Home в случае ошибки
     }
   };
 
@@ -151,7 +153,12 @@ function App() {
   return (
     <div className="App">
       {showDailyReward ? (
-        <DailyReward onContinue={handleContinue} userId={user?.id} />
+        <DailyReward 
+          onContinue={handleContinue} 
+          userId={user?.id} 
+          rewardAmount={dailyRewardData?.rewardAmount} // Передаем количество награды
+          currentDay={dailyRewardData?.currentDay} // Передаем текущий день
+        />
       ) : (
         <>
           <Routes>
