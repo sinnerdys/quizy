@@ -14,6 +14,8 @@ function App() {
   const [balance, setBalance] = useState(null); // Начальное значение - null
   const [user, setUser] = useState(null); // Состояние для данных пользователя
   const [referralCode, setReferralCode] = useState(null); // Состояние для реферального кода
+  const [dailyRewardData, setDailyRewardData] = useState(null); // Данные для награды
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,7 +43,6 @@ function App() {
     // Прелоадер на 2 секунды
     const preloaderTimer = setTimeout(() => {
       setLoading(false); // Убираем прелоадер
-      setShowDailyReward(true); // Показываем DailyReward
     }, 2000);
 
     return () => clearTimeout(preloaderTimer);
@@ -58,9 +59,30 @@ function App() {
       const userData = await response.json();
       setBalance(userData.balance); // Устанавливаем баланс пользователя из базы данных
       console.log('User data fetched successfully:', userData);
+
+      // Проверяем ежедневную награду
+      checkDailyReward(user.id);
     } catch (error) {
       console.error('Error fetching user data:', error);
       setBalance(0); // В случае ошибки устанавливаем баланс 0
+    }
+  };
+
+  // Функция для проверки ежедневной награды
+  const checkDailyReward = async (userId) => {
+    try {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/handleDailyReward?userId=${userId}`);
+      const rewardData = await response.json();
+
+      if (rewardData.success && rewardData.canClaimReward) { // Проверяем, доступна ли награда
+        setDailyRewardData(rewardData); // Сохраняем данные награды
+        setShowDailyReward(true); // Показываем экран награды
+      } else {
+        setShowDailyReward(false); // Награда уже получена сегодня или нет
+      }
+    } catch (error) {
+      console.error('Error fetching daily reward data:', error);
+      setShowDailyReward(false);
     }
   };
 
@@ -111,7 +133,9 @@ function App() {
   // Функция для перехода с DailyReward на Home
   const handleContinue = async () => {
     try {
-      await updateBalance(100); // Обновляем баланс
+      if (dailyRewardData && dailyRewardData.rewardAmount) {
+        await updateBalance(dailyRewardData.rewardAmount); // Обновляем баланс в зависимости от награды
+      }
       setShowDailyReward(false);
       navigate('/'); // Переход на Home
     } catch (error) {
@@ -127,7 +151,7 @@ function App() {
   return (
     <div className="App">
       {showDailyReward ? (
-        <DailyReward onContinue={handleContinue} />
+        <DailyReward onContinue={handleContinue} userId={user?.id} />
       ) : (
         <>
           <Routes>
