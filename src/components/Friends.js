@@ -6,7 +6,7 @@ import token from '../assets/token.png';
 function Friends() {
   const [referralCode, setReferralCode] = useState(''); 
   const [friends, setFriends] = useState([]); 
-  const [isLoading, setIsLoading] = useState(true); // Состояние для отображения скелетонов
+  const [isLoading, setIsLoading] = useState(true); 
 
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -31,12 +31,12 @@ function Friends() {
     };
 
     const generateReferralCode = (userId) => {
-      return Math.random().toString(36).substring(2, 12) + userId;
+      return `${userId}-${Math.random().toString(36).substring(2, 8)}`;
     };
 
     const saveReferralCode = async (userId, referralCode) => {
       try {
-        await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveReferralCode', {
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveReferralCode', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -46,6 +46,10 @@ function Friends() {
             referralCode,
           }),
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to save referral code');
+        }
       } catch (error) {
         console.error('Error saving referral code:', error);
       }
@@ -56,10 +60,10 @@ function Friends() {
         const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserFriends?userId=${userId}`);
         const friendsData = await response.json();
         setFriends(friendsData);
-        setIsLoading(false); // Отключаем загрузку после получения данных
+        setIsLoading(false);
       } catch (error) {
         console.error('Ошибка получения списка друзей:', error);
-        setIsLoading(false); // Отключаем загрузку при ошибке
+        setIsLoading(false);
       }
     };
 
@@ -75,7 +79,7 @@ function Friends() {
 
   const saveUserWithReferral = async (userId, referralCode) => {
     try {
-      await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,6 +89,10 @@ function Friends() {
           referralCode,
         }),
       });
+
+      if (!response.ok) {
+        throw new Error('Failed to save user with referral code');
+      }
     } catch (error) {
       console.error('Ошибка при сохранении пользователя с реферальным кодом:', error);
     }
