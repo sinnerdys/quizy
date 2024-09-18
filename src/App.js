@@ -5,13 +5,18 @@ import Leaderboard from './components/Leaderboard';
 import Friends from './components/Friends';
 import BottomNav from './components/BottomNav';
 import Preloader from './components/Preloader';
+import DailyReward from './components/DailyReward';
 import './App.css';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [showDailyReward, setShowDailyReward] = useState(false);
   const [balance, setBalance] = useState(null); // Начальное значение - null
   const [user, setUser] = useState(null); // Состояние для данных пользователя
   const [referralCode, setReferralCode] = useState(null); // Состояние для реферального кода
+  const [dailyRewardData, setDailyRewardData] = useState(null); // Данные для награды
+  const [hasCheckedDailyReward, setHasCheckedDailyReward] = useState(false); // Флаг проверки награды
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +52,21 @@ function App() {
   // Функция для загрузки данных пользователя (включая баланс) из Firebase
   const fetchUserData = async (user) => {
     try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${user.id}`);
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${user.id}`, {
+        method: 'GET',
+        mode: 'cors', // Включаем поддержку CORS
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 404) {
+        // Если пользователь не найден, создаем нового пользователя
+        console.log('User not found, creating new user...');
+        await createUser(user);
+        return; // Прекращаем выполнение функции, так как новый пользователь уже создан
+      }
+
       if (!response.ok) {
         throw new Error('Failed to fetch user data');
       }
@@ -55,9 +74,83 @@ function App() {
       const userData = await response.json();
       setBalance(userData.balance); // Устанавливаем баланс пользователя из базы данных
       console.log('User data fetched successfully:', userData);
+
+      // Проверяем ежедневную награду только при запуске
+      checkDailyReward(user.id);
     } catch (error) {
       console.error('Error fetching user data:', error);
       setBalance(0); // В случае ошибки устанавливаем баланс 0
+    }
+  };
+
+  // Функция для создания нового пользователя в Firebase
+  const createUser = async (user) => {
+    try {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
+        method: 'POST',
+        mode: 'cors', // Включаем поддержку CORS
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          firstName: user.first_name,
+          lastName: user.last_name || '',
+          username: user.username || '',
+          balance: referralCode ? 500 : 0, // Если есть реферальный код, добавляем бонус
+          referralCode: referralCode || null, // Передаем реферальный код, если есть
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create user');
+      }
+
+      const result = await response.json();
+      console.log('User created successfully:', result);
+
+      setBalance(referralCode ? 500 : 0); // Устанавливаем баланс нового пользователя
+      checkDailyReward(user.id); // Проверяем ежедневную награду для нового пользователя
+    } catch (error) {
+      console.error('Error creating user:', error);
+      setBalance(0); // В случае ошибки устанавливаем баланс 0
+    }
+  };
+
+  // Функция для проверки ежедневной награды
+  const checkDailyReward = async (userId) => {
+    try {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/handleDailyReward?userId=${userId}`, {
+        method: 'GET',
+        mode: 'cors', // Включаем поддержку CORS
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const rewardData = await response.json();
+
+      if (rewardData.success && rewardData.canClaimReward) {
+        // Если можно получить награду, показываем экран награды
+        setDailyRewardData(rewardData);
+        setShowDailyReward(true);
+      } else {
+        // Если награда уже была получена, перенаправляем на Home
+        setShowDailyReward(false);
+        if (!hasCheckedDailyReward) {
+          navigate('/'); // Перенаправляем на Home, если награда уже получена
+        }
+      }
+
+      // Отмечаем, что проверка завершена
+      setHasCheckedDailyReward(true);
+    } catch (error) {
+      console.error('Error fetching daily reward data:', error);
+      setShowDailyReward(false);
+      if (!hasCheckedDailyReward) {
+        navigate('/'); // Если возникла ошибка, сразу переходим на Home
+      }
+      setHasCheckedDailyReward(true);
     }
   };
 
@@ -66,6 +159,7 @@ function App() {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
+        mode: 'cors', // Включаем поддержку CORS
         headers: {
           'Content-Type': 'application/json',
         },
@@ -99,25 +193,49 @@ function App() {
   };
 
   // Функция для обновления баланса при возврате на экран
-  const fetchBalance = () => {
+  const fetchBalance = async () => {
     if (user) {
-      fetchUserData(user); // Получаем актуальные данные баланса пользователя
+      await fetchUserData(user); // Получаем актуальные данные баланса пользователя
+    }
+  };
+
+  // Функция для перехода с DailyReward на Home
+  const handleContinue = async () => {
+    try {
+      if (dailyRewardData && dailyRewardData.rewardAmount) {
+        await updateBalance(dailyRewardData.rewardAmount); // Обновляем баланс в зависимости от награды
+      }
+      setShowDailyReward(false);
+      navigate('/'); // Переход на Home после получения награды
+    } catch (error) {
+      console.error('Error during saving user data or balance update:', error);
     }
   };
 
   // Если данные еще загружаются или баланс не установлен, показываем прелоадер
-  if (balance === null || loading) {
+  if (balance === null || loading || !hasCheckedDailyReward) {
     return <Preloader />;
   }
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
-        <Route path="/leaderboard" element={<Leaderboard />} />
-        <Route path="/friends" element={<Friends />} />
-      </Routes>
-      <BottomNav />
+      {showDailyReward ? (
+        <DailyReward 
+          onContinue={handleContinue} 
+          userId={user?.id} 
+          rewardAmount={dailyRewardData?.rewardAmount} // Передаем количество награды
+          currentDay={dailyRewardData?.currentDay} // Передаем текущий день
+        />
+      ) : (
+        <>
+          <Routes>
+            <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/friends" element={<Friends />} />
+          </Routes>
+          <BottomNav />
+        </>
+      )}
     </div>
   );
 }
