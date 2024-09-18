@@ -12,6 +12,7 @@ function Leaderboard() {
   });
   const [topPlayers, setTopPlayers] = useState([]); // Начальное состояние - пустой массив
   const [error, setError] = useState(null); // Состояние для ошибки
+  const [isLoading, setIsLoading] = useState(true); // Состояние загрузки
 
   // Функция для отображения медали, если игрок в топ-3
   const getMedal = (rank) => {
@@ -54,9 +55,11 @@ function Leaderboard() {
         balance: userData.balance || 0,
         rank: userData.rank || 'Not ranked',
       });
+      setIsLoading(false); // Отключаем состояние загрузки
     } catch (error) {
       console.error('Error fetching leaderboard data or current user:', error);
       setError('Failed to fetch leaderboard or current user data');
+      setIsLoading(false); // Отключаем состояние загрузки в случае ошибки
     }
   };
 
@@ -80,40 +83,60 @@ function Leaderboard() {
       <h1 className="leaderboard-title">Leaderboard</h1>
 
       {/* Информация о текущем пользователе */}
-      {currentUser && (
-        <div className="current-user">
-          <div className="user-info">
-            <div className="user-icon">{currentUser.name.charAt(0)}</div>
-            <div className="user-details">
-              <span className="user-name">{currentUser.name}</span>
-              <span className="user-balance">{currentUser.balance.toLocaleString()} $QUIZY</span>
-            </div>
+      <div className="current-user">
+        <div className="user-info">
+          <div className="user-icon">
+            {isLoading ? <div className="skeleton-icon" /> : currentUser.name.charAt(0)}
           </div>
-          <div className="user-rank">
-            {/* Проверка на отображение медали и ранга */}
-            {getMedal(currentUser.rank) || <span>#{currentUser.rank}</span>}
+          <div className="user-details">
+            <span className="user-name">
+              {isLoading ? <div className="skeleton-text" /> : currentUser.name}
+            </span>
+            <span className="user-balance">
+              {isLoading ? <div className="skeleton-text" /> : `${currentUser.balance.toLocaleString()} $QUIZY`}
+            </span>
           </div>
         </div>
-      )}
+        <div className="user-rank">
+          {isLoading ? (
+            <div className="spinner" />
+          ) : (
+            getMedal(currentUser.rank) || <span>#{currentUser.rank}</span>
+          )}
+        </div>
+      </div>
 
       {/* Список топ-100 игроков */}
       <div className="top-players">
         <h3>Top-100 Players</h3>
         <ul className="players-list">
-          {topPlayers.map((player) => (
-            <li key={player.userId} className="player-item">
-              <div className="player-info">
-                <div className="player-icon">{player.username.charAt(0)}</div>
-                <div className="player-details">
-                  <span className="player-name">{player.username}</span>
-                  <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
-                </div>
-              </div>
-              <div className="player-rank">
-                {getMedal(player.rank) || <span>#{player.rank}</span>}
-              </div>
-            </li>
-          ))}
+          {isLoading
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <li key={index} className="player-item">
+                  <div className="player-info">
+                    <div className="player-icon skeleton-icon" />
+                    <div className="player-details">
+                      <span className="player-name skeleton-text" />
+                      <span className="player-balance skeleton-text" />
+                    </div>
+                  </div>
+                  <div className="player-rank skeleton-rank" />
+                </li>
+              ))
+            : topPlayers.map((player) => (
+                <li key={player.userId} className="player-item">
+                  <div className="player-info">
+                    <div className="player-icon">{player.username.charAt(0)}</div>
+                    <div className="player-details">
+                      <span className="player-name">{player.username}</span>
+                      <span className="player-balance">{player.balance.toLocaleString()} $QUIZY</span>
+                    </div>
+                  </div>
+                  <div className="player-rank">
+                    {getMedal(player.rank) || <span>#{player.rank}</span>}
+                  </div>
+                </li>
+              ))}
         </ul>
       </div>
     </div>

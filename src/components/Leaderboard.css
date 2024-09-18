@@ -138,3 +138,43 @@
     margin-left: 10px;
   }
   
+  .skeleton-icon,
+.skeleton-text,
+.skeleton-rank {
+  background-color: #e0e0e0; /* Цвет для скелетона */
+  border-radius: 4px;
+}
+
+.skeleton-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.skeleton-text {
+  height: 16px;
+  margin: 5px 0;
+  width: 100px;
+}
+
+.skeleton-rank {
+  height: 16px;
+  width: 50px;
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Легкий оттенок */
+  border-top: 4px solid #3498db; /* Цвет вращающегося сегмента */
+  border-radius: 50%; /* Круглая форма */
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite; /* Анимация вращения */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); /* Начальная позиция */
+  }
+  100% {
+    transform: rotate(360deg); /* Вращение на 360 градусов */
+  }
+}
