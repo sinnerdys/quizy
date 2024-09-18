@@ -52,7 +52,14 @@ function App() {
   // Функция для загрузки данных пользователя (включая баланс) из Firebase
   const fetchUserData = async (user) => {
     try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${user.id}`);
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${user.id}`, {
+        method: 'GET',
+        mode: 'cors', // Включаем поддержку CORS
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
       if (response.status === 404) {
         // Если пользователь не найден, создаем нового пользователя
         console.log('User not found, creating new user...');
@@ -81,6 +88,7 @@ function App() {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
+        mode: 'cors', // Включаем поддержку CORS
         headers: {
           'Content-Type': 'application/json',
         },
@@ -112,7 +120,14 @@ function App() {
   // Функция для проверки ежедневной награды
   const checkDailyReward = async (userId) => {
     try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/handleDailyReward?userId=${userId}`);
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/handleDailyReward?userId=${userId}`, {
+        method: 'GET',
+        mode: 'cors', // Включаем поддержку CORS
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
       const rewardData = await response.json();
 
       if (rewardData.success && rewardData.canClaimReward) {
@@ -144,6 +159,7 @@ function App() {
     try {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
+        mode: 'cors', // Включаем поддержку CORS
         headers: {
           'Content-Type': 'application/json',
         },
