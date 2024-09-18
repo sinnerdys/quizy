@@ -119,42 +119,48 @@
     cursor: pointer;
   }
 
-  .skeleton-friend {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: #284286 2px solid;
-    background-color: #182C5F; /* Цвет скелетона */
-    animation: skeleton-loading 1.5s infinite ease-in-out;
+  /* Скелетоны для друзей */
+.skeleton-friend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: #284286 2px solid;
+}
+
+.skeleton-friend-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #182C5F; /* Цвет скелетона */
+  border-radius: 50%;
+}
+
+.skeleton-friend-name {
+  width: 100px;
+  height: 16px;
+  background-color: #182C5F; /* Цвет скелетона */
+  border-radius: 4px;
+  margin-left: 10px; /* Отступ для выравнивания текста */
+}
+
+.skeleton-friend-reward {
+  width: 50px;
+  height: 16px;
+  background-color: #182C5F; /* Цвет скелетона */
+  border-radius: 4px;
+  margin-left: 10px; /* Отступ для выравнивания текста */
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #182C5F;
   }
-  
-  .skeleton-friend-icon {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
+  50% {
+    background-color: #284286;
   }
-  
-  .skeleton-friend-name {
-    width: 100px;
-    height: 16px;
+  100% {
+    background-color: #182C5F;
   }
-  
-  .skeleton-friend-reward {
-    width: 50px;
-    height: 16px;
-  }
-  
-  @keyframes skeleton-loading {
-    0% {
-      background-color: #182C5F;
-    }
-    50% {
-      background-color: #284286;
-    }
-    100% {
-      background-color: #182C5F;
-    }
-  }
+}
