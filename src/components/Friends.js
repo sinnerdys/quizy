@@ -15,17 +15,13 @@ function Friends() {
 
     const fetchReferralCode = async (userId) => {
       try {
-        console.log('Запрос на получение реферального кода для пользователя:', userId);
-    
         const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getReferralCode?userId=${userId}`);
         const data = await response.json();
-    
+
         if (data.referralCode) {
-          console.log('Получен существующий реферальный код:', data.referralCode);
           setReferralCode(data.referralCode);
         } else {
           const generatedCode = generateReferralCode(userId);
-          console.log('Создан новый реферальный код:', generatedCode);
           setReferralCode(generatedCode);
           saveReferralCode(userId, generatedCode);
         }
@@ -35,13 +31,11 @@ function Friends() {
     };
 
     const generateReferralCode = (userId) => {
-      return `${userId}-${Math.random().toString(36).substring(2, 8)}`;
+      return Math.random().toString(36).substring(2, 12) + userId;
     };
 
     const saveReferralCode = async (userId, referralCode) => {
       try {
-        console.log('Сохраняем реферальный код:', referralCode, 'для пользователя:', userId);
-    
         await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveReferralCode', {
           method: 'POST',
           headers: {
@@ -53,7 +47,7 @@ function Friends() {
           }),
         });
       } catch (error) {
-        console.error('Ошибка при сохранении реферального кода:', error);
+        console.error('Error saving referral code:', error);
       }
     };
 
