@@ -113,24 +113,21 @@ function Friends() {
       <div className="friends-list-title"><h3>My friends</h3></div>
       <div className="friends-list-section">
         <ul className="friends-list">
-          {friends.length > 0 ? (
-            friends.map(friend => (
-              <li key={friend.id} className="friend-item">
-                <div className="friend-info">
-                  <div className="friend-icon">
-                    {friend.username ? friend.username.charAt(0) : 'N/A'}
-                  </div>
-                  <span className="friend-name">{friend.username || 'Unknown Friend'}</span>
+          {/* Отображаем пустой список, пока данные не загружены */}
+          {friends.map(friend => (
+            <li key={friend.id} className="friend-item">
+              <div className="friend-info">
+                <div className="friend-icon">
+                  {friend.username ? friend.username.charAt(0) : 'N/A'}
                 </div>
-                <div className="friend-reward">
-                  <span className="reward-text">+{friend.reward}</span>
-                  <img src={token} alt="QUIZY Token" className="reward-logo" />
-                </div>
-              </li>
-            ))
-          ) : (
-            <li>No friends yet!</li>
-          )}
+                <span className="friend-name">{friend.username || 'Unknown Friend'}</span>
+              </div>
+              <div className="friend-reward">
+                <span className="reward-text">+{friend.reward}</span>
+                <img src={token} alt="QUIZY Token" className="reward-logo" />
+              </div>
+            </li>
+          ))}
         </ul>
       </div>
 
