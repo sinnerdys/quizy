@@ -54,6 +54,13 @@ function App() {
   const fetchUserData = async (user) => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUser?userId=${user.id}`);
+      if (response.status === 404) {
+        // Если пользователь не найден, создаем нового пользователя
+        console.log('User not found, creating new user...');
+        await createUser(user);
+        return; // Прекращаем выполнение функции, так как новый пользователь уже создан
+      }
+
       if (!response.ok) {
         throw new Error('Failed to fetch user data');
       }
@@ -66,6 +73,38 @@ function App() {
       checkDailyReward(user.id);
     } catch (error) {
       console.error('Error fetching user data:', error);
+      setBalance(0); // В случае ошибки устанавливаем баланс 0
+    }
+  };
+
+  // Функция для создания нового пользователя в Firebase
+  const createUser = async (user) => {
+    try {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          firstName: user.first_name,
+          lastName: user.last_name || '',
+          username: user.username || '',
+          balance: 500, // Устанавливаем начальный баланс для нового пользователя
+          referralCode: referralCode || null, // Передаем реферальный код, если есть
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create user');
+      }
+
+      const result = await response.json();
+      console.log('User created successfully:', result);
+      setBalance(500); // Устанавливаем начальный баланс для нового пользователя
+      checkDailyReward(user.id); // Проверяем ежедневную награду для нового пользователя
+    } catch (error) {
+      console.error('Error creating user:', error);
       setBalance(0); // В случае ошибки устанавливаем баланс 0
     }
   };
