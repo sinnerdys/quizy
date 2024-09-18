@@ -1,153 +1,156 @@
 .leaderboard {
-    padding: 20px;
-  }
-  
+  padding: 20px;
+}
+
 .leaderboard h3 {
   margin-bottom: 15px;
 }
 
-  /* Заголовок */
-  .leaderboard-title {
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  /* Текущий пользователь */
-  .current-user {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    background-color: #192955;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .user-icon {
-    width: 35px;
-    height: 35px;
-    background-color: #2F4FA4;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 18px;
-    margin-right: 15px;
-  }
-  
-  .user-details {
-    display: flex;
-    flex-direction: column;
-    text-align: left; /* Выровнять текст по левому краю */
-  }
-  
-  .user-name {
-    font-size: 16px;
-  }
-  
-  .user-tokens {
-    font-size: 14px;
-    color: #ADC3FF;
-  }
-  
-  .user-rank {
-    font-size: 16px;
-    color: #ADC3FF;
-    text-align: right; /* Ранг будет выровнен по правому краю */
-  }
-  
-  /* Топ-100 игроков */
-  .top-players {
-    margin-top: 20px;
-  }
-  
-  .players-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    flex-grow: 1; /* Раздел будет занимать все оставшееся место */
-    overflow-y: auto; /* Включаем вертикальный скролл */
-    max-height: calc(100vh - 280px); /* Ограничиваем высоту для списка друзей */
-  }
-  
-  .player-item {
-    display: flex;
-    justify-content: space-between; /* Имя слева, баланс справа */
-    align-items: center;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: #284286 2px solid;
-  }
-  
-  .player-name, .player-tokens {
-    text-align: left; /* Для имени и баланса — выравнивание текста влево */
-  }
-  
-  .player-info {
-    display: flex;
-    align-items: center;
-  }
-  
-  .player-icon {
-    width: 35px;
-    height: 35px;
-    background-color: #2F4FA4;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 18px;
-    margin-right: 15px;
-  }
-  
-  .player-details {
-    display: flex;
-    flex-direction: column;
-    text-align: left; /* Выровнять текст по левому краю */
-  }
-  
-  .player-name {
-    font-size: 16px;
-  }
-  
-  .player-tokens {
-    font-size: 14px;
-    color: #ADC3FF;
-  }
-  
-  /* Ранг игрока */
-  .player-rank {
-    font-size: 16px;
-    color: #ADC3FF;
-    display: flex;
-    align-items: center;
-    text-align: right; /* Выровнять ранг или медаль по правому краю */
-  }
-  
-  .medal-icon {
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-  }
-  
-  .skeleton-icon,
+/* Заголовок */
+.leaderboard-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Текущий пользователь */
+.current-user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: #192955;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #2F4FA4;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  margin-right: 15px;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* Выровнять текст по левому краю */
+}
+
+.user-name {
+  font-size: 16px;
+}
+
+.user-tokens {
+  font-size: 14px;
+  color: #ADC3FF;
+}
+
+.user-rank {
+  font-size: 16px;
+  color: #ADC3FF;
+  text-align: right; /* Ранг будет выровнен по правому краю */
+}
+
+/* Топ-100 игроков */
+.top-players {
+  margin-top: 20px;
+}
+
+.players-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1; /* Раздел будет занимать все оставшееся место */
+  overflow-y: auto; /* Включаем вертикальный скролл */
+  max-height: calc(100vh - 280px); /* Ограничиваем высоту для списка друзей */
+}
+
+.player-item {
+  display: flex;
+  justify-content: space-between; /* Имя слева, баланс справа */
+  align-items: center;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: #284286 2px solid;
+}
+
+.player-name, .player-tokens {
+  text-align: left; /* Для имени и баланса — выравнивание текста влево */
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+}
+
+.player-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #2F4FA4;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  margin-right: 15px;
+}
+
+.player-details {
+  display: flex;
+  flex-direction: column;
+  text-align: left; /* Выровнять текст по левому краю */
+}
+
+.player-name {
+  font-size: 16px;
+}
+
+.player-tokens {
+  font-size: 14px;
+  color: #ADC3FF;
+}
+
+/* Ранг игрока */
+.player-rank {
+  font-size: 16px;
+  color: #ADC3FF;
+  display: flex;
+  align-items: center;
+  text-align: right; /* Выровнять ранг или медаль по правому краю */
+}
+
+.medal-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+}
+
+/* Скелетоны */
+.skeleton-icon,
 .skeleton-text,
 .skeleton-rank {
-  background-color: #e0e0e0; /* Цвет для скелетона */
+  background-color: #182C5F; /* Цвет для скелетона */
   border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite ease-in-out; /* Добавляем анимацию переливания цвета */
 }
 
 .skeleton-icon {
-  width: 40px;
-  height: 40px;
+  width: 35px; /* Те же размеры, что и у аватаров */
+  height: 35px;
+  border-radius: 50%; /* Округляем, чтобы было как аватар */
 }
 
 .skeleton-text {
@@ -161,10 +164,24 @@
   width: 50px;
 }
 
-.spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1); /* Легкий оттенок */
-  border-top: 4px solid #3498db; /* Цвет вращающегося сегмента */
-  border-radius: 50%; /* Круглая форма */
+/* Анимация для скелетонов */
+@keyframes skeleton-loading {
+  0% {
+    background-color: #182C5F;
+  }
+  50% {
+    background-color: #284286;
+  }
+  100% {
+    background-color: #182C5F;
+  }
+}
+
+/* Спиннер */
+.spinner-l {
+  border: 4px solid #C0C5E0; /* Light grey */
+  border-top: 4px solid #284286; /* Синий цвет */
+  border-radius: 50%;
   width: 24px;
   height: 24px;
   animation: spin 1s linear infinite; /* Анимация вращения */

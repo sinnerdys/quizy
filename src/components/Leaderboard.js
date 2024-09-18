@@ -99,7 +99,7 @@ function Leaderboard() {
         </div>
         <div className="user-rank">
           {isLoading ? (
-            <div className="spinner" />
+            <div className="spinner-l" />
           ) : (
             getMedal(currentUser.rank) || <span>#{currentUser.rank}</span>
           )}
