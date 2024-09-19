@@ -15,17 +15,17 @@ function Friends() {
 
     const fetchReferralCode = async (userId) => {
       try {
-        console.log('Запрашиваем реферальный код для пользователя:', userId); // Логируем начало запроса
+        console.log('Запрашиваем реферальный код для пользователя:', userId); 
         const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getReferralCode?userId=${userId}`);
         const data = await response.json();
-        console.log('Ответ на запрос реферального кода:', data);  // Лог ответа сервера
+        console.log('Ответ на запрос реферального кода:', data);  
     
         if (data.referralCode) {
-          console.log('Получен существующий реферальный код:', data.referralCode);  // Лог если код уже существует
+          console.log('Получен существующий реферальный код:', data.referralCode);  
           setReferralCode(data.referralCode);
         } else {
           const generatedCode = generateReferralCode(userId);
-          console.log('Создан новый реферальный код:', generatedCode);  // Лог если код сгенерирован
+          console.log('Создан новый реферальный код:', generatedCode);  
           setReferralCode(generatedCode);
           saveReferralCode(userId, generatedCode);
         }
@@ -35,12 +35,12 @@ function Friends() {
     };
 
     const generateReferralCode = (userId) => {
-      return Math.random().toString(36).substring(2, 12) + userId;
+      return `${userId}-${Math.random().toString(36).substring(2, 8)}`;
     };
 
     const saveReferralCode = async (userId, referralCode) => {
       try {
-        console.log('Сохраняем реферальный код:', referralCode, 'для пользователя:', userId); // Логируем перед запросом
+        console.log('Сохраняем реферальный код:', referralCode, 'для пользователя:', userId); 
         const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveReferralCode', {
           method: 'POST',
           headers: {
@@ -73,11 +73,17 @@ function Friends() {
     };
 
     if (user.id) {
+      // Сохраняем пользователя, если он пришел по реферальной ссылке
       if (startParam) {
-        saveUserWithReferral(user.id, startParam);
+        saveUserWithReferral(user.id, startParam).then(() => {
+          // После сохранения пользователя с чужим реферальным кодом, создаем для него собственный реферальный код
+          fetchReferralCode(user.id);
+        });
       } else {
+        // Если пользователь не по реферальной ссылке, сразу создаем для него код
         fetchReferralCode(user.id);
       }
+
       fetchFriends(user.id);
     }
   }, []);
@@ -87,7 +93,7 @@ function Friends() {
       const tg = window.Telegram.WebApp;
       const user = tg.initDataUnsafe?.user || {};
   
-      console.log('Отправляем запрос с данными:', { userId, referralCode, firstName: user.first_name, username: user.username }); // Логируем данные перед запросом
+      console.log('Отправляем запрос с данными:', { userId, referralCode, firstName: user.first_name, username: user.username }); 
   
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
@@ -113,7 +119,7 @@ function Friends() {
   
 
   const handleInviteFriends = () => {
-    console.log('Текущий реферальный код:', referralCode);  // Логируем текущий код перед открытием ссылки
+    console.log('Текущий реферальный код:', referralCode);  
     
     if (!referralCode) {
       console.error('Реферальный код не сгенерирован!');
@@ -138,7 +144,7 @@ function Friends() {
       <div className="friends-list-section">
         <ul className="friends-list">
           {isLoading
-            ? Array.from({ length: 4 }).map((_, index) => (
+            ? Array.from({ length: 5 }).map((_, index) => (
                 <li key={index} className="friend-item skeleton-friend">
                   <div className="skeleton-icon skeleton-friend-icon" />
                   <div className="skeleton-text skeleton-friend-name" />
