@@ -18,55 +18,58 @@
   
   /* Колесо фортуны */
   .wheel {
+    position: relative;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 4px solid #fff;
+    border: 6px solid #4365C0;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
     overflow: hidden;
     transform: rotate(0deg);
     transition: transform 3s ease-out;
   }
   
-  /* Секторы колеса */
+  /* Треугольные сектора */
   .sector {
     position: absolute;
     width: 50%;
     height: 50%;
-    text-align: center;
-    line-height: 150px;
-    color: white;
-    font-size: 18px;
     background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+    clip-path: polygon(100% 50%, 0% 0%, 0% 100%);
+    border: 2px solid #4365C0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: white;
+    transform-origin: 100% 50%;
   }
   
-  .sector:nth-child(1) {
-    transform: rotate(0deg) translate(150px);
+  .sector span {
+    transform: rotate(-22.5deg); /* Чтобы текст всегда был горизонтальным */
   }
-  .sector:nth-child(2) {
-    transform: rotate(45deg) translate(150px);
+  
+  /* Центр колеса с изображением стрелки */
+  .center-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    background-color: #4365C0;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
   }
-  .sector:nth-child(3) {
-    transform: rotate(90deg) translate(150px);
-  }
-  .sector:nth-child(4) {
-    transform: rotate(135deg) translate(150px);
-  }
-  .sector:nth-child(5) {
-    transform: rotate(180deg) translate(150px);
-  }
-  .sector:nth-child(6) {
-    transform: rotate(225deg) translate(150px);
-  }
-  .sector:nth-child(7) {
-    transform: rotate(270deg) translate(150px);
-  }
-  .sector:nth-child(8) {
-    transform: rotate(315deg) translate(150px);
+  
+  .arrow {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
   }
   
   /* Анимация вращения колеса */
@@ -81,17 +84,6 @@
     100% {
       transform: rotate(1440deg); /* Вращаем на 4 полных оборота */
     }
-  }
-  
-  /* Стрелка, которая не крутится */
-  .arrow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 50px;
-    height: 50px;
-    transform: translate(-50%, -50%);
-    z-index: 10;
   }
   
   /* Кнопка */
