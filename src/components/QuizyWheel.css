@@ -40,12 +40,11 @@
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
 }
   
-/* Стили для текста внутри секторов */
 .sector span {
     position: absolute;
-    top: 50%;
+    top: 25%; /* Размещаем текст ближе к внешнему краю сектора */
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) rotate(0deg); /* Сбрасываем любое поворачивание текста */
     font-size: 1.2em;
     color: white;
     transform-origin: center;
@@ -61,6 +60,7 @@
 .sector:nth-child(6) span { transform: translate(-50%, -50%) rotate(-225deg); }
 .sector:nth-child(7) span { transform: translate(-50%, -50%) rotate(-270deg); }
 .sector:nth-child(8) span { transform: translate(-50%, -50%) rotate(-315deg); }
+
 
 /* Центр колеса с изображением стрелки */
 .center-circle {
