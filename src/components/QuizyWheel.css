@@ -12,8 +12,8 @@
 /* Контейнер для колеса и стрелки */
 .wheel-container {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 350px;
+    height: 350px;
 }
 
 /* Колесо фортуны */
