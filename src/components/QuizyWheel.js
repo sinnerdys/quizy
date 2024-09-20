@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './QuizyWheel.css'; // Стили для нашего компонента
-import ArrowImage from './arrow_wheel.png'; // Добавьте путь к изображению стрелки
+import ArrowImage from '../assets/arrow_wheel.png'; // Добавьте путь к изображению стрелки
 
 const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
