@@ -42,12 +42,23 @@
   
 .sector span {
     position: absolute;
-    top: 50%;
+    top: 80%; /* Поднимаем ближе к краю сектора */
     left: 50%;
-    transform: translate(-50%, -50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(-var(--rotate)); /* Вращаем текст обратно */
     font-size: 1.2em;
     color: white;
+    transform-origin: center; /* Центрируем точку поворота */
 }
+
+/* Добавляем переменную для поворота текста */
+.sector:nth-child(1) { transform: rotate(0deg); --rotate: 0deg; }
+.sector:nth-child(2) { transform: rotate(45deg); --rotate: 45deg; }
+.sector:nth-child(3) { transform: rotate(90deg); --rotate: 90deg; }
+.sector:nth-child(4) { transform: rotate(135deg); --rotate: 135deg; }
+.sector:nth-child(5) { transform: rotate(180deg); --rotate: 180deg; }
+.sector:nth-child(6) { transform: rotate(225deg); --rotate: 225deg; }
+.sector:nth-child(7) { transform: rotate(270deg); --rotate: 270deg; }
+.sector:nth-child(8) { transform: rotate(315deg); --rotate: 315deg; }
 
 /* Центр колеса с изображением стрелки */
 .center-circle {
@@ -109,13 +120,4 @@
     text-align: center;
 }
 
-/* Обновление для поворота каждого сектора */
-.sector:nth-child(1) { transform: rotate(0deg); }
-.sector:nth-child(2) { transform: rotate(45deg); }
-.sector:nth-child(3) { transform: rotate(90deg); }
-.sector:nth-child(4) { transform: rotate(135deg); }
-.sector:nth-child(5) { transform: rotate(180deg); }
-.sector:nth-child(6) { transform: rotate(225deg); }
-.sector:nth-child(7) { transform: rotate(270deg); }
-.sector:nth-child(8) { transform: rotate(315deg); }
 
