@@ -23,8 +23,6 @@
     height: 100%;
     border-radius: 50%;
     border: 6px solid #4365C0;
-    display: flex;
-    justify-content: center;
     align-items: center;
     overflow: hidden;
     transform: rotate(0deg);
@@ -36,7 +34,7 @@
     width: 50%;
     height: 50%;
     background-color: transparent;
-    border: 2px solid #4365C0;
+    border-right: 3px solid #4365C0;
     transform-origin: 100% 100%;
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
 }
