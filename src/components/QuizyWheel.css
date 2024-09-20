@@ -1,3 +1,4 @@
+/* Основной контейнер */
 .quizy-wheel-container {
     display: flex;
     flex-direction: column;
@@ -8,72 +9,92 @@
     color: white;
   }
   
-  .wheel {
+  /* Контейнер для колеса и стрелки */
+  .wheel-container {
+    position: relative;
     width: 300px;
     height: 300px;
+  }
+  
+  /* Колесо фортуны */
+  .wheel {
+    width: 100%;
+    height: 100%;
     border-radius: 50%;
-    border: 5px solid #fff;
-    position: relative;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-    background-color: #13253a;
-    overflow: hidden;
+    border: 4px solid #fff;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    overflow: hidden;
+    transform: rotate(0deg);
+    transition: transform 3s ease-out;
   }
   
+  /* Секторы колеса */
   .sector {
     position: absolute;
     width: 50%;
     height: 50%;
-    background-color: #1c4e99;
-    color: white;
     text-align: center;
     line-height: 150px;
-    transform-origin: 100% 100%;
-    clip-path: polygon(100% 100%, 0 100%, 100% 0);
+    color: white;
+    font-size: 18px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
   }
   
   .sector:nth-child(1) {
-    transform: rotate(0deg);
-    background-color: #4a90e2;
+    transform: rotate(0deg) translate(150px);
   }
-  
   .sector:nth-child(2) {
-    transform: rotate(45deg);
-    background-color: #50e3c2;
+    transform: rotate(45deg) translate(150px);
   }
-  
   .sector:nth-child(3) {
-    transform: rotate(90deg);
-    background-color: #b8e986;
+    transform: rotate(90deg) translate(150px);
   }
-  
   .sector:nth-child(4) {
-    transform: rotate(135deg);
-    background-color: #f8e71c;
+    transform: rotate(135deg) translate(150px);
   }
-  
   .sector:nth-child(5) {
-    transform: rotate(180deg);
-    background-color: #f5a623;
+    transform: rotate(180deg) translate(150px);
   }
-  
   .sector:nth-child(6) {
-    transform: rotate(225deg);
-    background-color: #d0021b;
+    transform: rotate(225deg) translate(150px);
   }
-  
   .sector:nth-child(7) {
-    transform: rotate(270deg);
-    background-color: #bd10e0;
+    transform: rotate(270deg) translate(150px);
   }
-  
   .sector:nth-child(8) {
-    transform: rotate(315deg);
-    background-color: #9013fe;
+    transform: rotate(315deg) translate(150px);
   }
   
+  /* Анимация вращения колеса */
+  .spinning {
+    animation: spin 3s ease-in-out forwards;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(1440deg); /* Вращаем на 4 полных оборота */
+    }
+  }
+  
+  /* Стрелка, которая не крутится */
+  .arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50px;
+    height: 50px;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+  
+  /* Кнопка */
   .spin-button {
     margin-top: 20px;
     padding: 10px 20px;
@@ -90,19 +111,7 @@
     cursor: not-allowed;
   }
   
-  .spinning {
-    animation: spin 3s ease-in-out;
-  }
-  
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(1440deg); /* Вращаем на 4 полных оборота */
-    }
-  }
-  
+  /* Текст */
   .info-text {
     margin-top: 10px;
     color: #d0d0d0;

@@ -1,52 +1,38 @@
 import React, { useState } from 'react';
-import './QuizyWheel.css'; // Стили для компонента
+import './QuizyWheel.css'; // Стили для нашего компонента
+import ArrowImage from './arrow_wheel.png'; // Добавьте путь к изображению стрелки
 
-const QuizyWheel = ({ userId, updateBalance }) => {
+const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [prize, setPrize] = useState(null);
 
   const handleSpin = async () => {
     if (!isSpinning) {
       setIsSpinning(true);
 
-      try {
-        const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/spinQuizyWheel?userId=${userId}`);
-        const data = await response.json();
-
-        if (data.success) {
-          const randomPrize = data.prize;
-          setPrize(randomPrize);
-
-          // Обновляем баланс пользователя на фронтенде
-          updateBalance(data.newBalance);
-
-          setTimeout(() => {
-            setIsSpinning(false);
-            alert(`You won ${randomPrize} tokens!`);
-          }, 3000); // Время вращения колеса
-        } else {
-          console.error('Ошибка получения приза:', data.error);
-          setIsSpinning(false);
-        }
-      } catch (error) {
-        console.error('Ошибка при получении приза:', error);
+      // Симулируем вращение и получение приза
+      setTimeout(() => {
         setIsSpinning(false);
-      }
+        const randomPrize = 1000; // Симулируем получение награды (замените на API)
+        alert(`You won ${randomPrize} tokens!`);
+      }, 3000); // Время вращения 3 секунды
     }
   };
 
   return (
     <div className="quizy-wheel-container">
       <h1>Quizy Wheel</h1>
-      <div className={`wheel ${isSpinning ? 'spinning' : ''}`}>
-        <div className="sector">500</div>
-        <div className="sector">1000</div>
-        <div className="sector">1500</div>
-        <div className="sector">2000</div>
-        <div className="sector">2500</div>
-        <div className="sector">3000</div>
-        <div className="sector">5000</div>
-        <div className="sector">10000</div>
+      <div className="wheel-container">
+        <div className={`wheel ${isSpinning ? 'spinning' : ''}`}>
+          <div className="sector">500</div>
+          <div className="sector">1000</div>
+          <div className="sector">1500</div>
+          <div className="sector">2000</div>
+          <div className="sector">2500</div>
+          <div className="sector">3000</div>
+          <div className="sector">5000</div>
+          <div className="sector">10000</div>
+        </div>
+        <img src={ArrowImage} alt="arrow" className="arrow" />
       </div>
       <button className="spin-button" onClick={handleSpin} disabled={isSpinning}>
         {isSpinning ? 'Spinning...' : 'Tap to Spin'}
