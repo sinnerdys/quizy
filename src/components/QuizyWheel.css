@@ -12,85 +12,21 @@
 /* Контейнер для колеса и стрелки */
 .wheel-container {
     position: relative;
-    width: 350px;
-    height: 350px;
-}
-
-/* Колесо фортуны */
-.wheel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 6px solid #4365C0;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    overflow: hidden;
-    transform: rotate(0deg);
-    transition: transform 3s ease-out;
-    background-color: #152A60;
 }
 
-.sector {
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    background-color: transparent;
-    border-right: 3px solid #4365C0;
-    transform-origin: 100% 100%;
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
-}
-  
-.sector span {
+/* Стрелка по центру колеса */
+.arrow {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.2em;
-    color: white;
-    text-align: center;
-}
-
-/* Поворот каждого сектора */
-.sector:nth-child(1) { transform: rotate(0deg); }
-.sector:nth-child(2) { transform: rotate(45deg); }
-.sector:nth-child(3) { transform: rotate(90deg); }
-.sector:nth-child(4) { transform: rotate(135deg); }
-.sector:nth-child(5) { transform: rotate(180deg); }
-.sector:nth-child(6) { transform: rotate(225deg); }
-.sector:nth-child(7) { transform: rotate(270deg); }
-.sector:nth-child(8) { transform: rotate(315deg); }
-
-/* Поворот текста обратно для горизонтальной ориентации */
-.sector:nth-child(1) span { transform: translate(-50%, -50%) rotate(0deg); }
-.sector:nth-child(2) span { transform: translate(-50%, -50%) rotate(-45deg); }
-.sector:nth-child(3) span { transform: translate(-50%, -50%) rotate(-90deg); }
-.sector:nth-child(4) span { transform: translate(-50%, -50%) rotate(-135deg); }
-.sector:nth-child(5) span { transform: translate(-50%, -50%) rotate(-180deg); }
-.sector:nth-child(6) span { transform: translate(-50%, -50%) rotate(-225deg); }
-.sector:nth-child(7) span { transform: translate(-50%, -50%) rotate(-270deg); }
-.sector:nth-child(8) span { transform: translate(-50%, -50%) rotate(-315deg); }
-
-
-
-/* Центр колеса с изображением стрелки */
-.center-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
     width: 60px;
     height: 60px;
-    background-color: #4365C0;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-}
-
-.arrow {
-    width: 100px;
-    height: 50px;
-    position: absolute;
-    top: 5px;
-    left: 5px;
 }
 
 /* Анимация вращения колеса */
@@ -132,4 +68,9 @@
     text-align: center;
 }
 
-
+/* Стиль текста внутри секторов */
+text {
+    fill: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+}
