@@ -42,10 +42,10 @@
   
 .sector span {
     position: absolute;
-    top: 25%; /* Размещаем текст ближе к внешнему краю сектора */
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(0deg); /* Сбрасываем любое поворачивание текста */
-    font-size: 1.2em;
+    top: 50%; /* Размещаем текст по центру вертикально */
+    left: 50%; /* Размещаем текст по центру горизонтально */
+    transform: translate(-50%, -50%); /* Центрируем текст */
+    font-size: 20px;
     color: white;
     transform-origin: center;
     text-align: center;
@@ -60,6 +60,7 @@
 .sector:nth-child(6) span { transform: translate(-50%, -50%) rotate(-225deg); }
 .sector:nth-child(7) span { transform: translate(-50%, -50%) rotate(-270deg); }
 .sector:nth-child(8) span { transform: translate(-50%, -50%) rotate(-315deg); }
+
 
 
 /* Центр колеса с изображением стрелки */
