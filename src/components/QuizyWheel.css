@@ -24,7 +24,6 @@
     border-radius: 50%;
     border: 6px solid #4365C0;
     display: flex;
-    justify-content: center;
     align-items: center;
     overflow: hidden;
     transform: rotate(0deg);
@@ -36,11 +35,8 @@
     position: absolute;
     width: 50%;
     height: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    clip-path: polygon(100% 50%, 0% 0%, 0% 100%);
-    border: 2px solid #4365C0;
+    border-right: 2px solid #4365C0;
     display: flex;
-    justify-content: center;
     align-items: center;
     font-size: 18px;
     color: white;
