@@ -31,7 +31,7 @@ function BottomNav() {
         <div className="icon">
           <img src={wheelIcon} alt="Wheel" className="icon-svg" />
         </div>
-        <span>Friends</span>
+        <span>Wheel</span>
       </NavLink>
     </div>
   );
