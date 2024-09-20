@@ -23,28 +23,28 @@ const QuizyWheel = () => {
         <h1>Quizy Wheel</h1>
         <div className="wheel-container">
           <div className={`wheel ${isSpinning ? 'spinning' : ''}`}>
-            <div className="sector" style={{ transform: 'rotate(0deg)' }}>
+            <div className="sector">
               <span>500</span>
             </div>
-            <div className="sector" style={{ transform: 'rotate(45deg)' }}>
+            <div className="sector">
               <span>1000</span>
             </div>
-            <div className="sector" style={{ transform: 'rotate(90deg)' }}>
+            <div className="sector">
               <span>1500</span>
             </div>
-            <div className="sector" style={{ transform: 'rotate(135deg)' }}>
+            <div className="sector">
               <span>2000</span>
             </div>
-            <div className="sector" style={{ transform: 'rotate(180deg)' }}>
+            <div className="sector">
               <span>2500</span>
             </div>
-            <div className="sector" style={{ transform: 'rotate(225deg)' }}>
+            <div className="sector">
               <span>3000</span>
             </div>
-            <div className="sector" style={{ transform: 'rotate(270deg)' }}>
+            <div className="sector">
               <span>5000</span>
             </div>
-            <div className="sector" style={{ transform: 'rotate(315deg)' }}>
+            <div className="sector">
               <span>10000</span>
             </div>
           </div>

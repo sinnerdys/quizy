@@ -42,16 +42,25 @@
   
 .sector span {
     position: absolute;
-    top: 50%; /* Размещаем текст по центру вертикально */
-    left: 50%; /* Размещаем текст по центру горизонтально */
-    transform: translate(-50%, -50%); /* Центрируем текст */
-    font-size: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2em;
     color: white;
-    transform-origin: center;
     text-align: center;
 }
 
-/* Поворот текста для каждого сектора */
+/* Поворот каждого сектора */
+.sector:nth-child(1) { transform: rotate(0deg); }
+.sector:nth-child(2) { transform: rotate(45deg); }
+.sector:nth-child(3) { transform: rotate(90deg); }
+.sector:nth-child(4) { transform: rotate(135deg); }
+.sector:nth-child(5) { transform: rotate(180deg); }
+.sector:nth-child(6) { transform: rotate(225deg); }
+.sector:nth-child(7) { transform: rotate(270deg); }
+.sector:nth-child(8) { transform: rotate(315deg); }
+
+/* Поворот текста обратно для горизонтальной ориентации */
 .sector:nth-child(1) span { transform: translate(-50%, -50%) rotate(0deg); }
 .sector:nth-child(2) span { transform: translate(-50%, -50%) rotate(-45deg); }
 .sector:nth-child(3) span { transform: translate(-50%, -50%) rotate(-90deg); }
