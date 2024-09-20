@@ -27,6 +27,7 @@
     overflow: hidden;
     transform: rotate(0deg);
     transition: transform 3s ease-out;
+    background-color: #152A60;
 }
 
 .sector {
