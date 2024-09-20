@@ -4,6 +4,7 @@ import './BottomNav.css'; // стили для нижней навигации
 import homeIcon from '../assets/icons/home.svg';
 import leaderboardIcon from '../assets/icons/leaderboard.svg';
 import friendsIcon from '../assets/icons/friends.svg';
+import wheelIcon from '../assets/icons/wheel.svg';
 
 function BottomNav() {
   return (
@@ -23,6 +24,12 @@ function BottomNav() {
       <NavLink to="/friends" className="nav-link" activeClassName="active">
         <div className="icon">
           <img src={friendsIcon} alt="Friends" className="icon-svg" />
+        </div>
+        <span>Friends</span>
+      </NavLink>
+      <NavLink to="/wheel" className="nav-link" activeClassName="active">
+        <div className="icon">
+          <img src={wheelIcon} alt="Wheel" className="icon-svg" />
         </div>
         <span>Friends</span>
       </NavLink>

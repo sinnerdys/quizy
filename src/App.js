@@ -6,6 +6,7 @@ import Friends from './components/Friends';
 import BottomNav from './components/BottomNav';
 import Preloader from './components/Preloader';
 import DailyReward from './components/DailyReward';
+import QuizyWheel from './components/QuizyWheel';
 import './App.css';
 
 function App() {
@@ -232,6 +233,7 @@ function App() {
             <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/friends" element={<Friends />} />
+            <Route path="/wheel" element={<QuizyWheel />} />
           </Routes>
           <BottomNav />
         </>
