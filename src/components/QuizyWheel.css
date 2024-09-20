@@ -31,20 +31,23 @@
     transition: transform 3s ease-out;
 }
 
-/* Треугольные сектора */
 .sector {
     position: absolute;
     width: 50%;
     height: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    clip-path: polygon(100% 50%, 0% 0%, 0% 100%);
+    background-color: transparent;
     border: 2px solid #4365C0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
+    transform-origin: 100% 100%;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+}
+  
+.sector span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    font-size: 1.2em;
     color: white;
-    transform-origin: 100% 50%;
 }
 
 /* Центр колеса с изображением стрелки */
@@ -117,10 +120,3 @@
 .sector:nth-child(7) { transform: rotate(270deg); }
 .sector:nth-child(8) { transform: rotate(315deg); }
 
-/* Центрирование текста в каждом секторе */
-.sector span {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg); /* Чтобы текст всегда был горизонтальным */
-}
