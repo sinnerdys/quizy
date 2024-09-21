@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './QuizyWheel.css'; // Стили для нашего компонента
 import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
+import TicketImage from '../assets/ticket_image.png'; // Путь к изображению билета
 
 const QuizyWheel = () => {
     const wheelRef = useRef(null);
@@ -95,6 +96,14 @@ const QuizyWheel = () => {
   return (
     <div className="quizy-wheel-container">
       <h1 className="header-title">Quizy Wheel</h1>
+  {/* Количество билетов с изображением */}
+  <div className="tickets-container">
+    <p>Your Tickets</p>
+    <div className="tickets-count-container">
+      <p className="tickets-count">30</p> {/* Замените на динамическое значение, если нужно */}
+      <img src={TicketImage} alt="Ticket" className="ticket-image" />
+    </div>
+  </div>
       <div className="wheel-container">
         <svg
           ref={wheelRef} // Добавили ref здесь

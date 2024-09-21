@@ -19,6 +19,31 @@
     align-items: center;
 }
 
+/* Контейнер для билетов */
+.tickets-container {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.tickets-count-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.tickets-count {
+    font-size: 24px;
+    font-weight: bold;
+    color: white; /* Можно заменить на любой другой цвет */
+    margin-right: 8px; /* Отступ справа от текста для изображения */
+}
+
+.ticket-image {
+    width: 24px; /* Размер изображения */
+    height: 24px;
+}
+
 /* Контейнер для колеса и стрелки */
 .wheel-container {
     position: relative;
