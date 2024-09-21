@@ -31,15 +31,16 @@ const QuizyWheel = () => {
       // Получаем случайный сектор и его угол текста
       const { prize, textRotation } = getRandomSector();
 
-      // Генерация полного вращения (например, 4 полных оборота) и точного угла для остановки
-      const randomRotation = 1440 + textRotation - (rotationAngle % 360); // Угол для остановки на нужном секторе
-      setRotationAngle(rotationAngle + randomRotation); // Обновляем текущий угол для вращения
+      // Генерация полного вращения и точного угла для остановки
+      // Вычисляем угол так, чтобы текст оказался справа от стрелки
+      const targetRotation = 1440 + textRotation - (rotationAngle % 360);
+      setRotationAngle(prevRotation => prevRotation + targetRotation); // Обновляем текущий угол для плавного вращения
 
       // Даем время на завершение анимации
       setTimeout(() => {
         setIsSpinning(false);
         console.log(`You won ${prize} tokens!`);
-      }, 5000); // Увеличиваем время вращения до 5 секунд для более плавного завершения
+      }, 5000); // Время вращения 5 секунд для плавности
     }
   };
 
