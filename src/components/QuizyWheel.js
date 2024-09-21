@@ -129,7 +129,7 @@ const QuizyWheel = () => {
               href={TokenImageW} /* Используем изображение токена */
               width="14" /* Ширина изображения токена */
               height="22"
-              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              transform="rotate(-65) translate(140)" /* Позиционируем и вращаем */
               />
             </g>
             {/* Сектор 2 */}
@@ -165,7 +165,7 @@ const QuizyWheel = () => {
               href={TokenImageW} /* Используем изображение токена */
               width="14" /* Ширина изображения токена */
               height="22"
-              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              transform="rotate(25) translate(140)" /* Позиционируем и вращаем */
               />
             </g>
             {/* Сектор 4 */}
@@ -183,7 +183,7 @@ const QuizyWheel = () => {
               href={TokenImageW} /* Используем изображение токена */
               width="14" /* Ширина изображения токена */
               height="22"
-              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              transform="rotate(70) translate(140)" /* Позиционируем и вращаем */
               />
             </g>
             {/* Сектор 5 */}
@@ -201,7 +201,7 @@ const QuizyWheel = () => {
               href={TokenImageW} /* Используем изображение токена */
               width="14" /* Ширина изображения токена */
               height="22"
-              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              transform="rotate(115) translate(140)" /* Позиционируем и вращаем */
               />
             </g>
             {/* Сектор 6 */}
@@ -219,7 +219,7 @@ const QuizyWheel = () => {
               href={TokenImageW} /* Используем изображение токена */
               width="14" /* Ширина изображения токена */
               height="22"
-              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              transform="rotate(160) translate(140)" /* Позиционируем и вращаем */
               />
             </g>
             {/* Сектор 7 */}
@@ -237,7 +237,7 @@ const QuizyWheel = () => {
               href={TokenImageW} /* Используем изображение токена */
               width="14" /* Ширина изображения токена */
               height="22"
-              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              transform="rotate(205) translate(140)" /* Позиционируем и вращаем */
               />
             </g>
             {/* Сектор 8 */}
@@ -255,7 +255,7 @@ const QuizyWheel = () => {
               href={TokenImageW} /* Используем изображение токена */
               width="14" /* Ширина изображения токена */
               height="22"
-              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              transform="rotate(251) translate(140)" /* Позиционируем и вращаем */
               />
             </g>
           </g>
