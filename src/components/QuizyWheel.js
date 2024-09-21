@@ -215,10 +215,12 @@ const QuizyWheel = () => {
         {/* Стрелка в центре */}
         <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
       </div>
+      <div className="button-container">
       <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
         {isSpinning ? 'Spinning...' : 'Tap to Spin'}
       </button>
       <p className="info-text">Spin to win guaranteed prizes. You have a free spin every 6 hours.</p>
+      </div>
     </div>
   );
 };

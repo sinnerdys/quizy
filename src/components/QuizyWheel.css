@@ -12,7 +12,6 @@
 
 /* Заголовок прибиваем к верху */
 .header-title {
-    margin-top: 20px; /* Отступ сверху, чтобы заголовок не сливался с краем */
     font-size: 24px;
     font-weight: bold;
     justify-content: center;
@@ -22,8 +21,7 @@
 /* Контейнер для билетов */
 .tickets-container {
     text-align: center;
-    margin-top: 10px; /* Увеличиваем отступ от заголовка */
-    margin-bottom: 20px; /* Добавляем отступ снизу, чтобы билеты не прижимались к колесу */
+    margin-bottom: 50px; /* Добавляем отступ снизу, чтобы билеты не прижимались к колесу */
 }
 
 .tickets-count-container {
@@ -71,6 +69,14 @@
 .wheel-container svg {
     transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
 }
+
+.button-container {
+    width: 100%;
+    position: fixed;
+    bottom: 70px; /* Прибиваем кнопку над нижней панелью */
+    left: 0;
+    padding: 20px;
+  }
 
 /* Кнопка */
 .spin-button {
