@@ -23,7 +23,7 @@ const QuizyWheel = () => {
       const { prize, angle } = getRandomSector();
 
       // Генерация полного вращения + корректировка на 22.5 градуса (для центра текста)
-      const randomRotation = 1440 + angle - (rotationAngle % 360) + 22.5;
+      const randomRotation = 1440 + angle + 22.5 - (rotationAngle % 360); // Добавляем корректировку на 22.5 градуса для центрирования текста
       setRotationAngle(rotationAngle + randomRotation); // Обновляем угол вращения
 
       // Устанавливаем таймер для завершения анимации
