@@ -104,3 +104,11 @@
     font-size: 14px;
     text-align: center;
 }
+
+/* Стиль текста внутри секторов */
+text {
+    fill: white;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
