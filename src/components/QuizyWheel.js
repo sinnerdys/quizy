@@ -37,7 +37,7 @@ const QuizyWheel = () => {
           height="300"
           viewBox="-150 -150 300 300"
           className={isSpinning ? 'spinning' : ''}
-          style={{ transform: `rotate(${rotationAngle}deg)` }}
+          style={{ transform: `rotate(${rotationAngle}deg)`, overflow: 'visible' }}
         >
           <g>
             <g className="slice">

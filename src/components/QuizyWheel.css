@@ -3,18 +3,19 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Разделяем верх и низ */
     height: 100vh;
     background-color: #0a1d3f;
     color: white;
     padding: 20px;
 }
 
-/* Заголовок */
+/* Заголовок прибиваем к верху */
 .header-title {
-    margin-top: 20px;
+    margin-top: 0;
     font-size: 24px;
     font-weight: bold;
+    align-self: flex-start; /* Прилепляем к верху контейнера */
 }
 
 /* Контейнер для колеса и стрелки */
@@ -29,10 +30,11 @@
     border-radius: 50%; /* Гарантирует, что колесо всегда будет круглым */
 }
 
+/* Стрелка */
 .wheel-arrow {
     position: absolute;
-    top: 50%; /* Центрирование стрелки */
-    left: 50%;
+    top: 50%;
+    left: 58%;
     transform: translate(-50%, -50%);
     z-index: 1;
     height: 50px;
@@ -49,11 +51,11 @@
         transform: rotate(0deg);
     }
     100% {
-        transform: rotate(1440deg); /* Вращение на 4 полных оборота */
+        transform: rotate(1440deg); /* Вращаем на 4 полных оборота */
     }
 }
 
-/* Кнопка */
+/* Кнопка прибиваем к низу */
 .spin-button {
     width: 100%;
     padding: 15px 20px;
@@ -63,6 +65,7 @@
     border-radius: 10px;
     font-size: 18px;
     cursor: pointer;
+    align-self: flex-end; /* Прилепляем к низу контейнера */
 }
 
 .spin-button:disabled {
@@ -76,12 +79,4 @@
     color: #d0d0d0;
     font-size: 14px;
     text-align: center;
-}
-
-/* Стиль текста внутри секторов */
-text {
-    fill: white;
-    font-size: 20px;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
 }
