@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './QuizyWheel.css'; // Стили для нашего компонента
 import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
 import TicketImage from '../assets/ticket_image.png'; // Путь к изображению билета
+import TokenImageW from '../assets/TokenImage.png'; 
 
 const QuizyWheel = () => {
     const wheelRef = useRef(null);
@@ -124,6 +125,12 @@ const QuizyWheel = () => {
               <text transform="rotate(-65) translate(120)" textAnchor="middle">
                 500
               </text>
+              <image
+              href={TokenImageW} /* Используем изображение токена */
+              width="14" /* Ширина изображения токена */
+              height="22"
+              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              />
             </g>
             {/* Сектор 2 */}
             <g className="slice">
@@ -136,6 +143,12 @@ const QuizyWheel = () => {
               <text transform="rotate(-20) translate(120)" textAnchor="middle">
                 1000
               </text>
+              <image
+              href={TokenImageW} /* Используем изображение токена */
+              width="14" /* Ширина изображения токена */
+              height="22"
+              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              />
             </g>
             {/* Сектор 3 */}
             <g className="slice">
@@ -148,6 +161,12 @@ const QuizyWheel = () => {
               <text transform="rotate(25) translate(120)" textAnchor="middle">
                 1500
               </text>
+              <image
+              href={TokenImageW} /* Используем изображение токена */
+              width="14" /* Ширина изображения токена */
+              height="22"
+              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              />
             </g>
             {/* Сектор 4 */}
             <g className="slice">
@@ -160,6 +179,12 @@ const QuizyWheel = () => {
               <text transform="rotate(70) translate(120)" textAnchor="middle">
                 2000
               </text>
+              <image
+              href={TokenImageW} /* Используем изображение токена */
+              width="14" /* Ширина изображения токена */
+              height="22"
+              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              />
             </g>
             {/* Сектор 5 */}
             <g className="slice">
@@ -172,6 +197,12 @@ const QuizyWheel = () => {
               <text transform="rotate(115) translate(120)" textAnchor="middle">
                 2500
               </text>
+              <image
+              href={TokenImageW} /* Используем изображение токена */
+              width="14" /* Ширина изображения токена */
+              height="22"
+              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              />
             </g>
             {/* Сектор 6 */}
             <g className="slice">
@@ -184,6 +215,12 @@ const QuizyWheel = () => {
               <text transform="rotate(160) translate(120)" textAnchor="middle">
                 3000
               </text>
+              <image
+              href={TokenImageW} /* Используем изображение токена */
+              width="14" /* Ширина изображения токена */
+              height="22"
+              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              />
             </g>
             {/* Сектор 7 */}
             <g className="slice">
@@ -196,6 +233,12 @@ const QuizyWheel = () => {
               <text transform="rotate(205) translate(120)" textAnchor="middle">
                 5000
               </text>
+              <image
+              href={TokenImageW} /* Используем изображение токена */
+              width="14" /* Ширина изображения токена */
+              height="22"
+              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              />
             </g>
             {/* Сектор 8 */}
             <g className="slice">
@@ -208,6 +251,12 @@ const QuizyWheel = () => {
               <text transform="rotate(251) translate(120)" textAnchor="middle">
                 10000
               </text>
+              <image
+              href={TokenImageW} /* Используем изображение токена */
+              width="14" /* Ширина изображения токена */
+              height="22"
+              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
+              />
             </g>
           </g>
           <circle cx="0" cy="0" r="30" fill="#4365C0" />
