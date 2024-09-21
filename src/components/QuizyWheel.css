@@ -3,14 +3,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Ориентируем контент в начало экрана */
+    justify-content: flex-start;
     height: 100vh;
     background-color: #0a1d3f;
     color: white;
     padding: 20px;
 }
 
-/* Заголовок прибиваем к верху */
+/* Заголовок */
 .header-title {
     font-size: 24px;
     font-weight: bold;
@@ -21,7 +21,7 @@
 /* Контейнер для билетов */
 .tickets-container {
     text-align: center;
-    margin-bottom: 50px; /* Добавляем отступ снизу, чтобы билеты не прижимались к колесу */
+    margin-bottom: 50px;
 }
 
 .tickets-count-container {
@@ -52,7 +52,7 @@
     align-items: center;
     overflow: visible;
     border-radius: 50%;
-    margin-bottom: 30px; /* Отступ снизу перед кнопкой */
+    margin-bottom: 30px;
 }
 
 /* Стрелка */
@@ -70,28 +70,25 @@
     transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
+/* Контейнер кнопки */
 .button-container {
-    width: 100%;
+    width: calc(100% - 40px); /* Уменьшаем ширину контейнера с учетом отступов по 20px */
     position: fixed;
-    bottom: 70px; /* Прибиваем кнопку над нижней панелью */
-    left: 0;
-    padding: 20px;
-  }
+    bottom: 100px;
+    left: 20px; /* Отступ слева */
+    right: 20px; /* Отступ справа */
+}
 
 /* Кнопка */
 .spin-button {
     width: 100%;
-    padding: 15px 20px;
+    padding: 15px;
     background-color: #1c4e99;
     color: white;
     border: none;
     border-radius: 10px;
     font-size: 18px;
     cursor: pointer;
-    position: fixed;
-    bottom: 120px; /* Поднимаем кнопку вверх, чтобы был текст */
-    left: 0;
-    padding: 15px 20px;
 }
 
 .spin-button:disabled {
@@ -101,19 +98,9 @@
 
 /* Текст под кнопкой */
 .info-text {
-    position: fixed;
-    bottom: 80px; /* Размещаем текст чуть выше кнопки */
-    left: 0;
-    width: 100%;
+    margin-top: 10px;
+    padding: 0 20px; /* Добавляем отступы для текста */
     color: #d0d0d0;
     font-size: 14px;
     text-align: center;
-}
-
-/* Стиль текста внутри секторов */
-text {
-    fill: white;
-    font-size: 20px;
-    font-family: Arial, sans-serif;
-    font-weight: bold;
 }
