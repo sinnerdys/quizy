@@ -22,7 +22,7 @@ const getRandomSector = () => {
 
 const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [rotationAngle, setRotationAngle] = useState(0);
+  const [rotationAngle, setRotationAngle] = useState(1150); // Устанавливаем начальный угол 1150°
 
   const handleSpin = async () => {
     if (!isSpinning) {
@@ -31,9 +31,9 @@ const QuizyWheel = () => {
       // Получаем случайный сектор и его угол текста
       const { prize, textRotation } = getRandomSector();
 
-      // Генерация полного вращения и точного угла для остановки
-      const newRotation = 1440 + textRotation - (rotationAngle % 360); // Полные обороты и точный угол остановки
-      const totalRotation = rotationAngle + newRotation; // Рассчитываем итоговый угол вращения
+      // Генерация полного вращения (например, 4 полных оборота) и точного угла для остановки
+      const randomRotation = 1440 + textRotation; // Полные обороты и точный угол остановки относительно изначального угла
+      const totalRotation = rotationAngle + randomRotation; // Рассчитываем итоговый угол вращения
 
       // Устанавливаем только один раз полный угол вращения
       setRotationAngle(totalRotation);
