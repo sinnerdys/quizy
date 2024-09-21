@@ -75,6 +75,7 @@ const QuizyWheel = () => {
           </g>
           <circle cx="0" cy="0" r="30" fill="#4365C0" />
         </svg>
+        {/* Стрелка в центре */}
         <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
       </div>
       <button className="spin-button" onClick={handleSpin} disabled={isSpinning}>

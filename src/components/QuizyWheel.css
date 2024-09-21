@@ -3,14 +3,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     height: 100vh;
     background-color: #0a1d3f;
     color: white;
     padding: 20px;
 }
 
-/* Заголовок прибиваем к верху */
+/* Заголовок */
 .header-title {
     margin-top: 20px;
     font-size: 24px;
@@ -20,21 +20,20 @@
 /* Контейнер для колеса и стрелки */
 .wheel-container {
     position: relative;
-    width: 100%; /* Процентная ширина */
-    max-width: 400px; /* Максимальная ширина */
-    height: auto; /* Высота будет рассчитываться автоматически для сохранения пропорций */
-    aspect-ratio: 1 / 1; /* Пропорция, чтобы колесо оставалось кругом */
+    width: 300px;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: visible;
+    border-radius: 50%; /* Гарантирует, что колесо всегда будет круглым */
 }
 
 .wheel-arrow {
     position: absolute;
-    top: -50px; /* Ставим стрелку выше колеса */
+    top: 50%; /* Центрирование стрелки */
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     z-index: 1;
     height: 50px;
     width: 100px;
@@ -50,7 +49,7 @@
         transform: rotate(0deg);
     }
     100% {
-        transform: rotate(1440deg);
+        transform: rotate(1440deg); /* Вращение на 4 полных оборота */
     }
 }
 
