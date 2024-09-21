@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import './QuizyWheel.css'; // Стили для нашего компонента
 import ArrowImage from '../assets/arrow_wheel.png'; // Добавьте путь к изображению стрелки
 
+const sectors = [500, 1000, 1500, 2000, 2500, 3000, 5000, 10000]; // Призы по секторам
+const sectorAngles = [22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5]; // Углы для каждого сектора
+
+const getRandomSector = () => {
+  const randomIndex = Math.floor(Math.random() * sectors.length); // Случайный индекс
+  return { prize: sectors[randomIndex], angle: sectorAngles[randomIndex] };
+};
+
 const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [rotationAngle, setRotationAngle] = useState(0); // Хранение угла вращения
@@ -10,15 +18,17 @@ const QuizyWheel = () => {
     if (!isSpinning) {
       setIsSpinning(true);
 
-      // Генерация случайного угла вращения
-      const randomRotation = Math.floor(Math.random() * 360) + 1440; // 1440 градусов = 4 полных оборота + рандомный угол
-      setRotationAngle(rotationAngle + randomRotation); // Добавляем рандомный угол к текущему вращению
+      // Генерация случайного сектора и его угла
+      const { prize, angle } = getRandomSector();
+
+      // Генерация случайного вращения (4 полных оборота + точный угол сектора)
+      const randomRotation = Math.floor(Math.random() * 360) + 1440 + angle; // 1440 градусов = 4 полных оборота
+      setRotationAngle(rotationAngle + randomRotation); // Добавляем вращение
 
       // Анимация вращения и симуляция получения приза
       setTimeout(() => {
         setIsSpinning(false);
-        const randomPrize = 1000; // Симулируем получение награды (замените на API)
-        alert(`You won ${randomPrize} tokens!`);
+        alert(`You won ${prize} tokens!`); // Выводим награду
       }, 3000); // Время вращения 3 секунды
     }
   };
@@ -31,8 +41,8 @@ const QuizyWheel = () => {
           width="300"
           height="300"
           viewBox="-150 -150 300 300"
-          style={{ overflow: 'visible', transform: `rotate(${rotationAngle}deg)` }}
           className={isSpinning ? 'spinning' : ''} // Применяем класс вращения
+          style={{ transform: `rotate(${rotationAngle}deg)` }} // Применяем вращение
         >
           <g>
             <g className="slice">
@@ -70,8 +80,9 @@ const QuizyWheel = () => {
           </g>
           {/* Круг в центре */}
           <circle cx="0" cy="0" r="30" fill="#4365C0" />
-          <image xlinkHref={ArrowImage} x="-25" y="-25" height="50px" width="100px" />
         </svg>
+        {/* Стрелка сверху, отдельный элемент */}
+        <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
       </div>
       <button className="spin-button" onClick={handleSpin} disabled={isSpinning}>
         {isSpinning ? 'Spinning...' : 'Tap to Spin'}
