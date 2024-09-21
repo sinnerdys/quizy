@@ -11,7 +11,7 @@ const sectors = [
   { prize: 2500, textRotation: 115 },
   { prize: 3000, textRotation: 160 },
   { prize: 5000, textRotation: 205 },
-  { prize: 10000, textRotation: 250 }
+  { prize: 10000, textRotation: 251 }
 ];
 
 // Определение случайного сектора
@@ -32,14 +32,14 @@ const QuizyWheel = () => {
       const { prize, textRotation } = getRandomSector();
 
       // Генерация полного вращения (например, 4 полных оборота) и точного угла для остановки
-      const targetRotation = 1440 + textRotation - (rotationAngle % 360); // Угол для остановки на нужном секторе
-      setRotationAngle(rotationAngle + targetRotation); // Обновляем текущий угол для вращения
+      const randomRotation = 1440 + textRotation - (rotationAngle % 360); // Угол для остановки на нужном секторе
+      setRotationAngle(rotationAngle + randomRotation); // Обновляем текущий угол для вращения
 
-      // Устанавливаем таймер для завершения анимации
+      // Даем время на завершение анимации
       setTimeout(() => {
         setIsSpinning(false);
         console.log(`You won ${prize} tokens!`);
-      }, 3000); // Длительность вращения
+      }, 5000); // Увеличиваем время вращения до 5 секунд для более плавного завершения
     }
   };
 
