@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Разделяем верх и низ */
+    justify-content: flex-start; /* Ориентируем контент в начало экрана */
     height: 100vh;
     background-color: #0a1d3f;
     color: white;
@@ -12,7 +12,7 @@
 
 /* Заголовок прибиваем к верху */
 .header-title {
-    margin-top: 0;
+    margin-top: 20px; /* Отступ сверху, чтобы заголовок не сливался с краем */
     font-size: 24px;
     font-weight: bold;
     justify-content: center;
@@ -22,25 +22,25 @@
 /* Контейнер для билетов */
 .tickets-container {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 10px; /* Увеличиваем отступ от заголовка */
+    margin-bottom: 20px; /* Добавляем отступ снизу, чтобы билеты не прижимались к колесу */
 }
 
 .tickets-count-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 5px;
 }
 
 .tickets-count {
     font-size: 24px;
     font-weight: bold;
-    color: white; /* Можно заменить на любой другой цвет */
-    margin-right: 8px; /* Отступ справа от текста для изображения */
+    color: white;
+    margin-right: 8px;
 }
 
 .ticket-image {
-    width: 24px; /* Размер изображения */
+    width: 24px;
     height: 24px;
 }
 
@@ -53,7 +53,8 @@
     justify-content: center;
     align-items: center;
     overflow: visible;
-    border-radius: 50%; /* Гарантирует, что колесо всегда будет круглым */
+    border-radius: 50%;
+    margin-bottom: 30px; /* Отступ снизу перед кнопкой */
 }
 
 /* Стрелка */
@@ -69,9 +70,9 @@
 
 .wheel-container svg {
     transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
-  }
+}
 
-/* Кнопка прибиваем к низу */
+/* Кнопка */
 .spin-button {
     width: 100%;
     padding: 15px 20px;
@@ -81,7 +82,10 @@
     border-radius: 10px;
     font-size: 18px;
     cursor: pointer;
-    align-self: flex-end; /* Прилепляем к низу контейнера */
+    position: fixed;
+    bottom: 120px; /* Поднимаем кнопку вверх, чтобы был текст */
+    left: 0;
+    padding: 15px 20px;
 }
 
 .spin-button:disabled {
@@ -89,9 +93,12 @@
     cursor: not-allowed;
 }
 
-/* Текст */
+/* Текст под кнопкой */
 .info-text {
-    margin-top: 10px;
+    position: fixed;
+    bottom: 80px; /* Размещаем текст чуть выше кнопки */
+    left: 0;
+    width: 100%;
     color: #d0d0d0;
     font-size: 14px;
     text-align: center;
