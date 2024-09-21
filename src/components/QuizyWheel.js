@@ -106,161 +106,168 @@ const QuizyWheel = () => {
     </div>
   </div>
       <div className="wheel-container">
-        <svg
-          ref={wheelRef} // Добавили ref здесь
-          width="300"
-          height="300"
-          viewBox="-150 -150 300 300"
-          style={{ transform: `rotate(${initialRotation}deg)`, overflow: 'visible' }}
-        >
-          <g>
-            {/* Сектор 1 */}
-            <g className="slice">
-              <path
-                fill="#152A60"
-                stroke="#4365C0"
-                strokeWidth="5"
-                d="M0,-175A175,175 0 0,1 123.744,-123.744L0,0Z"
-              ></path>
-              <text transform="rotate(-65) translate(120)" textAnchor="middle">
-                500
-              </text>
-              <image
-              href={TokenImageW} /* Используем изображение токена */
-              width="14" /* Ширина изображения токена */
-              height="22"
-              transform="rotate(-65) translate(140)" /* Позиционируем и вращаем */
-              />
-            </g>
-            {/* Сектор 2 */}
-            <g className="slice">
-              <path
-                fill="#152A60"
-                stroke="#4365C0"
-                strokeWidth="5"
-                d="M123.744,-123.744A175,175 0 0,1 175,0L0,0Z"
-              ></path>
-              <text transform="rotate(-20) translate(120)" textAnchor="middle">
-                1000
-              </text>
-              <image
-              href={TokenImageW} /* Используем изображение токена */
-              width="14" /* Ширина изображения токена */
-              height="22"
-              transform="rotate(-20) translate(140)" /* Позиционируем и вращаем */
-              />
-            </g>
-            {/* Сектор 3 */}
-            <g className="slice">
-              <path
-                fill="#152A60"
-                stroke="#4365C0"
-                strokeWidth="5"
-                d="M175,0A175,175 0 0,1 123.744,123.744L0,0Z"
-              ></path>
-              <text transform="rotate(25) translate(120)" textAnchor="middle">
-                1500
-              </text>
-              <image
-              href={TokenImageW} /* Используем изображение токена */
-              width="14" /* Ширина изображения токена */
-              height="22"
-              transform="rotate(25) translate(140)" /* Позиционируем и вращаем */
-              />
-            </g>
-            {/* Сектор 4 */}
-            <g className="slice">
-              <path
-                fill="#152A60"
-                stroke="#4365C0"
-                strokeWidth="5"
-                d="M123.744,123.744A175,175 0 0,1 0,175L0,0Z"
-              ></path>
-              <text transform="rotate(70) translate(120)" textAnchor="middle">
-                2000
-              </text>
-              <image
-              href={TokenImageW} /* Используем изображение токена */
-              width="14" /* Ширина изображения токена */
-              height="22"
-              transform="rotate(70) translate(140)" /* Позиционируем и вращаем */
-              />
-            </g>
-            {/* Сектор 5 */}
-            <g className="slice">
-              <path
-                fill="#152A60"
-                stroke="#4365C0"
-                strokeWidth="5"
-                d="M0,175A175,175 0 0,1 -123.744,123.744L0,0Z"
-              ></path>
-              <text transform="rotate(115) translate(120)" textAnchor="middle">
-                2500
-              </text>
-              <image
-              href={TokenImageW} /* Используем изображение токена */
-              width="14" /* Ширина изображения токена */
-              height="22"
-              transform="rotate(115) translate(140)" /* Позиционируем и вращаем */
-              />
-            </g>
-            {/* Сектор 6 */}
-            <g className="slice">
-              <path
-                fill="#152A60"
-                stroke="#4365C0"
-                strokeWidth="5"
-                d="M-123.744,123.744A175,175 0 0,1 -175,0L0,0Z"
-              ></path>
-              <text transform="rotate(160) translate(120)" textAnchor="middle">
-                3000
-              </text>
-              <image
-              href={TokenImageW} /* Используем изображение токена */
-              width="14" /* Ширина изображения токена */
-              height="22"
-              transform="rotate(160) translate(140)" /* Позиционируем и вращаем */
-              />
-            </g>
-            {/* Сектор 7 */}
-            <g className="slice">
-              <path
-                fill="#152A60"
-                stroke="#4365C0"
-                strokeWidth="5"
-                d="M-175,0A175,175 0 0,1 -123.744,-123.744L0,0Z"
-              ></path>
-              <text transform="rotate(205) translate(120)" textAnchor="middle">
-                5000
-              </text>
-              <image
-              href={TokenImageW} /* Используем изображение токена */
-              width="14" /* Ширина изображения токена */
-              height="22"
-              transform="rotate(205) translate(140)" /* Позиционируем и вращаем */
-              />
-            </g>
-            {/* Сектор 8 */}
-            <g className="slice">
-              <path
-                fill="#152A60"
-                stroke="#4365C0"
-                strokeWidth="5"
-                d="M-123.744,-123.744A175,175 0 0,1 0,-175L0,0Z"
-              ></path>
-              <text transform="rotate(251) translate(120)" textAnchor="middle">
-                10000
-              </text>
-              <image
-              href={TokenImageW} /* Используем изображение токена */
-              width="14" /* Ширина изображения токена */
-              height="22"
-              transform="rotate(251) translate(140)" /* Позиционируем и вращаем */
-              />
-            </g>
-          </g>
-          <circle cx="0" cy="0" r="30" fill="#4365C0" />
-        </svg>
+      <svg
+  ref={wheelRef}
+  width="300"
+  height="300"
+  viewBox="-150 -150 300 300"
+  style={{ transform: `rotate(${initialRotation}deg)`, overflow: 'visible' }}
+>
+  <g>
+    {/* Сектор 1 */}
+    <g className="slice">
+      <path
+        fill="#152A60"
+        stroke="#4365C0"
+        strokeWidth="5"
+        d="M0,-175A175,175 0 0,1 123.744,-123.744L0,0Z"
+      ></path>
+      <text transform="rotate(-65) translate(115)" textAnchor="middle">
+        500
+      </text>
+      <image
+        href={TokenImageW}
+        width="14"
+        height="22"
+        transform="rotate(-65) translate(140, -5)" /* Исправили положение изображения */
+      />
+    </g>
+
+    {/* Сектор 2 */}
+    <g className="slice">
+      <path
+        fill="#152A60"
+        stroke="#4365C0"
+        strokeWidth="5"
+        d="M123.744,-123.744A175,175 0 0,1 175,0L0,0Z"
+      ></path>
+      <text transform="rotate(-20) translate(115)" textAnchor="middle">
+        1000
+      </text>
+      <image
+        href={TokenImageW}
+        width="14"
+        height="22"
+        transform="rotate(-20) translate(140, -5)" /* Исправили положение изображения */
+      />
+    </g>
+
+    {/* Сектор 3 */}
+    <g className="slice">
+      <path
+        fill="#152A60"
+        stroke="#4365C0"
+        strokeWidth="5"
+        d="M175,0A175,175 0 0,1 123.744,123.744L0,0Z"
+      ></path>
+      <text transform="rotate(25) translate(115)" textAnchor="middle">
+        1500
+      </text>
+      <image
+        href={TokenImageW}
+        width="14"
+        height="22"
+        transform="rotate(25) translate(140, -5)" /* Исправили положение изображения */
+      />
+    </g>
+
+    {/* Сектор 4 */}
+    <g className="slice">
+      <path
+        fill="#152A60"
+        stroke="#4365C0"
+        strokeWidth="5"
+        d="M123.744,123.744A175,175 0 0,1 0,175L0,0Z"
+      ></path>
+      <text transform="rotate(70) translate(115)" textAnchor="middle">
+        2000
+      </text>
+      <image
+        href={TokenImageW}
+        width="14"
+        height="22"
+        transform="rotate(70) translate(140, -5)" /* Исправили положение изображения */
+      />
+    </g>
+
+    {/* Сектор 5 */}
+    <g className="slice">
+      <path
+        fill="#152A60"
+        stroke="#4365C0"
+        strokeWidth="5"
+        d="M0,175A175,175 0 0,1 -123.744,123.744L0,0Z"
+      ></path>
+      <text transform="rotate(115) translate(115)" textAnchor="middle">
+        2500
+      </text>
+      <image
+        href={TokenImageW}
+        width="14"
+        height="22"
+        transform="rotate(115) translate(140, -5)" /* Исправили положение изображения */
+      />
+    </g>
+
+    {/* Сектор 6 */}
+    <g className="slice">
+      <path
+        fill="#152A60"
+        stroke="#4365C0"
+        strokeWidth="5"
+        d="M-123.744,123.744A175,175 0 0,1 -175,0L0,0Z"
+      ></path>
+      <text transform="rotate(160) translate(115)" textAnchor="middle">
+        3000
+      </text>
+      <image
+        href={TokenImageW}
+        width="14"
+        height="22"
+        transform="rotate(160) translate(140, -5)" /* Исправили положение изображения */
+      />
+    </g>
+
+    {/* Сектор 7 */}
+    <g className="slice">
+      <path
+        fill="#152A60"
+        stroke="#4365C0"
+        strokeWidth="5"
+        d="M-175,0A175,175 0 0,1 -123.744,-123.744L0,0Z"
+      ></path>
+      <text transform="rotate(205) translate(115)" textAnchor="middle">
+        5000
+      </text>
+      <image
+        href={TokenImageW}
+        width="14"
+        height="22"
+        transform="rotate(205) translate(140, -5)" /* Исправили положение изображения */
+      />
+    </g>
+
+    {/* Сектор 8 */}
+    <g className="slice">
+      <path
+        fill="#152A60"
+        stroke="#4365C0"
+        strokeWidth="5"
+        d="M-123.744,-123.744A175,175 0 0,1 0,-175L0,0Z"
+      ></path>
+      <text transform="rotate(251) translate(115)" textAnchor="middle">
+        10000
+      </text>
+      <image
+        href={TokenImageW}
+        width="14"
+        height="22"
+        transform="rotate(251) translate(140, -5)" /* Исправили положение изображения */
+      />
+    </g>
+  </g>
+  <circle cx="0" cy="0" r="30" fill="#4365C0" />
+</svg>
         {/* Стрелка в центре */}
         <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
       </div>
