@@ -1,77 +1,96 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './QuizyWheel.css'; // Стили для нашего компонента
 import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
 
 const QuizyWheel = () => {
-  const [isSpinning, setIsSpinning] = useState(false);
-  const wheelRef = useRef(null);
-
-  // Начальный угол поворота колеса
-  const initialRotation = 1150 % 360;
-
-  // Углы центров секторов
-  const sectorAngles = [295, 340, 25, 70, 115, 160, 205, 251];
-
-  const spinWheel = () => {
-    if (isSpinning) return; // Предотвращаем множественные вращения
-
-    const randomSector = Math.floor(Math.random() * sectorAngles.length);
-    const sectorAngle = sectorAngles[randomSector];
-
-    const spins = 5; // Количество полных оборотов
-    const currentRotation = getCurrentRotation();
-
-    // Вычисляем необходимый угол вращения
-    const rotationNeeded = spins * 360 + ((360 - sectorAngle + currentRotation) % 360);
-
-    setIsSpinning(true);
-
-    if (wheelRef.current) {
-      // Устанавливаем анимацию вращения
-      wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-      wheelRef.current.style.transform = `rotate(${currentRotation + rotationNeeded}deg)`;
-    }
-
-    // Таймер для завершения анимации
-    setTimeout(() => {
-      handleRotationEnd();
-    }, 5000); // Длительность должна совпадать с transition
-  };
-
-  const getCurrentRotation = () => {
-    if (wheelRef.current) {
-      const computedStyle = window.getComputedStyle(wheelRef.current);
-      const transformMatrix = computedStyle.getPropertyValue('transform');
-
-      // Извлекаем угол поворота из матрицы трансформации
-      let angle = 0;
-      if (transformMatrix && transformMatrix !== 'none') {
-        const values = transformMatrix.split('(')[1].split(')')[0].split(',');
-        const a = values[0];
-        const b = values[1];
-        angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-        if (angle < 0) angle += 360;
+    const wheelRef = useRef(null);
+    const [isSpinning, setIsSpinning] = useState(false);
+  
+    const initialRotation = 1150 % 360;
+  
+    // Углы центров секторов
+    const sectorAngles = [295, 340, 25, 70, 115, 160, 205, 251];
+  
+    // Состояние для хранения последнего угла
+    const [lastAngle, setLastAngle] = useState(initialRotation);
+  
+    // Считываем последний угол из localStorage при монтировании компонента
+    useEffect(() => {
+      const savedAngle = localStorage.getItem('wheelLastAngle');
+      if (savedAngle !== null) {
+        setLastAngle(parseFloat(savedAngle));
+        if (wheelRef.current) {
+          wheelRef.current.style.transform = `rotate(${parseFloat(savedAngle)}deg)`;
+        }
       } else {
-        angle = initialRotation;
+        if (wheelRef.current) {
+          wheelRef.current.style.transform = `rotate(${initialRotation}deg)`;
+        }
       }
-      return angle;
-    }
-    return initialRotation;
-  };
-
-  const handleRotationEnd = () => {
-    if (wheelRef.current) {
-      // Получаем текущий угол после вращения
-      const angle = getCurrentRotation();
-
-      // Сбрасываем переход и устанавливаем угол поворота
-      wheelRef.current.style.transition = 'none';
-      wheelRef.current.style.transform = `rotate(${angle % 360}deg)`;
-    }
-    setIsSpinning(false);
-
-    // Здесь вы можете обработать результат вращения
-  };
+    }, [initialRotation]);
+  
+    const spinWheel = () => {
+      if (isSpinning) return;
+  
+      const randomSector = Math.floor(Math.random() * sectorAngles.length);
+      const sectorAngle = sectorAngles[randomSector];
+  
+      const spins = 5;
+      const currentRotation = getCurrentRotation();
+  
+      const rotationNeeded =
+        spins * 360 + ((360 - sectorAngle + currentRotation) % 360);
+  
+      setIsSpinning(true);
+  
+      if (wheelRef.current) {
+        wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
+        wheelRef.current.style.transform = `rotate(${currentRotation + rotationNeeded}deg)`;
+      }
+  
+      setTimeout(() => {
+        handleRotationEnd();
+      }, 5000);
+    };
+  
+    const getCurrentRotation = () => {
+      if (wheelRef.current) {
+        const computedStyle = window.getComputedStyle(wheelRef.current);
+        const transformMatrix = computedStyle.getPropertyValue('transform');
+  
+        let angle = 0;
+        if (transformMatrix && transformMatrix !== 'none') {
+          const values = transformMatrix
+            .split('(')[1]
+            .split(')')[0]
+            .split(',');
+          const a = values[0];
+          const b = values[1];
+          angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+          if (angle < 0) angle += 360;
+        } else {
+          angle = lastAngle;
+        }
+        return angle;
+      }
+      return lastAngle;
+    };
+  
+    const handleRotationEnd = () => {
+      if (wheelRef.current) {
+        const angle = getCurrentRotation();
+        wheelRef.current.style.transition = 'none';
+        wheelRef.current.style.transform = `rotate(${angle % 360}deg)`;
+  
+        // Сохраняем угол в localStorage
+        localStorage.setItem('wheelLastAngle', angle % 360);
+        setLastAngle(angle % 360);
+      }
+      setIsSpinning(false);
+  
+      // Дополнительная логика после вращения
+    };
+  
 
   return (
     <div className="quizy-wheel-container">
