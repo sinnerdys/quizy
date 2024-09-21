@@ -17,14 +17,19 @@ const QuizyWheel = () => {
   const handleSpin = async () => {
     if (!isSpinning) {
       setIsSpinning(true);
-      const { prize, angle } = getRandomSector();
-      const randomRotation = Math.floor(Math.random() * 360) + 1440 + angle;
-      setRotationAngle(rotationAngle + randomRotation);
 
+      // Генерация случайного сектора и его угла
+      const { prize, angle } = getRandomSector();
+
+      // Генерация полного вращения (например, 4 полных оборота) и точного угла для остановки
+      const randomRotation = 1440 + angle - 22.5 - (rotationAngle % 360); // Смещаем вращение на 22.5 градусов вправо
+      setRotationAngle(rotationAngle + randomRotation); // Обновляем текущий угол
+
+      // Симуляция вращения и получение приза
       setTimeout(() => {
         setIsSpinning(false);
         alert(`You won ${prize} tokens!`);
-      }, 3000);
+      }, 3000); // Время вращения 3 секунды
     }
   };
 
@@ -70,7 +75,7 @@ const QuizyWheel = () => {
             </g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M-123.744,-123.744A175,175 0 0,1 0,-175L0,0Z"></path>
-              <text transform="rotate(251) translate(120)" textAnchor="middle">10000</text>
+              <text transform="rotate(250) translate(120)" textAnchor="middle">10000</text>
             </g>
           </g>
           <circle cx="0" cy="0" r="30" fill="#4365C0" />
