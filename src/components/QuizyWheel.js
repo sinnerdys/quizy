@@ -32,9 +32,11 @@ const QuizyWheel = () => {
       const { prize, textRotation } = getRandomSector();
 
       // Генерация полного вращения и точного угла для остановки
-      // Вычисляем угол так, чтобы текст оказался справа от стрелки
-      const targetRotation = 1440 + textRotation - (rotationAngle % 360);
-      setRotationAngle(prevRotation => prevRotation + targetRotation); // Обновляем текущий угол для плавного вращения
+      const newRotation = 1440 + textRotation - (rotationAngle % 360); // Полные обороты и точный угол остановки
+      const totalRotation = rotationAngle + newRotation; // Рассчитываем итоговый угол вращения
+
+      // Устанавливаем только один раз полный угол вращения
+      setRotationAngle(totalRotation);
 
       // Даем время на завершение анимации
       setTimeout(() => {
