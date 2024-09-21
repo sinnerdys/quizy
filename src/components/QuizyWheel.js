@@ -2,12 +2,22 @@ import React, { useState } from 'react';
 import './QuizyWheel.css'; // Стили для нашего компонента
 import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
 
-const sectors = [500, 1000, 1500, 2000, 2500, 3000, 5000, 10000];
-const sectorAngles = [22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5];
+// Призы по секторам
+const sectors = [
+  { prize: 500, textRotation: -65 },
+  { prize: 1000, textRotation: -20 },
+  { prize: 1500, textRotation: 25 },
+  { prize: 2000, textRotation: 70 },
+  { prize: 2500, textRotation: 115 },
+  { prize: 3000, textRotation: 160 },
+  { prize: 5000, textRotation: 205 },
+  { prize: 10000, textRotation: 251 }
+];
 
+// Определение случайного сектора
 const getRandomSector = () => {
   const randomIndex = Math.floor(Math.random() * sectors.length);
-  return { prize: sectors[randomIndex], angle: sectorAngles[randomIndex] };
+  return sectors[randomIndex];
 };
 
 const QuizyWheel = () => {
@@ -18,23 +28,17 @@ const QuizyWheel = () => {
     if (!isSpinning) {
       setIsSpinning(true);
 
-      // Генерация случайного сектора и его угла
-      const { prize, angle } = getRandomSector();
+      // Получаем случайный сектор и его угол текста
+      const { prize, textRotation } = getRandomSector();
 
-      // Генерация полного вращения (например, 4 полных оборота) и точного угла для остановки
-      const randomRotation = 1440 + angle - (rotationAngle % 360); // Обновляем текущий угол
-      setRotationAngle(rotationAngle + randomRotation); // Обновляем текущий угол
+      // Убираем угол поворота текста и добавляем 1440 градусов для полного вращения
+      const randomRotation = 1440 + textRotation - (rotationAngle % 360);
+      setRotationAngle(rotationAngle + randomRotation); // Обновляем угол вращения
 
       // Даем время на завершение анимации
       setTimeout(() => {
-        // Корректируем положение после завершения анимации
-        setRotationAngle((prevRotation) => prevRotation + 22.5); // Добавляем 22.5 градуса для центрирования текста
-        setTimeout(() => {
-          // Остановка колеса на нужном угле после завершения анимации
-          setIsSpinning(false);
-          // Выводим награду
-          console.log(`You won ${prize} tokens!`);
-        }, 300); // Даем дополнительное время для корректировки
+        setIsSpinning(false);
+        console.log(`You won ${prize} tokens!`);
       }, 3000); // Время вращения 3 секунды
     }
   };
@@ -51,34 +55,42 @@ const QuizyWheel = () => {
           style={{ transform: `rotate(${rotationAngle}deg)`, overflow: 'visible' }}
         >
           <g>
+            {/* Сектор 1 */}
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M0,-175A175,175 0 0,1 123.744,-123.744L0,0Z"></path>
               <text transform="rotate(-65) translate(120)" textAnchor="middle">500</text>
             </g>
+            {/* Сектор 2 */}
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M123.744,-123.744A175,175 0 0,1 175,0L0,0Z"></path>
               <text transform="rotate(-20) translate(120)" textAnchor="middle">1000</text>
             </g>
+            {/* Сектор 3 */}
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M175,0A175,175 0 0,1 123.744,123.744L0,0Z"></path>
               <text transform="rotate(25) translate(120)" textAnchor="middle">1500</text>
             </g>
+            {/* Сектор 4 */}
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M123.744,123.744A175,175 0 0,1 0,175L0,0Z"></path>
               <text transform="rotate(70) translate(120)" textAnchor="middle">2000</text>
             </g>
+            {/* Сектор 5 */}
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M0,175A175,175 0 0,1 -123.744,123.744L0,0Z"></path>
               <text transform="rotate(115) translate(120)" textAnchor="middle">2500</text>
             </g>
+            {/* Сектор 6 */}
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M-123.744,123.744A175,175 0 0,1 -175,0L0,0Z"></path>
               <text transform="rotate(160) translate(120)" textAnchor="middle">3000</text>
             </g>
+            {/* Сектор 7 */}
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M-175,0A175,175 0 0,1 -123.744,-123.744L0,0Z"></path>
               <text transform="rotate(205) translate(120)" textAnchor="middle">5000</text>
             </g>
+            {/* Сектор 8 */}
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M-123.744,-123.744A175,175 0 0,1 0,-175L0,0Z"></path>
               <text transform="rotate(251) translate(120)" textAnchor="middle">10000</text>
