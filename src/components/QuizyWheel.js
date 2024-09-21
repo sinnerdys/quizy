@@ -122,14 +122,14 @@ const QuizyWheel = () => {
         strokeWidth="5"
         d="M0,-175A175,175 0 0,1 123.744,-123.744L0,0Z"
       ></path>
-      <text transform="rotate(-65) translate(115)" textAnchor="middle">
+      <text transform="rotate(-65) translate(120)" textAnchor="middle">
         500
       </text>
       <image
         href={TokenImageW}
         width="14"
         height="22"
-        transform="rotate(-65) translate(140, -5)" /* Исправили положение изображения */
+        transform="rotate(-65) translate(140, -18)" /* Исправили положение изображения */
       />
     </g>
 
@@ -148,7 +148,7 @@ const QuizyWheel = () => {
         href={TokenImageW}
         width="14"
         height="22"
-        transform="rotate(-20) translate(140, -5)" /* Исправили положение изображения */
+        transform="rotate(-20) translate(140, -18)" /* Исправили положение изображения */
       />
     </g>
 
@@ -167,7 +167,7 @@ const QuizyWheel = () => {
         href={TokenImageW}
         width="14"
         height="22"
-        transform="rotate(25) translate(140, -5)" /* Исправили положение изображения */
+        transform="rotate(25) translate(140, -18)" /* Исправили положение изображения */
       />
     </g>
 
@@ -186,7 +186,7 @@ const QuizyWheel = () => {
         href={TokenImageW}
         width="14"
         height="22"
-        transform="rotate(70) translate(140, -5)" /* Исправили положение изображения */
+        transform="rotate(70) translate(140, -18)" /* Исправили положение изображения */
       />
     </g>
 
@@ -205,7 +205,7 @@ const QuizyWheel = () => {
         href={TokenImageW}
         width="14"
         height="22"
-        transform="rotate(115) translate(140, -5)" /* Исправили положение изображения */
+        transform="rotate(115) translate(140, -18)" /* Исправили положение изображения */
       />
     </g>
 
@@ -224,7 +224,7 @@ const QuizyWheel = () => {
         href={TokenImageW}
         width="14"
         height="22"
-        transform="rotate(160) translate(140, -5)" /* Исправили положение изображения */
+        transform="rotate(160) translate(140, -18)" /* Исправили положение изображения */
       />
     </g>
 
@@ -243,7 +243,7 @@ const QuizyWheel = () => {
         href={TokenImageW}
         width="14"
         height="22"
-        transform="rotate(205) translate(140, -5)" /* Исправили положение изображения */
+        transform="rotate(205) translate(140, -18)" /* Исправили положение изображения */
       />
     </g>
 
@@ -255,14 +255,14 @@ const QuizyWheel = () => {
         strokeWidth="5"
         d="M-123.744,-123.744A175,175 0 0,1 0,-175L0,0Z"
       ></path>
-      <text transform="rotate(251) translate(115)" textAnchor="middle">
+      <text transform="rotate(251) translate(108)" textAnchor="middle">
         10000
       </text>
       <image
         href={TokenImageW}
         width="14"
         height="22"
-        transform="rotate(251) translate(140, -5)" /* Исправили положение изображения */
+        transform="rotate(251) translate(140, -18)" /* Исправили положение изображения */
       />
     </g>
   </g>
