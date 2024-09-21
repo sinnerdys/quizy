@@ -4,12 +4,17 @@ import ArrowImage from '../assets/arrow_wheel.png'; // Добавьте путь
 
 const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
+  const [rotationAngle, setRotationAngle] = useState(0); // Хранение угла вращения
 
   const handleSpin = async () => {
     if (!isSpinning) {
       setIsSpinning(true);
 
-      // Симулируем вращение и получение приза
+      // Генерация случайного угла вращения
+      const randomRotation = Math.floor(Math.random() * 360) + 1440; // 1440 градусов = 4 полных оборота + рандомный угол
+      setRotationAngle(rotationAngle + randomRotation); // Добавляем рандомный угол к текущему вращению
+
+      // Анимация вращения и симуляция получения приза
       setTimeout(() => {
         setIsSpinning(false);
         const randomPrize = 1000; // Симулируем получение награды (замените на API)
@@ -22,8 +27,14 @@ const QuizyWheel = () => {
     <div className="quizy-wheel-container">
       <h1 className="header-title">Quizy Wheel</h1> {/* Закрепляем заголовок */}
       <div className="wheel-container">
-        <svg width="300" height="300" viewBox="-150 -150 300 300" style={{ overflow: 'visible' }}>
-          <g transform="rotate(0)">
+        <svg
+          width="300"
+          height="300"
+          viewBox="-150 -150 300 300"
+          style={{ overflow: 'visible', transform: `rotate(${rotationAngle}deg)` }}
+          className={isSpinning ? 'spinning' : ''} // Применяем класс вращения
+        >
+          <g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M0,-175A175,175 0 0,1 123.744,-123.744L0,0Z"></path>
               <text id="sector1" transform="rotate(-65) translate(120)" textAnchor="middle" style={{ fill: "white", fontSize: "20px", fontWeight: "bold" }}>500</text>
