@@ -3,11 +3,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between; /* Разделяем верх и низ */
+    justify-content: space-between;
     height: 100vh;
     background-color: #0a1d3f;
     color: white;
-    padding: 20px; /* Добавляем отступы */
+    padding: 20px;
 }
 
 /* Заголовок прибиваем к верху */
@@ -20,17 +20,19 @@
 /* Контейнер для колеса и стрелки */
 .wheel-container {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 100%; /* Процентная ширина */
+    max-width: 400px; /* Максимальная ширина */
+    height: auto; /* Высота будет рассчитываться автоматически для сохранения пропорций */
+    aspect-ratio: 1 / 1; /* Пропорция, чтобы колесо оставалось кругом */
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: visible; /* Исправляем обрезание */
+    overflow: visible;
 }
 
 .wheel-arrow {
     position: absolute;
-    top: 0;
+    top: -50px; /* Ставим стрелку выше колеса */
     left: 50%;
     transform: translateX(-50%);
     z-index: 1;
@@ -45,16 +47,16 @@
 
 @keyframes spin {
     0% {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     100% {
-      transform: rotate(1440deg); /* Вращаем на 4 полных оборота */
+        transform: rotate(1440deg);
     }
 }
 
 /* Кнопка */
 .spin-button {
-    width: 100%; /* Делаем кнопку на всю ширину */
+    width: 100%;
     padding: 15px 20px;
     background-color: #1c4e99;
     color: white;
@@ -82,5 +84,5 @@ text {
     fill: white;
     font-size: 20px;
     font-family: Arial, sans-serif;
-    font-weight: bold; /* Жирный текст */
+    font-weight: bold;
 }
