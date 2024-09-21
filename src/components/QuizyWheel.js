@@ -38,7 +38,7 @@ const QuizyWheel = () => {
       const sectorAngle = sectorAngles[randomSector];
 
       // Добавляем случайную корректировку в пределах 5 градусов, чтобы не попадать на грани
-      const adjustment = Math.random() * 10 - 5; 
+      const adjustment = Math.random() * 30 - 15; 
       const adjustedAngle = sectorAngle + adjustment;
 
       const spins = 5;
