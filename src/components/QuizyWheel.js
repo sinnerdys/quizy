@@ -22,17 +22,15 @@ const QuizyWheel = () => {
       const { prize, angle } = getRandomSector();
 
       // Генерация полного вращения (например, 4 полных оборота) и точного угла для остановки
-      const randomRotation = 1440 + angle - (rotationAngle % 360); // Обновляем текущий угол
+      const randomRotation = 1440 + angle - (rotationAngle % 360); // Обновляем текущий угол, чтобы остановиться на нужном секторе
       setRotationAngle(rotationAngle + randomRotation); // Обновляем текущий угол
 
-      // Симуляция вращения
+      // Симуляция вращения и получение приза
       setTimeout(() => {
         setIsSpinning(false);
-        
-        // Небольшая задержка перед показом алерта, чтобы колесо окончательно остановилось
-        setTimeout(() => {
-          alert(`You won ${prize} tokens!`);
-        }, 100); // Задержка 100ms перед выводом алерта
+
+        // Выводим награду
+        alert(`You won ${prize} tokens!`);
       }, 3000); // Время вращения 3 секунды
     }
   };
