@@ -3,24 +3,37 @@ import './QuizyWheel.css'; // Стили для нашего компонент�
 import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
 
 const QuizyWheel = () => {
-    const [rotationAngle, setRotationAngle] = useState(1150);
+    const [rotationAngle, setRotationAngle] = useState(0);
     const [isSpinning, setIsSpinning] = useState(false);
   
-    const sectorAngles = [295, 340, 25, 70, 115, 160, 205, 251];
-    const deltaAngles = sectorAngles.map(angle => (angle - 295 + 360) % 360);
+    // Углы секторов относительно стрелки
+    const sectors = [
+      { value: '500', angle: 0 },
+      { value: '1000', angle: 45 },
+      { value: '1500', angle: 90 },
+      { value: '2000', angle: 135 },
+      { value: '2500', angle: 180 },
+      { value: '3000', angle: 225 },
+      { value: '5000', angle: 270 },
+      { value: '10000', angle: 315 },
+    ];
   
     const spinWheel = () => {
-      const randomSector = Math.floor(Math.random() * 8);
-      const rotationNeeded = deltaAngles[randomSector];
-      const totalRotation = rotationAngle + 5 * 360 + rotationNeeded;
+      const randomSector = Math.floor(Math.random() * sectors.length);
+      const sectorAngle = sectors[randomSector].angle;
   
-      setRotationAngle(totalRotation);
+      // Добавляем необходимое количество полных оборотов (например, 5)
+      const spins = 5;
+      const totalRotation = spins * 360 + sectorAngle;
+  
       setIsSpinning(true);
+      setRotationAngle(totalRotation);
   
       setTimeout(() => {
         setIsSpinning(false);
       }, 5000);
     };
+  
 
   return (
     <div className="quizy-wheel-container">
