@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './QuizyWheel.css'; // Стили для нашего компонента
 import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
 
@@ -82,7 +82,7 @@ const QuizyWheel = () => {
           height="300"
           viewBox="-150 -150 300 300"
           className={isSpinning ? 'spinning' : ''}
-          style={{ transform: `rotate(${rotationAngle}deg)`, overflow: 'visible' }}
+          style={{ transform: `rotate(${initialRotation}deg)`, overflow: 'visible' }}
         >
           <g>
             {/* Сектор 1 */}
