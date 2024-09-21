@@ -17,6 +17,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: visible; /* Исправляем обрезание */
 }
 
 /* Стрелка по центру колеса */

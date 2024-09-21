@@ -22,39 +22,39 @@ const QuizyWheel = () => {
     <div className="quizy-wheel-container">
       <h1>Quizy Wheel</h1>
       <div className="wheel-container">
-        <svg width="300" height="300" viewBox="-150 -150 300 300">
+        <svg width="300" height="300" viewBox="-150 -150 300 300" style={{ overflow: 'visible' }}>
           <g transform="rotate(0)">
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M0,-150A150,150 0 0,1 106.066,-106.066L0,0Z"></path>
-              <text transform="rotate(-22.5) translate(95)" textAnchor="end">500</text>
+              <text transform="rotate(-22.5) translate(120)" textAnchor="middle">500</text>
             </g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M106.066,-106.066A150,150 0 0,1 150,0L0,0Z"></path>
-              <text transform="rotate(22.5) translate(95)" textAnchor="end">1000</text>
+              <text transform="rotate(22.5) translate(120)" textAnchor="middle">1000</text>
             </g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M150,0A150,150 0 0,1 106.066,106.066L0,0Z"></path>
-              <text transform="rotate(67.5) translate(95)" textAnchor="end">1500</text>
+              <text transform="rotate(67.5) translate(120)" textAnchor="middle">1500</text>
             </g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M106.066,106.066A150,150 0 0,1 0,150L0,0Z"></path>
-              <text transform="rotate(112.5) translate(95)" textAnchor="end">2000</text>
+              <text transform="rotate(112.5) translate(120)" textAnchor="middle">2000</text>
             </g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M0,150A150,150 0 0,1 -106.066,106.066L0,0Z"></path>
-              <text transform="rotate(157.5) translate(95)" textAnchor="end">2500</text>
+              <text transform="rotate(157.5) translate(120)" textAnchor="middle">2500</text>
             </g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M-106.066,106.066A150,150 0 0,1 -150,0L0,0Z"></path>
-              <text transform="rotate(202.5) translate(95)" textAnchor="end">3000</text>
+              <text transform="rotate(202.5) translate(120)" textAnchor="middle">3000</text>
             </g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M-150,0A150,150 0 0,1 -106.066,-106.066L0,0Z"></path>
-              <text transform="rotate(247.5) translate(95)" textAnchor="end">5000</text>
+              <text transform="rotate(247.5) translate(120)" textAnchor="middle">5000</text>
             </g>
             <g className="slice">
               <path fill="#152A60" stroke="#4365C0" strokeWidth="5" d="M-106.066,-106.066A150,150 0 0,1 0,-150L0,0Z"></path>
-              <text transform="rotate(292.5) translate(95)" textAnchor="end">10000</text>
+              <text transform="rotate(292.5) translate(120)" textAnchor="middle">10000</text>
             </g>
           </g>
           {/* Круг в центре */}
