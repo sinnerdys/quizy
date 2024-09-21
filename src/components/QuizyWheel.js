@@ -2,49 +2,25 @@ import React, { useState } from 'react';
 import './QuizyWheel.css'; // Стили для нашего компонента
 import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
 
-// Призы по секторам
-const sectors = [
-  { prize: 500, textRotation: -65 },
-  { prize: 1000, textRotation: -20 },
-  { prize: 1500, textRotation: 25 },
-  { prize: 2000, textRotation: 70 },
-  { prize: 2500, textRotation: 115 },
-  { prize: 3000, textRotation: 160 },
-  { prize: 5000, textRotation: 205 },
-  { prize: 10000, textRotation: 251 }
-];
-
-// Определение случайного сектора
-const getRandomSector = () => {
-  const randomIndex = Math.floor(Math.random() * sectors.length);
-  return sectors[randomIndex];
-};
-
 const QuizyWheel = () => {
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [rotationAngle, setRotationAngle] = useState(1150); // Устанавливаем начальный угол 1150°
-
-  const handleSpin = async () => {
-    if (!isSpinning) {
-      setIsSpinning(true);
-
-      // Получаем случайный сектор и его угол текста
-      const { prize, textRotation } = getRandomSector();
-
-      // Генерация полного вращения (например, 4 полных оборота) и точного угла для остановки
-      const randomRotation = 1440 + textRotation; // Полные обороты и точный угол остановки относительно изначального угла
-      const totalRotation = rotationAngle + randomRotation; // Рассчитываем итоговый угол вращения
-
-      // Устанавливаем только один раз полный угол вращения
+    const [rotationAngle, setRotationAngle] = useState(1150);
+    const [isSpinning, setIsSpinning] = useState(false);
+  
+    const sectorAngles = [295, 340, 25, 70, 115, 160, 205, 251];
+    const deltaAngles = sectorAngles.map(angle => (angle - 295 + 360) % 360);
+  
+    const spinWheel = () => {
+      const randomSector = Math.floor(Math.random() * 8);
+      const rotationNeeded = deltaAngles[randomSector];
+      const totalRotation = rotationAngle + 5 * 360 + rotationNeeded;
+  
       setRotationAngle(totalRotation);
-
-      // Даем время на завершение анимации
+      setIsSpinning(true);
+  
       setTimeout(() => {
         setIsSpinning(false);
-        console.log(`You won ${prize} tokens!`);
-      }, 5000); // Время вращения 5 секунд для плавности
-    }
-  };
+      }, 5000);
+    };
 
   return (
     <div className="quizy-wheel-container">
@@ -104,7 +80,7 @@ const QuizyWheel = () => {
         {/* Стрелка в центре */}
         <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
       </div>
-      <button className="spin-button" onClick={handleSpin} disabled={isSpinning}>
+      <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
         {isSpinning ? 'Spinning...' : 'Tap to Spin'}
       </button>
       <p className="info-text">Spin to win guaranteed prizes. You have a free spin every 6 hours.</p>
