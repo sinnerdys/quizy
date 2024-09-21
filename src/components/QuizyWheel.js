@@ -38,7 +38,7 @@ const QuizyWheel = () => {
       const sectorAngle = sectorAngles[randomSector];
 
       // Добавляем случайную корректировку в пределах 5 градусов, чтобы не попадать на грани
-      const adjustment = Math.random() * 30 - 15; 
+      const adjustment = Math.random() * 60 - 30; 
       const adjustedAngle = sectorAngle + adjustment;
 
       const spins = 5;
@@ -123,7 +123,7 @@ const QuizyWheel = () => {
       <path
         fill="#152A60"
         stroke="#4365C0"
-        strokeWidth="5"
+        strokeWidth="4"
         d="M0,-175A175,175 0 0,1 123.744,-123.744L0,0Z"
       ></path>
       <text transform="rotate(-65) translate(120)" textAnchor="middle">
@@ -142,7 +142,7 @@ const QuizyWheel = () => {
       <path
         fill="#152A60"
         stroke="#4365C0"
-        strokeWidth="5"
+        strokeWidth="4"
         d="M123.744,-123.744A175,175 0 0,1 175,0L0,0Z"
       ></path>
       <text transform="rotate(-20) translate(115)" textAnchor="middle">
@@ -161,7 +161,7 @@ const QuizyWheel = () => {
       <path
         fill="#152A60"
         stroke="#4365C0"
-        strokeWidth="5"
+        strokeWidth="4"
         d="M175,0A175,175 0 0,1 123.744,123.744L0,0Z"
       ></path>
       <text transform="rotate(25) translate(115)" textAnchor="middle">
@@ -180,7 +180,7 @@ const QuizyWheel = () => {
       <path
         fill="#152A60"
         stroke="#4365C0"
-        strokeWidth="5"
+        strokeWidth="4"
         d="M123.744,123.744A175,175 0 0,1 0,175L0,0Z"
       ></path>
       <text transform="rotate(70) translate(115)" textAnchor="middle">
@@ -199,7 +199,7 @@ const QuizyWheel = () => {
       <path
         fill="#152A60"
         stroke="#4365C0"
-        strokeWidth="5"
+        strokeWidth="4"
         d="M0,175A175,175 0 0,1 -123.744,123.744L0,0Z"
       ></path>
       <text transform="rotate(115) translate(115)" textAnchor="middle">
@@ -218,7 +218,7 @@ const QuizyWheel = () => {
       <path
         fill="#152A60"
         stroke="#4365C0"
-        strokeWidth="5"
+        strokeWidth="4"
         d="M-123.744,123.744A175,175 0 0,1 -175,0L0,0Z"
       ></path>
       <text transform="rotate(160) translate(115)" textAnchor="middle">
@@ -237,7 +237,7 @@ const QuizyWheel = () => {
       <path
         fill="#152A60"
         stroke="#4365C0"
-        strokeWidth="5"
+        strokeWidth="4"
         d="M-175,0A175,175 0 0,1 -123.744,-123.744L0,0Z"
       ></path>
       <text transform="rotate(205) translate(115)" textAnchor="middle">
@@ -256,7 +256,7 @@ const QuizyWheel = () => {
       <path
         fill="#152A60"
         stroke="#4365C0"
-        strokeWidth="5"
+        strokeWidth="4"
         d="M-123.744,-123.744A175,175 0 0,1 0,-175L0,0Z"
       ></path>
       <text transform="rotate(251) translate(108)" textAnchor="middle">
