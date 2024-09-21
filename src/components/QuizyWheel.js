@@ -25,13 +25,15 @@ const QuizyWheel = () => {
       const randomRotation = 1440 + angle - (rotationAngle % 360); // Обновляем текущий угол, чтобы остановиться на нужном секторе
       setRotationAngle(rotationAngle + randomRotation); // Обновляем текущий угол
 
-      // Симуляция вращения и получение приза
+      // Увеличиваем задержку перед вызовом `alert`
       setTimeout(() => {
         setIsSpinning(false);
 
-        // Выводим награду
-        alert(`You won ${prize} tokens!`);
-      }, 3000); // Время вращения 3 секунды
+        // Выводим награду после завершения анимации
+        setTimeout(() => {
+          alert(`You won ${prize} tokens!`);
+        }, 100); // Дополнительная задержка 100 мс для завершения анимации
+      }, 3500); // Увеличиваем время вращения до 3,5 секунд
     }
   };
 
