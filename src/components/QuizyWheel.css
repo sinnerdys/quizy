@@ -42,19 +42,9 @@
     width: 100px;
 }
 
-/* Анимация вращения колеса */
-.spinning {
-    animation: spin 3s ease-in-out forwards;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(1440deg); /* Вращаем на 4 полных оборота */
-    }
-}
+.wheel-container svg {
+    transition: transform 5s cubic-bezier(0.33, 1, 0.68, 1);
+  }
 
 /* Кнопка прибиваем к низу */
 .spin-button {
