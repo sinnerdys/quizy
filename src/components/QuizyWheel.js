@@ -4,7 +4,7 @@ import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 
 const QuizyWheel = () => {
-    const WIN_ANGLE = 50; // Угол, на котором должна остановиться стрелка
+    const WIN_ANGLE = 0; // Угол, на котором должна остановиться стрелка
     const canvasRef = useRef(null);
     const [isSpinning, setIsSpinning] = useState(false);
     const prizes = [500, 1000, 1500, 2000, 2500, 3000, 5000, 10000]; // Призы на колесе
@@ -24,7 +24,7 @@ const QuizyWheel = () => {
         const ctx = canvas.getContext('2d');
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
-        const radius = 150; // Увеличиваем радиус для большего колеса
+        const radius = 160; // Увеличиваем радиус для большего колеса
 
         // Угол для каждого сектора
         const sectorAngle = (2 * Math.PI) / numSectors;
