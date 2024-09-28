@@ -24,7 +24,7 @@ const QuizyWheel = () => {
         const ctx = canvas.getContext('2d');
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
-        const radius = 150;
+        const radius = 200; // Увеличиваем радиус для большего колеса
 
         // Угол для каждого сектора
         const sectorAngle = (2 * Math.PI) / numSectors;
@@ -53,8 +53,8 @@ const QuizyWheel = () => {
             ctx.rotate(startAngle + sectorAngle / 2);
             ctx.textAlign = 'right';
             ctx.fillStyle = '#FFFFFF';
-            ctx.font = '24px Arial';
-            ctx.fillText(prizes[i], radius - 10, 10);
+            ctx.font = '18px Arial';
+            ctx.fillText(prizes[i], radius - 20, 10);
             ctx.restore();
         }
 
@@ -81,12 +81,11 @@ const QuizyWheel = () => {
         const randomSector = Math.floor(Math.random() * numSectors);
         const sectorAngle = (randomSector * 360) / numSectors; // Центральный угол выбранного сектора в градусах
 
-        const spins = 5; // Количество полных оборотов
-        const currentRotation = getCurrentRotation(); // Получаем текущий угол колеса
+        // Количество полных оборотов
+        const spins = 5;
 
         // Расчет необходимого угла для вращения, чтобы колесо остановилось на нужном секторе
-        const offsetAngle = (360 - (sectorAngle - WIN_ANGLE)) % 360;
-        const finalRotation = spins * 360 + offsetAngle + currentRotation;
+        const finalRotation = spins * 360 + sectorAngle - WIN_ANGLE;
 
         if (canvasRef.current) {
             canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
@@ -98,32 +97,11 @@ const QuizyWheel = () => {
         }, 5000);
     };
 
-    const getCurrentRotation = () => {
-        if (canvasRef.current) {
-            const computedStyle = window.getComputedStyle(canvasRef.current);
-            const transformMatrix = computedStyle.getPropertyValue('transform');
-
-            let angle = 0;
-            if (transformMatrix && transformMatrix !== 'none') {
-                const values = transformMatrix
-                    .split('(')[1]
-                    .split(')')[0]
-                    .split(',');
-                const a = values[0];
-                const b = values[1];
-                angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-                if (angle < 0) angle += 360;
-            }
-            return angle;
-        }
-        return 0;
-    };
-
     const handleRotationEnd = (randomSector) => {
         if (canvasRef.current) {
-            const angle = getCurrentRotation() % 360;
+            const finalAngle = (randomSector * 360) / numSectors - WIN_ANGLE;
             canvasRef.current.style.transition = 'none';
-            canvasRef.current.style.transform = `rotate(${angle}deg)`;
+            canvasRef.current.style.transform = `rotate(${finalAngle}deg)`;
 
             // Показываем алерт с выигрышем
             alert(`You won ${prizes[randomSector]} tokens!`);
@@ -143,7 +121,7 @@ const QuizyWheel = () => {
                 </div>
             </div>
             <div className="wheel-container">
-                <canvas ref={canvasRef} width="500" height="500"></canvas>
+                <canvas ref={canvasRef} width="600" height="600"></canvas> {/* Увеличен размер canvas */}
                 {/* Стрелка в центре */}
                 <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
             </div>
