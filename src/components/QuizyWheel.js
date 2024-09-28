@@ -7,14 +7,6 @@ import TokenImageW from '../assets/TokenImage.png';
 const QuizyWheel = () => {
   const wheelRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const initialRotation = 0; // Начальный угол вращения
-
-  useEffect(() => {
-    // Устанавливаем начальный угол при загрузке компонента
-    if (wheelRef.current) {
-      wheelRef.current.style.transform = `rotate(${initialRotation}deg)`;
-    }
-  }, [initialRotation]);
 
   const spinWheel = async () => {
     if (isSpinning) return;
@@ -45,14 +37,9 @@ const QuizyWheel = () => {
       if (data.success) {
         const { prize, newBalance, angle } = data;
 
-        // Фиксированный угол, чтобы выигрышный сектор остановился напротив стрелки на угле 50 градусов
-        const FIXED_ANGLE_OFFSET = 50; // Угол, на котором должна остановиться стрелка
-        const spins = 5; // Количество полных оборотов
-        const finalAngle = spins * 360 + FIXED_ANGLE_OFFSET - angle;
-
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-          wheelRef.current.style.transform = `rotate(${finalAngle}deg)`;
+          wheelRef.current.style.transform = `rotate(${angle}deg)`;
         }
 
         setTimeout(() => {
