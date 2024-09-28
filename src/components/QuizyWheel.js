@@ -70,13 +70,10 @@ const QuizyWheel = () => {
         const prizeData = prizes.find(item => item.prize === prize);
         const sectorAngle = prizeData ? prizeData.angle : 0;
 
-        const adjustment = Math.random() * 60 - 30; // Добавляем случайную корректировку, чтобы не попадать на грани
-        const adjustedAngle = sectorAngle + adjustment;
-
         const spins = 5; // Количество полных вращений
         const currentRotation = getCurrentRotation();
         const rotationNeeded =
-          spins * 360 + ((360 - adjustedAngle + currentRotation) % 360);
+          spins * 360 + ((360 - sectorAngle + currentRotation) % 360);
 
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
