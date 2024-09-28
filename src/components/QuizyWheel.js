@@ -82,7 +82,7 @@ const QuizyWheel = () => {
 
         try {
             // Запрос к Firebase Function
-            const response = await fetch('https://<your-region>-<your-project-id>.cloudfunctions.net/handleWheelSpin', {
+            const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
