@@ -7,7 +7,6 @@ import TokenImageW from '../assets/TokenImage.png';
 const QuizyWheel = () => {
   const wheelRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const initialRotation = 0;
 
   const spinWheel = async () => {
     if (isSpinning) return;
@@ -24,7 +23,7 @@ const QuizyWheel = () => {
     }
 
     try {
-      // Запрос к Firebase Function для получения приза и угла
+      // Запрос к Firebase Function для получения сектора и его угла
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
         method: 'POST',
         headers: {
@@ -38,14 +37,10 @@ const QuizyWheel = () => {
       if (data.success) {
         const { prize, newBalance, angle } = data;
 
-        // Рассчитываем угол, чтобы выигрышный сектор остановился на 115 градусах
-        const targetAngle = 115; // Угол, на котором должен остановиться выигрышный сектор
-        const currentRotation = getCurrentRotation();
-        const rotationNeeded = targetAngle - angle;
-
-        // Корректируем на полные вращения
-        const spins = 5; // Количество полных вращений
-        const finalAngle = currentRotation + spins * 360 + rotationNeeded;
+        // Рассчитываем угол для вращения, чтобы сектор остановился напротив выигрышного угла (например, 115 градусов)
+        const WIN_ANGLE = 115;
+        const spins = 5; // Количество полных оборотов
+        const finalAngle = spins * 360 + WIN_ANGLE - angle;
 
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
@@ -66,31 +61,10 @@ const QuizyWheel = () => {
     }
   };
 
-  const getCurrentRotation = () => {
-    if (wheelRef.current) {
-      const computedStyle = window.getComputedStyle(wheelRef.current);
-      const transformMatrix = computedStyle.getPropertyValue('transform');
-
-      let angle = 0;
-      if (transformMatrix && transformMatrix !== 'none') {
-        const values = transformMatrix.split('(')[1].split(')')[0].split(',');
-        const a = values[0];
-        const b = values[1];
-        angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-        if (angle < 0) angle += 360;
-      }
-      return angle;
-    }
-    return initialRotation;
-  };
-
   const handleRotationEnd = (prize, newBalance) => {
     setIsSpinning(false);
-
-    // Отображение результата пользователю
     alert(`You won ${prize} tokens! Your new balance is ${newBalance} tokens.`);
   };
-
 
   return (
     <div className="quizy-wheel-container">
