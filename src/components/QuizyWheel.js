@@ -1,47 +1,65 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './QuizyWheel.css'; // Стили для нашего компонента
-import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
-import TicketImage from '../assets/ticket_image.png'; // Путь к изображению билета
-import TokenImageW from '../assets/TokenImage.png'; // Путь к изображению токена
+import './QuizyWheel.css';
+import ArrowImage from '../assets/arrow_wheel.png';
+import TicketImage from '../assets/ticket_image.png';
 
 const QuizyWheel = () => {
-    const WIN_ANGLE = 50; // Фиксированный угол, на котором должна остановиться стрелка
-    const wheelRef = useRef(null);
+    const WIN_ANGLE = 50; // Угол, на котором должна остановиться стрелка
+    const canvasRef = useRef(null);
     const [isSpinning, setIsSpinning] = useState(false);
+    const prizes = [500, 1000, 1500, 2000, 2500, 3000, 5000, 10000]; // Призы на колесе
+    const numSectors = prizes.length; // Количество секторов
 
-    // Начальный угол вращения
-    const initialRotation = 1150 % 360;
-
-    // Углы центров секторов и соответствующие призы
-    const sectorAngles = [
-        { angle: 295, prize: 500 },
-        { angle: 340, prize: 1000 },
-        { angle: 25, prize: 1500 },
-        { angle: 70, prize: 2000 },
-        { angle: 115, prize: 2500 },
-        { angle: 160, prize: 3000 },
-        { angle: 205, prize: 5000 },
-        { angle: 251, prize: 10000 }
-    ];
-
-    // Состояние для хранения последнего угла
-    const [lastAngle, setLastAngle] = useState(initialRotation);
-
-    // Считываем последний угол из localStorage при монтировании компонента
     useEffect(() => {
-        const savedAngle = localStorage.getItem('wheelLastAngle');
-        if (savedAngle !== null) {
-            const parsedAngle = parseFloat(savedAngle);
-            setLastAngle(parsedAngle);
-            if (wheelRef.current) {
-                wheelRef.current.style.transform = `rotate(${parsedAngle}deg)`;
-            }
-        } else {
-            if (wheelRef.current) {
-                wheelRef.current.style.transform = `rotate(${initialRotation}deg)`;
-            }
+        drawWheel();
+    }, []);
+
+    const drawWheel = () => {
+        const canvas = canvasRef.current;
+        if (!canvas.getContext) {
+            console.error('Canvas not supported by your browser.');
+            return;
         }
-    }, [initialRotation]);
+
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 150;
+
+        // Угол для каждого сектора
+        const sectorAngle = (2 * Math.PI) / numSectors;
+
+        for (let i = 0; i < numSectors; i++) {
+            // Начальный и конечный угол сектора
+            const startAngle = i * sectorAngle;
+            const endAngle = startAngle + sectorAngle;
+
+            // Заполнение сектора цветом
+            ctx.fillStyle = i % 2 === 0 ? '#152A60' : '#4365C0';
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Добавление текста приза в центр сектора
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(startAngle + sectorAngle / 2);
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '16px Arial';
+            ctx.fillText(prizes[i], radius - 10, 10);
+            ctx.restore();
+        }
+
+        // Рисуем центр колеса
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
+        ctx.fillStyle = '#4365C0';
+        ctx.fill();
+    };
 
     const spinWheel = () => {
         if (isSpinning) return;
@@ -49,30 +67,29 @@ const QuizyWheel = () => {
         setIsSpinning(true);
 
         // Случайный выбор сектора
-        const randomSector = Math.floor(Math.random() * sectorAngles.length);
-        const sectorAngle = sectorAngles[randomSector].angle;
+        const randomSector = Math.floor(Math.random() * numSectors);
+        const sectorAngle = (randomSector * 360) / numSectors; // Центральный угол выбранного сектора в градусах
 
         const spins = 5; // Количество полных оборотов
         const currentRotation = getCurrentRotation(); // Получаем текущий угол колеса
 
         // Расчет необходимого угла для вращения, чтобы колесо остановилось на нужном секторе
-        // Финальный угол будет равен количеству полных оборотов плюс смещение сектора на WIN_ANGLE
         const offsetAngle = (360 - (sectorAngle - WIN_ANGLE)) % 360;
         const finalRotation = spins * 360 + offsetAngle + currentRotation;
 
-        if (wheelRef.current) {
-            wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-            wheelRef.current.style.transform = `rotate(${finalRotation}deg)`;
+        if (canvasRef.current) {
+            canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
+            canvasRef.current.style.transform = `rotate(${finalRotation}deg)`;
         }
 
         setTimeout(() => {
-            handleRotationEnd(finalRotation);
+            handleRotationEnd(randomSector);
         }, 5000);
     };
 
     const getCurrentRotation = () => {
-        if (wheelRef.current) {
-            const computedStyle = window.getComputedStyle(wheelRef.current);
+        if (canvasRef.current) {
+            const computedStyle = window.getComputedStyle(canvasRef.current);
             const transformMatrix = computedStyle.getPropertyValue('transform');
 
             let angle = 0;
@@ -85,37 +102,20 @@ const QuizyWheel = () => {
                 const b = values[1];
                 angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
                 if (angle < 0) angle += 360;
-            } else {
-                angle = lastAngle;
             }
             return angle;
         }
-        return lastAngle;
+        return 0;
     };
 
-    const handleRotationEnd = (finalRotation) => {
-        if (wheelRef.current) {
-            const angle = finalRotation % 360;
-            wheelRef.current.style.transition = 'none';
-            wheelRef.current.style.transform = `rotate(${angle}deg)`;
-
-            // Сохраняем угол в localStorage
-            localStorage.setItem('wheelLastAngle', angle);
-            setLastAngle(angle);
-
-            // Определение сектора, на котором остановилась стрелка
-            let closestSector = sectorAngles[0];
-            let minDifference = Math.abs(angle - (sectorAngles[0].angle - WIN_ANGLE + 360) % 360);
-            for (let i = 1; i < sectorAngles.length; i++) {
-                const difference = Math.abs(angle - (sectorAngles[i].angle - WIN_ANGLE + 360) % 360);
-                if (difference < minDifference) {
-                    minDifference = difference;
-                    closestSector = sectorAngles[i];
-                }
-            }
+    const handleRotationEnd = (randomSector) => {
+        if (canvasRef.current) {
+            const angle = getCurrentRotation() % 360;
+            canvasRef.current.style.transition = 'none';
+            canvasRef.current.style.transform = `rotate(${angle}deg)`;
 
             // Показываем алерт с выигрышем
-            alert(`You won ${closestSector.prize} tokens!`);
+            alert(`You won ${prizes[randomSector]} tokens!`);
         }
         setIsSpinning(false);
     };
@@ -132,168 +132,7 @@ const QuizyWheel = () => {
                 </div>
             </div>
             <div className="wheel-container">
-            <svg
-  ref={wheelRef}
-  width="300"
-  height="300"
-  viewBox="-150 -150 300 300"
-  style={{ transform: `rotate(${initialRotation}deg)`, overflow: 'visible' }}
->
-  <g>
-    {/* Сектор 1 */}
-    <g className="slice">
-      <path
-        fill="#152A60"
-        stroke="#4365C0"
-        strokeWidth="4"
-        d="M0,-175A175,175 0 0,1 123.744,-123.744L0,0Z"
-      ></path>
-      <text transform="rotate(-65) translate(120)" textAnchor="middle">
-        500
-      </text>
-      <image
-        href={TokenImageW}
-        width="14"
-        height="22"
-        transform="rotate(-65) translate(140, -18)"
-      />
-    </g>
-
-    {/* Сектор 2 */}
-    <g className="slice">
-      <path
-        fill="#152A60"
-        stroke="#4365C0"
-        strokeWidth="4"
-        d="M123.744,-123.744A175,175 0 0,1 175,0L0,0Z"
-      ></path>
-      <text transform="rotate(-20) translate(115)" textAnchor="middle">
-        1000
-      </text>
-      <image
-        href={TokenImageW}
-        width="14"
-        height="22"
-        transform="rotate(-20) translate(140, -18)"
-      />
-    </g>
-
-    {/* Сектор 3 */}
-    <g className="slice">
-      <path
-        fill="#152A60"
-        stroke="#4365C0"
-        strokeWidth="4"
-        d="M175,0A175,175 0 0,1 123.744,123.744L0,0Z"
-      ></path>
-      <text transform="rotate(25) translate(115)" textAnchor="middle">
-        1500
-      </text>
-      <image
-        href={TokenImageW}
-        width="14"
-        height="22"
-        transform="rotate(25) translate(140, -18)"
-      />
-    </g>
-
-    {/* Сектор 4 */}
-    <g className="slice">
-      <path
-        fill="#152A60"
-        stroke="#4365C0"
-        strokeWidth="4"
-        d="M123.744,123.744A175,175 0 0,1 0,175L0,0Z"
-      ></path>
-      <text transform="rotate(70) translate(115)" textAnchor="middle">
-        2000
-      </text>
-      <image
-        href={TokenImageW}
-        width="14"
-        height="22"
-        transform="rotate(70) translate(140, -18)"
-      />
-    </g>
-
-    {/* Сектор 5 */}
-    <g className="slice">
-      <path
-        fill="#152A60"
-        stroke="#4365C0"
-        strokeWidth="4"
-        d="M0,175A175,175 0 0,1 -123.744,123.744L0,0Z"
-      ></path>
-      <text transform="rotate(115) translate(115)" textAnchor="middle">
-        2500
-      </text>
-      <image
-        href={TokenImageW}
-        width="14"
-        height="22"
-        transform="rotate(115) translate(140, -18)"
-      />
-    </g>
-
-    {/* Сектор 6 */}
-    <g className="slice">
-      <path
-        fill="#152A60"
-        stroke="#4365C0"
-        strokeWidth="4"
-        d="M-123.744,123.744A175,175 0 0,1 -175,0L0,0Z"
-      ></path>
-      <text transform="rotate(160) translate(115)" textAnchor="middle">
-        3000
-      </text>
-      <image
-        href={TokenImageW}
-        width="14"
-        height="22"
-        transform="rotate(160) translate(140, -18)"
-      />
-    </g>
-
-    {/* Сектор 7 */}
-    <g className="slice">
-      <path
-        fill="#152A60"
-        stroke="#4365C0"
-        strokeWidth="4"
-        d="M-175,0A175,175 0 0,1 -123.744,-123.744L0,0Z"
-      ></path>
-      <text transform="rotate(205) translate(115)" textAnchor="middle">
-        5000
-      </text>
-      <image
-        href={TokenImageW}
-        width="14"
-        height="22"
-        transform="rotate(205) translate(140, -18)"
-      />
-    </g>
-
-    {/* Сектор 8 */}
-    <g className="slice">
-      <path
-        fill="#152A60"
-        stroke="#4365C0"
-        strokeWidth="4"
-        d="M-123.744,-123.744A175,175 0 0,1 0,-175L0,0Z"
-      ></path>
-      <text transform="rotate(251) translate(108)" textAnchor="middle">
-        10000
-      </text>
-      <image
-        href={TokenImageW}
-        width="14"
-        height="22"
-        transform="rotate(251) translate(140, -18)"
-      />
-    </g>
-  </g>
-  <circle cx="0" cy="0" r="30" fill="#4365C0" />
-</svg>
+                <canvas ref={canvasRef} width="400" height="400"></canvas>
                 {/* Стрелка в центре */}
                 <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
             </div>
