@@ -4,132 +4,134 @@ import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 
 const QuizyWheel = () => {
-  const canvasRef = useRef(null);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [prizes, setPrizes] = useState([]);
-  const [sectorAngle, setSectorAngle] = useState(0);
-  const numSectors = 8; // Количество секторов
+    const canvasRef = useRef(null);
+    const [isSpinning, setIsSpinning] = useState(false);
+    const [prizes, setPrizes] = useState([]);
+    const [sectorAngle, setSectorAngle] = useState(0);
+    const numSectors = 8; // Количество секторов
 
-  useEffect(() => {
-      if (prizes.length > 0 && sectorAngle > 0) {
-          drawWheel();
-      }
-  }, [prizes, sectorAngle]);
+    useEffect(() => {
+        if (prizes.length > 0 && sectorAngle > 0) {
+            drawWheel(prizes, sectorAngle);
+        }
+    }, [prizes, sectorAngle]);
 
-  const drawWheel = () => {
-      const canvas = canvasRef.current;
-      if (!canvas.getContext) {
-          console.error('Canvas not supported by your browser.');
-          return;
-      }
+    const drawWheel = (prizes, sectorAngle) => {
+        const canvas = canvasRef.current;
+        if (!canvas.getContext) {
+            console.error('Canvas not supported by your browser.');
+            return;
+        }
 
-      const ctx = canvas.getContext('2d');
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const radius = 165;
+        const ctx = canvas.getContext('2d');
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const radius = 165;
 
-      // Угол для каждого сектора
-      const sectorAngleRadians = (2 * Math.PI) / numSectors;
+        // Угол для каждого сектора в радианах
+        const sectorAngleRadians = (2 * Math.PI) / numSectors;
 
-      for (let i = 0; i < numSectors; i++) {
-          const startAngle = i * sectorAngleRadians;
-          const endAngle = startAngle + sectorAngleRadians;
+        for (let i = 0; i < numSectors; i++) {
+            const startAngle = i * sectorAngleRadians;
+            const endAngle = startAngle + sectorAngleRadians;
 
-          ctx.fillStyle = '#152A60';
-          ctx.beginPath();
-          ctx.moveTo(centerX, centerY);
-          ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-          ctx.closePath();
-          ctx.fill();
+            ctx.fillStyle = '#152A60';
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fill();
 
-          ctx.strokeStyle = '#4365C0';
-          ctx.lineWidth = 2;
-          ctx.stroke();
+            ctx.strokeStyle = '#4365C0';
+            ctx.lineWidth = 2;
+            ctx.stroke();
 
-          ctx.save();
-          ctx.translate(centerX, centerY);
-          ctx.rotate(startAngle + sectorAngleRadians / 2);
-          ctx.textAlign = 'right';
-          ctx.fillStyle = '#FFFFFF';
-          ctx.font = '20px Arial';
-          ctx.fillText(prizes[i], radius - 20, 10);
-          ctx.restore();
-      }
+            ctx.save();
+            ctx.translate(centerX, centerY);
+            ctx.rotate(startAngle + sectorAngleRadians / 2);
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = '20px Arial';
+            ctx.fillText(prizes[i], radius - 20, 10);
+            ctx.restore();
+        }
 
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = '#4365C0';
-      ctx.lineWidth = 4;
-      ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = '#4365C0';
+        ctx.lineWidth = 4;
+        ctx.stroke();
 
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
-      ctx.fillStyle = '#4365C0';
-      ctx.fill();
-  };
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
+        ctx.fillStyle = '#4365C0';
+        ctx.fill();
+    };
 
-  const spinWheel = async () => {
-      if (isSpinning) return;
+    const spinWheel = async () => {
+        if (isSpinning) return;
 
-      setIsSpinning(true);
+        setIsSpinning(true);
 
-      const tg = window.Telegram.WebApp;
-      const userId = tg.initDataUnsafe?.user?.id;
+        const tg = window.Telegram.WebApp;
+        const userId = tg.initDataUnsafe?.user?.id;
 
-      if (!userId) {
-          console.error('User ID not found.');
-          setIsSpinning(false);
-          return;
-      }
+        if (!userId) {
+            console.error('User ID not found.');
+            setIsSpinning(false);
+            return;
+        }
 
-      try {
-          // Запрос к Firebase Function
-          const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ userId }),
-          });
+        try {
+            // Запрос к Firebase Function
+            const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            });
 
-          const data = await response.json();
+            const data = await response.json();
 
-          if (data.success) {
-              const { prize, angle, prizes, sectorAngle } = data;
+            if (data.success) {
+                const { prize, angle, prizes, sectorAngle } = data;
 
-              // Обновляем локальные значения
-              setPrizes(prizes);
-              setSectorAngle(sectorAngle);
+                // Обновляем локальные значения
+                setPrizes(prizes);
+                setSectorAngle(sectorAngle);
 
-              // Количество полных оборотов
-              const spins = 5;
-              const finalRotation = spins * 360 + angle;
+                // Количество полных оборотов
+                const spins = 5;
+                const finalRotation = spins * 360 + angle;
 
-              if (canvasRef.current) {
-                  canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-                  canvasRef.current.style.transform = `rotate(${finalRotation}deg)`;
-              }
+                if (canvasRef.current) {
+                    canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
+                    canvasRef.current.style.transform = `rotate(${finalRotation}deg)`;
+                }
 
-              setTimeout(() => {
-                  // Убедимся, что колесо осталось на конечной позиции
-                  canvasRef.current.style.transition = 'none';
-                  canvasRef.current.style.transform = `rotate(${angle}deg)`;
-                  handleRotationEnd(prize);
-              }, 5000);
-          }
-      } catch (error) {
-          console.error('Error spinning the wheel:', error);
-          setIsSpinning(false);
-      }
-  };
+                setTimeout(() => {
+                    // Убедимся, что колесо осталось на конечной позиции
+                    if (canvasRef.current) {
+                        canvasRef.current.style.transition = 'none';
+                        canvasRef.current.style.transform = `rotate(${angle}deg)`;
+                    }
+                    handleRotationEnd(prize);
+                }, 5000);
+            }
+        } catch (error) {
+            console.error('Error spinning the wheel:', error);
+            setIsSpinning(false);
+        }
+    };
 
-  const handleRotationEnd = (prize) => {
-      if (canvasRef.current) {
-          // Показываем алерт с выигрышем
-          alert(`You won ${prize} tokens!`);
-      }
-      setIsSpinning(false);
-  };
+    const handleRotationEnd = (prize) => {
+        if (canvasRef.current) {
+            // Показываем алерт с выигрышем
+            alert(`You won ${prize} tokens!`);
+        }
+        setIsSpinning(false);
+    };
 
     return (
         <div className="quizy-wheel-container">
