@@ -9,7 +9,18 @@ const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const initialRotation = 1150 % 360;
 
-  const sectorAngles = [295, 340, 25, 70, 115, 160, 205, 251];
+  // Призы и их углы
+  const prizes = [
+    { prize: 500, angle: 295 },
+    { prize: 1000, angle: 340 },
+    { prize: 1500, angle: 25 },
+    { prize: 2000, angle: 70 },
+    { prize: 2500, angle: 115 },
+    { prize: 3000, angle: 160 },
+    { prize: 5000, angle: 205 },
+    { prize: 10000, angle: 251 }
+  ];
+
   const [lastAngle, setLastAngle] = useState(initialRotation);
 
   useEffect(() => {
@@ -26,29 +37,64 @@ const QuizyWheel = () => {
     }
   }, [initialRotation]);
 
-  const spinWheel = () => {
+  const spinWheel = async () => {
     if (isSpinning) return;
-
-    const randomSector = Math.floor(Math.random() * sectorAngles.length);
-    const sectorAngle = sectorAngles[randomSector];
-    const adjustment = Math.random() * 60 - 30;
-    const adjustedAngle = sectorAngle + adjustment;
-
-    const spins = 5;
-    const currentRotation = getCurrentRotation();
-    const rotationNeeded =
-      spins * 360 + ((360 - adjustedAngle + currentRotation) % 360);
 
     setIsSpinning(true);
 
-    if (wheelRef.current) {
-      wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-      wheelRef.current.style.transform = `rotate(${currentRotation + rotationNeeded}deg)`;
+    const tg = window.Telegram.WebApp;
+    const userId = tg.initDataUnsafe?.user?.id;
+
+    if (!userId) {
+      console.error('User ID not found.');
+      setIsSpinning(false);
+      return;
     }
 
-    setTimeout(() => {
-      handleRotationEnd();
-    }, 5000);
+    try {
+      // Запрос к Firebase Function для получения приза
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        const { prize, newBalance } = data;
+
+        // Найти соответствующий угол для выпавшего приза
+        const prizeData = prizes.find(item => item.prize === prize);
+        const sectorAngle = prizeData ? prizeData.angle : 0;
+
+        const adjustment = Math.random() * 60 - 30; // Добавляем случайную корректировку, чтобы не попадать на грани
+        const adjustedAngle = sectorAngle + adjustment;
+
+        const spins = 5; // Количество полных вращений
+        const currentRotation = getCurrentRotation();
+        const rotationNeeded =
+          spins * 360 + ((360 - adjustedAngle + currentRotation) % 360);
+
+        if (wheelRef.current) {
+          wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
+          wheelRef.current.style.transform = `rotate(${currentRotation + rotationNeeded}deg)`;
+        }
+
+        setTimeout(() => {
+          handleRotationEnd(prize, newBalance);
+        }, 5000);
+      } else {
+        alert('Something went wrong. Please try again later.');
+        setIsSpinning(false);
+      }
+    } catch (error) {
+      console.error('Error handling wheel spin:', error);
+      alert('Failed to handle the wheel spin. Please try again later.');
+      setIsSpinning(false);
+    }
   };
 
   const getCurrentRotation = () => {
@@ -71,7 +117,7 @@ const QuizyWheel = () => {
     return lastAngle;
   };
 
-  const handleRotationEnd = async () => {
+  const handleRotationEnd = (prize, newBalance) => {
     if (wheelRef.current) {
       const angle = getCurrentRotation();
       wheelRef.current.style.transition = 'none';
@@ -83,36 +129,8 @@ const QuizyWheel = () => {
 
     setIsSpinning(false);
 
-    // Дополнительная логика после вращения: запрос к бэкенду
-    const tg = window.Telegram.WebApp;
-    const userId = tg.initDataUnsafe?.user?.id;
-
-    if (!userId) {
-      console.error('User ID not found.');
-      return;
-    }
-
-    try {
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        const { prize, newBalance } = data;
-        alert(`You won ${prize} tokens! Your new balance is ${newBalance} tokens.`);
-      } else {
-        alert('Something went wrong. Please try again later.');
-      }
-    } catch (error) {
-      console.error('Error handling wheel spin:', error);
-      alert('Failed to handle the wheel spin. Please try again later.');
-    }
+    // Отображение результата пользователю
+    alert(`You won ${prize} tokens! Your new balance is ${newBalance} tokens.`);
   };
   
 
