@@ -4,7 +4,6 @@ import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 
 const QuizyWheel = () => {
-    const WIN_ANGLE = 22.5; // Центральный угол сектора справа от стрелки
     const canvasRef = useRef(null);
     const [isSpinning, setIsSpinning] = useState(false);
     const numSectors = 8; // Количество секторов
@@ -97,7 +96,7 @@ const QuizyWheel = () => {
 
                 // Количество полных оборотов
                 const spins = 5;
-                const finalRotation = spins * 360 + angle - WIN_ANGLE;
+                const finalRotation = spins * 360 + angle;
 
                 if (canvasRef.current) {
                     canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
