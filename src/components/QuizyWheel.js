@@ -24,7 +24,7 @@ const QuizyWheel = () => {
         const ctx = canvas.getContext('2d');
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
-        const radius = 200; // Увеличиваем радиус для большего колеса
+        const radius = 150; // Увеличиваем радиус для большего колеса
 
         // Угол для каждого сектора
         const sectorAngle = (2 * Math.PI) / numSectors;
