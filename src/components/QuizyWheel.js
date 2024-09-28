@@ -46,7 +46,7 @@ const QuizyWheel = () => {
         const { prize, newBalance, angle } = data;
 
         // Рассчитываем угол для вращения, чтобы сектор остановился напротив угла -20 градусов
-        const WIN_ANGLE = -20; // Угол, где должна остановиться стрелка напротив сектора
+        const WIN_ANGLE = 50; // Угол, где должна остановиться стрелка напротив сектора
         const spins = 5; // Количество полных оборотов
         const finalAngle = spins * 360 + WIN_ANGLE - angle;
 
