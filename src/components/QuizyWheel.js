@@ -7,15 +7,7 @@ import TokenImageW from '../assets/TokenImage.png';
 const QuizyWheel = () => {
   const wheelRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const initialRotation = 1150 % 360;
-
-  useEffect(() => {
-    const savedAngle = localStorage.getItem('wheelLastAngle');
-    const angleToSet = savedAngle !== null ? parseFloat(savedAngle) : initialRotation;
-    if (wheelRef.current) {
-      wheelRef.current.style.transform = `rotate(${angleToSet}deg)`;
-    }
-  }, [initialRotation]);
+  const initialRotation = 0;
 
   const spinWheel = async () => {
     if (isSpinning) return;
@@ -44,18 +36,16 @@ const QuizyWheel = () => {
       const data = await response.json();
 
       if (data.success) {
-        const { prize, newBalance, angle, sectorId } = data;
+        const { prize, newBalance, angle } = data;
 
-        // Убедитесь, что сектор с указанным ID существует на SVG
-        const selectedText = document.getElementById(`text-${sectorId}`);
-        if (!selectedText) {
-          alert('Something went wrong with determining the sector. Please try again later.');
-          setIsSpinning(false);
-          return;
-        }
+        // Рассчитываем угол, чтобы выигрышный сектор остановился на 115 градусах
+        const targetAngle = 115; // Угол, на котором должен остановиться выигрышный сектор
+        const currentRotation = getCurrentRotation();
+        const rotationNeeded = targetAngle - angle;
 
+        // Корректируем на полные вращения
         const spins = 5; // Количество полных вращений
-        const finalAngle = angle + spins * 360; // Увеличиваем угол на количество полных вращений
+        const finalAngle = currentRotation + spins * 360 + rotationNeeded;
 
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
@@ -63,7 +53,7 @@ const QuizyWheel = () => {
         }
 
         setTimeout(() => {
-          handleRotationEnd(prize, newBalance, finalAngle);
+          handleRotationEnd(prize, newBalance);
         }, 5000);
       } else {
         alert('Something went wrong. Please try again later.');
@@ -76,21 +66,31 @@ const QuizyWheel = () => {
     }
   };
 
-  const handleRotationEnd = (prize, newBalance, finalAngle) => {
+  const getCurrentRotation = () => {
     if (wheelRef.current) {
-      // Сбрасываем анимацию и устанавливаем конечный угол
-      wheelRef.current.style.transition = 'none';
-      wheelRef.current.style.transform = `rotate(${finalAngle % 360}deg)`;
+      const computedStyle = window.getComputedStyle(wheelRef.current);
+      const transformMatrix = computedStyle.getPropertyValue('transform');
 
-      // Сохраняем последний угол в localStorage
-      localStorage.setItem('wheelLastAngle', finalAngle % 360);
+      let angle = 0;
+      if (transformMatrix && transformMatrix !== 'none') {
+        const values = transformMatrix.split('(')[1].split(')')[0].split(',');
+        const a = values[0];
+        const b = values[1];
+        angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+        if (angle < 0) angle += 360;
+      }
+      return angle;
     }
+    return initialRotation;
+  };
 
+  const handleRotationEnd = (prize, newBalance) => {
     setIsSpinning(false);
 
     // Отображение результата пользователю
     alert(`You won ${prize} tokens! Your new balance is ${newBalance} tokens.`);
   };
+
 
   return (
     <div className="quizy-wheel-container">
