@@ -7,6 +7,17 @@ import TokenImageW from '../assets/TokenImage.png';
 const QuizyWheel = () => {
   const wheelRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
+  
+  // Задаем начальный угол (например, 0 градусов)
+  const initialRotation = 0;
+
+  useEffect(() => {
+    const savedAngle = localStorage.getItem('wheelLastAngle');
+    const angleToSet = savedAngle !== null ? parseFloat(savedAngle) : initialRotation;
+    if (wheelRef.current) {
+      wheelRef.current.style.transform = `rotate(${angleToSet}deg)`;
+    }
+  }, [initialRotation]);
 
   const spinWheel = async () => {
     if (isSpinning) return;
