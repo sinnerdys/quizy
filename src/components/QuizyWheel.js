@@ -4,7 +4,7 @@ import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 
 const QuizyWheel = () => {
-    const WIN_ANGLE = 50; // Угол, на котором должна остановиться стрелка
+    const WIN_ANGLE = 22.5; // Центральный угол сектора справа от стрелки
     const canvasRef = useRef(null);
     const [isSpinning, setIsSpinning] = useState(false);
     const prizes = [500, 1000, 1500, 2000, 2500, 3000, 5000, 10000]; // Призы на колесе
@@ -85,7 +85,7 @@ const QuizyWheel = () => {
         const spins = 5;
 
         // Расчет необходимого угла для вращения, чтобы колесо остановилось на нужном секторе
-        const finalRotation = spins * 360 + sectorAngle - WIN_ANGLE;
+        const finalRotation = spins * 360 + (360 - sectorAngle + WIN_ANGLE) % 360;
 
         if (canvasRef.current) {
             canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
@@ -99,6 +99,7 @@ const QuizyWheel = () => {
 
     const handleRotationEnd = (randomSector) => {
         if (canvasRef.current) {
+            // Устанавливаем финальный угол, чтобы остановить колесо в точке центрального угла сектора
             const finalAngle = (randomSector * 360) / numSectors - WIN_ANGLE;
             canvasRef.current.style.transition = 'none';
             canvasRef.current.style.transform = `rotate(${finalAngle}deg)`;
