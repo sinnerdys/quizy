@@ -53,7 +53,7 @@ const QuizyWheel = () => {
             ctx.rotate(startAngle + sectorAngle / 2);
             ctx.textAlign = 'right';
             ctx.fillStyle = '#FFFFFF';
-            ctx.font = '18px Arial';
+            ctx.font = '20px Arial';
             ctx.fillText(prizes[i], radius - 20, 10);
             ctx.restore();
         }
@@ -121,7 +121,7 @@ const QuizyWheel = () => {
                 </div>
             </div>
             <div className="wheel-container">
-                <canvas ref={canvasRef} width="600" height="600"></canvas> {/* Увеличен размер canvas */}
+                <canvas ref={canvasRef} width="500" height="500"></canvas> {/* Увеличен размер canvas */}
                 {/* Стрелка в центре */}
                 <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
             </div>
