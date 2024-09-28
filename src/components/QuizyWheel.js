@@ -45,9 +45,10 @@ const QuizyWheel = () => {
       if (data.success) {
         const { prize, newBalance, angle } = data;
 
-        // Устанавливаем количество полных оборотов перед остановкой
+        // Фиксированный угол, чтобы выигрышный сектор остановился напротив стрелки на угле 50 градусов
+        const FIXED_ANGLE_OFFSET = 50; // Угол, на котором должна остановиться стрелка
         const spins = 5; // Количество полных оборотов
-        const finalAngle = spins * 360 + angle; // Финальный угол с учетом полного вращения
+        const finalAngle = spins * 360 + FIXED_ANGLE_OFFSET - angle;
 
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
@@ -72,6 +73,7 @@ const QuizyWheel = () => {
     setIsSpinning(false);
     alert(`You won ${prize} tokens! Your new balance is ${newBalance} tokens.`);
   };
+
 
   return (
     <div className="quizy-wheel-container">
