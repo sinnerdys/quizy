@@ -1,101 +1,119 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './QuizyWheel.css'; // Стили для нашего компонента
-import ArrowImage from '../assets/arrow_wheel.png'; // Путь к изображению стрелки
-import TicketImage from '../assets/ticket_image.png'; // Путь к изображению билета
-import TokenImageW from '../assets/TokenImage.png'; 
+import './QuizyWheel.css';
+import ArrowImage from '../assets/arrow_wheel.png';
+import TicketImage from '../assets/ticket_image.png';
+import TokenImageW from '../assets/TokenImage.png';
 
 const QuizyWheel = () => {
-    const wheelRef = useRef(null);
-    const [isSpinning, setIsSpinning] = useState(false);
+  const wheelRef = useRef(null);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const initialRotation = 1150 % 360;
 
-    const initialRotation = 1150 % 360;
+  const sectorAngles = [295, 340, 25, 70, 115, 160, 205, 251];
+  const [lastAngle, setLastAngle] = useState(initialRotation);
 
-    // Углы центров секторов
-    const sectorAngles = [295, 340, 25, 70, 115, 160, 205, 251];
+  useEffect(() => {
+    const savedAngle = localStorage.getItem('wheelLastAngle');
+    if (savedAngle !== null) {
+      setLastAngle(parseFloat(savedAngle));
+      if (wheelRef.current) {
+        wheelRef.current.style.transform = `rotate(${parseFloat(savedAngle)}deg)`;
+      }
+    } else {
+      if (wheelRef.current) {
+        wheelRef.current.style.transform = `rotate(${initialRotation}deg)`;
+      }
+    }
+  }, [initialRotation]);
 
-    // Состояние для хранения последнего угла
-    const [lastAngle, setLastAngle] = useState(initialRotation);
+  const spinWheel = () => {
+    if (isSpinning) return;
 
-    // Считываем последний угол из localStorage при монтировании компонента
-    useEffect(() => {
-      const savedAngle = localStorage.getItem('wheelLastAngle');
-      if (savedAngle !== null) {
-        setLastAngle(parseFloat(savedAngle));
-        if (wheelRef.current) {
-          wheelRef.current.style.transform = `rotate(${parseFloat(savedAngle)}deg)`;
-        }
+    const randomSector = Math.floor(Math.random() * sectorAngles.length);
+    const sectorAngle = sectorAngles[randomSector];
+    const adjustment = Math.random() * 60 - 30;
+    const adjustedAngle = sectorAngle + adjustment;
+
+    const spins = 5;
+    const currentRotation = getCurrentRotation();
+    const rotationNeeded =
+      spins * 360 + ((360 - adjustedAngle + currentRotation) % 360);
+
+    setIsSpinning(true);
+
+    if (wheelRef.current) {
+      wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
+      wheelRef.current.style.transform = `rotate(${currentRotation + rotationNeeded}deg)`;
+    }
+
+    setTimeout(() => {
+      handleRotationEnd();
+    }, 5000);
+  };
+
+  const getCurrentRotation = () => {
+    if (wheelRef.current) {
+      const computedStyle = window.getComputedStyle(wheelRef.current);
+      const transformMatrix = computedStyle.getPropertyValue('transform');
+
+      let angle = 0;
+      if (transformMatrix && transformMatrix !== 'none') {
+        const values = transformMatrix.split('(')[1].split(')')[0].split(',');
+        const a = values[0];
+        const b = values[1];
+        angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+        if (angle < 0) angle += 360;
       } else {
-        if (wheelRef.current) {
-          wheelRef.current.style.transform = `rotate(${initialRotation}deg)`;
-        }
+        angle = lastAngle;
       }
-    }, [initialRotation]);
+      return angle;
+    }
+    return lastAngle;
+  };
 
-    const spinWheel = () => {
-      if (isSpinning) return;
+  const handleRotationEnd = async () => {
+    if (wheelRef.current) {
+      const angle = getCurrentRotation();
+      wheelRef.current.style.transition = 'none';
+      wheelRef.current.style.transform = `rotate(${angle % 360}deg)`;
 
-      const randomSector = Math.floor(Math.random() * sectorAngles.length);
-      const sectorAngle = sectorAngles[randomSector];
+      localStorage.setItem('wheelLastAngle', angle % 360);
+      setLastAngle(angle % 360);
+    }
 
-      // Добавляем случайную корректировку в пределах 5 градусов, чтобы не попадать на грани
-      const adjustment = Math.random() * 60 - 30; 
-      const adjustedAngle = sectorAngle + adjustment;
+    setIsSpinning(false);
 
-      const spins = 5;
-      const currentRotation = getCurrentRotation();
+    // Дополнительная логика после вращения: запрос к бэкенду
+    const tg = window.Telegram.WebApp;
+    const userId = tg.initDataUnsafe?.user?.id;
 
-      const rotationNeeded =
-        spins * 360 + ((360 - adjustedAngle + currentRotation) % 360);
+    if (!userId) {
+      console.error('User ID not found.');
+      return;
+    }
 
-      setIsSpinning(true);
+    try {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+      });
 
-      if (wheelRef.current) {
-        wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-        wheelRef.current.style.transform = `rotate(${currentRotation + rotationNeeded}deg)`;
+      const data = await response.json();
+
+      if (data.success) {
+        const { prize, newBalance } = data;
+        alert(`You won ${prize} tokens! Your new balance is ${newBalance} tokens.`);
+      } else {
+        alert('Something went wrong. Please try again later.');
       }
-
-      setTimeout(() => {
-        handleRotationEnd();
-      }, 5000);
-    };
-
-    const getCurrentRotation = () => {
-      if (wheelRef.current) {
-        const computedStyle = window.getComputedStyle(wheelRef.current);
-        const transformMatrix = computedStyle.getPropertyValue('transform');
-
-        let angle = 0;
-        if (transformMatrix && transformMatrix !== 'none') {
-          const values = transformMatrix
-            .split('(')[1]
-            .split(')')[0]
-            .split(',');
-          const a = values[0];
-          const b = values[1];
-          angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-          if (angle < 0) angle += 360;
-        } else {
-          angle = lastAngle;
-        }
-        return angle;
-      }
-      return lastAngle;
-    };
-
-    const handleRotationEnd = () => {
-      if (wheelRef.current) {
-        const angle = getCurrentRotation();
-        wheelRef.current.style.transition = 'none';
-        wheelRef.current.style.transform = `rotate(${angle % 360}deg)`;
-
-        // Сохраняем угол в localStorage
-        localStorage.setItem('wheelLastAngle', angle % 360);
-        setLastAngle(angle % 360);
-      }
-      setIsSpinning(false);
-
-      // Дополнительная логика после вращения
-    };
+    } catch (error) {
+      console.error('Error handling wheel spin:', error);
+      alert('Failed to handle the wheel spin. Please try again later.');
+    }
+  };
   
 
   return (
