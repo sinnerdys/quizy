@@ -35,12 +35,16 @@ const QuizyWheel = () => {
             const endAngle = startAngle + sectorAngle;
 
             // Заполнение сектора цветом
-            ctx.fillStyle = i % 2 === 0 ? '#152A60' : '#4365C0';
+            ctx.fillStyle = '#152A60'; // Цвет сектора
             ctx.beginPath();
             ctx.moveTo(centerX, centerY);
             ctx.arc(centerX, centerY, radius, startAngle, endAngle);
             ctx.closePath();
             ctx.fill();
+
+            // Обводка границ сектора
+            ctx.strokeStyle = '#4365C0';
+            ctx.lineWidth = 2;
             ctx.stroke();
 
             // Добавление текста приза в центр сектора
@@ -49,15 +53,22 @@ const QuizyWheel = () => {
             ctx.rotate(startAngle + sectorAngle / 2);
             ctx.textAlign = 'right';
             ctx.fillStyle = '#FFFFFF';
-            ctx.font = '16px Arial';
+            ctx.font = '24px Arial';
             ctx.fillText(prizes[i], radius - 10, 10);
             ctx.restore();
         }
 
-        // Рисуем центр колеса
+        // Рисуем обводку всего колеса
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.strokeStyle = '#4365C0'; // Цвет обводки колеса
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Рисуем центральный круг
         ctx.beginPath();
         ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
-        ctx.fillStyle = '#4365C0';
+        ctx.fillStyle = '#4365C0'; // Цвет центрального круга
         ctx.fill();
     };
 
@@ -132,7 +143,7 @@ const QuizyWheel = () => {
                 </div>
             </div>
             <div className="wheel-container">
-                <canvas ref={canvasRef} width="400" height="400"></canvas>
+                <canvas ref={canvasRef} width="500" height="500"></canvas>
                 {/* Стрелка в центре */}
                 <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
             </div>
