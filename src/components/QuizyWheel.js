@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import './QuizyWheel.css';
 import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
@@ -38,14 +38,9 @@ const QuizyWheel = () => {
       if (data.success) {
         const { prize, newBalance, angle } = data;
 
-        // Расчёт финального угла вращения, чтобы указать на выигрышный сектор на отметке 50 градусов
-        const WIN_ANGLE = 50; // Фиксированный угол, на котором должна остановиться стрелка
-        const spins = 5; // Количество полных оборотов
-        const finalAngle = spins * 360 + WIN_ANGLE - angle;
-
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-          wheelRef.current.style.transform = `rotate(${finalAngle}deg)`;
+          wheelRef.current.style.transform = `rotate(${angle}deg)`;
         }
 
         setTimeout(() => {
