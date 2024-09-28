@@ -9,18 +9,6 @@ const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const initialRotation = 1150 % 360;
 
-  // Призы и их углы
-  const prizes = [
-    { prize: 500, angle: 295 },
-    { prize: 1000, angle: 340 },
-    { prize: 1500, angle: 25 },
-    { prize: 2000, angle: 70 },
-    { prize: 2500, angle: 115 },
-    { prize: 3000, angle: 160 },
-    { prize: 5000, angle: 205 },
-    { prize: 10000, angle: 251 }
-  ];
-
   const [lastAngle, setLastAngle] = useState(initialRotation);
 
   useEffect(() => {
@@ -52,7 +40,7 @@ const QuizyWheel = () => {
     }
 
     try {
-      // Запрос к Firebase Function для получения приза
+      // Запрос к Firebase Function для получения приза и угла
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
         method: 'POST',
         headers: {
@@ -64,16 +52,12 @@ const QuizyWheel = () => {
       const data = await response.json();
 
       if (data.success) {
-        const { prize, newBalance } = data;
-
-        // Найти соответствующий угол для выпавшего приза
-        const prizeData = prizes.find(item => item.prize === prize);
-        const sectorAngle = prizeData ? prizeData.angle : 0;
+        const { prize, newBalance, angle } = data;
 
         const spins = 5; // Количество полных вращений
         const currentRotation = getCurrentRotation();
         const rotationNeeded =
-          spins * 360 + ((360 - sectorAngle + currentRotation) % 360);
+          spins * 360 + ((360 - angle + currentRotation) % 360);
 
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
@@ -81,7 +65,7 @@ const QuizyWheel = () => {
         }
 
         setTimeout(() => {
-          handleRotationEnd(prize, newBalance);
+          handleRotationEnd(prize, newBalance, angle);
         }, 5000);
       } else {
         alert('Something went wrong. Please try again later.');
@@ -114,14 +98,13 @@ const QuizyWheel = () => {
     return lastAngle;
   };
 
-  const handleRotationEnd = (prize, newBalance) => {
+  const handleRotationEnd = (prize, newBalance, finalAngle) => {
     if (wheelRef.current) {
-      const angle = getCurrentRotation();
       wheelRef.current.style.transition = 'none';
-      wheelRef.current.style.transform = `rotate(${angle % 360}deg)`;
+      wheelRef.current.style.transform = `rotate(${finalAngle % 360}deg)`;
 
-      localStorage.setItem('wheelLastAngle', angle % 360);
-      setLastAngle(angle % 360);
+      localStorage.setItem('wheelLastAngle', finalAngle % 360);
+      setLastAngle(finalAngle % 360);
     }
 
     setIsSpinning(false);
