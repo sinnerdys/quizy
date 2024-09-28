@@ -74,6 +74,7 @@ const QuizyWheel = () => {
     alert(`You won ${prize} tokens! Your new balance is ${newBalance} tokens.`);
   };
 
+
   return (
     <div className="quizy-wheel-container">
       <h1 className="header-title">Quizy Wheel</h1>
