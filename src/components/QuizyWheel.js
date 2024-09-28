@@ -9,8 +9,19 @@ const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const initialRotation = 1150 % 360;
 
+  // Сектора, включая их ID
+  const sectors = [
+    { id: 1, prize: 500, angle: 295 },
+    { id: 2, prize: 1000, angle: 340 },
+    { id: 3, prize: 1500, angle: 25 },
+    { id: 4, prize: 2000, angle: 70 },
+    { id: 5, prize: 2500, angle: 115 },
+    { id: 6, prize: 3000, angle: 160 },
+    { id: 7, prize: 5000, angle: 205 },
+    { id: 8, prize: 10000, angle: 251 }
+  ];
+
   useEffect(() => {
-    // Устанавливаем начальное положение колеса из localStorage
     const savedAngle = localStorage.getItem('wheelLastAngle');
     const angleToSet = savedAngle !== null ? parseFloat(savedAngle) : initialRotation;
     if (wheelRef.current) {
@@ -45,10 +56,18 @@ const QuizyWheel = () => {
       const data = await response.json();
 
       if (data.success) {
-        const { prize, newBalance, angle } = data;
+        const { prize, newBalance, angle, sectorId } = data;
+
+        // Проверяем, что сектор с таким ID действительно существует
+        const selectedSector = sectors.find(sector => sector.id === sectorId);
+        if (!selectedSector) {
+          alert('Something went wrong with determining the sector. Please try again later.');
+          setIsSpinning(false);
+          return;
+        }
 
         const spins = 5; // Количество полных вращений
-        const finalAngle = angle + spins * 360; // Увеличиваем угол на количество полных вращений
+        const finalAngle = selectedSector.angle + spins * 360; // Увеличиваем угол на количество полных вращений
 
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
