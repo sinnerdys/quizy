@@ -117,10 +117,8 @@ const QuizyWheel = () => {
     };
 
     const handleRotationEnd = (prize) => {
-        if (canvasRef.current) {
-            // Показываем алерт с выигрышем
-            alert(`You won ${prize} tokens!`);
-        }
+        // Показываем алерт с выигрышем
+        alert(`You won ${prize} tokens!`);
         setIsSpinning(false);
     };
 
