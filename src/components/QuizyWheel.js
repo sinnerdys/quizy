@@ -7,7 +7,7 @@ import TokenImageW from '../assets/TokenImage.png';
 const QuizyWheel = () => {
   const wheelRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const initialRotation = 0; // Начальный угол вращения
+  const [initialRotation, setInitialRotation] = useState(0); // Начальный угол вращения
 
   const spinWheel = async () => {
     if (isSpinning) return;
@@ -38,10 +38,16 @@ const QuizyWheel = () => {
       if (data.success) {
         const { prize, newBalance, angle } = data;
 
+        // Рассчитываем финальный угол с учетом текущего положения колеса
+        const finalRotation = initialRotation + angle;
+
         if (wheelRef.current) {
           wheelRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-          wheelRef.current.style.transform = `rotate(${angle}deg)`;
+          wheelRef.current.style.transform = `rotate(${finalRotation}deg)`;
         }
+
+        // Обновляем начальный угол для следующего вращения
+        setInitialRotation(finalRotation % 360);
 
         setTimeout(() => {
           handleRotationEnd(prize, newBalance);
