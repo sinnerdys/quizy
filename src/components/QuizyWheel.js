@@ -104,6 +104,9 @@ const QuizyWheel = () => {
                 }
 
                 setTimeout(() => {
+                    // Убедимся, что колесо осталось на конечной позиции
+                    canvasRef.current.style.transition = 'none';
+                    canvasRef.current.style.transform = `rotate(${angle}deg)`;
                     handleRotationEnd(prize);
                 }, 5000);
             }
