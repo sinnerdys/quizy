@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './QuizyWheel.css';
-import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 
 const QuizyWheel = () => {
@@ -40,6 +39,9 @@ const QuizyWheel = () => {
     const centerY = canvas.height / 2;
     const radius = 165;
 
+    // Очистка холста
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     // Угол для каждого сектора в радианах
     const sectorAngleRadians = (2 * Math.PI) / prizes.length;
 
@@ -68,15 +70,17 @@ const QuizyWheel = () => {
       ctx.restore();
     }
 
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    ctx.strokeStyle = '#4365C0';
-    ctx.lineWidth = 4;
-    ctx.stroke();
+    // Нарисовать стрелку
+    drawArrow(ctx, centerX, centerY, radius);
+  };
 
+  const drawArrow = (ctx, centerX, centerY, radius) => {
+    ctx.fillStyle = '#000080'; // Цвет стрелки
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
-    ctx.fillStyle = '#4365C0';
+    ctx.moveTo(centerX, centerY - radius - 20); // Вершина стрелки
+    ctx.lineTo(centerX - 20, centerY - radius + 30); // Левая часть основания стрелки
+    ctx.lineTo(centerX + 20, centerY - radius + 30); // Правая часть основания стрелки
+    ctx.closePath();
     ctx.fill();
   };
 
@@ -147,7 +151,6 @@ const QuizyWheel = () => {
       </div>
       <div className="wheel-container">
         <canvas ref={canvasRef} width="500" height="500"></canvas>
-        <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
       </div>
       <div className="button-container">
         <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
