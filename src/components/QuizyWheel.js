@@ -70,60 +70,58 @@ const QuizyWheel = () => {
 
     const spinWheel = async () => {
         if (isSpinning) return;
-
+      
         setIsSpinning(true);
-
+      
         const tg = window.Telegram.WebApp;
         const userId = tg.initDataUnsafe?.user?.id;
-
+      
         if (!userId) {
-            console.error('User ID not found.');
-            setIsSpinning(false);
-            return;
+          console.error('User ID not found.');
+          setIsSpinning(false);
+          return;
         }
-
+      
         try {
-            // Запрос к Firebase Function
-            const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId }),
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                const { prize, angle, prizes, sectorAngle } = data;
-
-                // Обновляем локальные значения
-                setPrizes(prizes);
-                setSectorAngle(sectorAngle);
-
-                // Количество полных оборотов
-                const spins = 5;
-                const finalRotation = spins * 360 + angle;
-
-                if (canvasRef.current) {
-                    canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-                    canvasRef.current.style.transform = `rotate(${finalRotation}deg)`;
-                }
-
-                setTimeout(() => {
-                    // Убедимся, что колесо осталось на конечной позиции
-                    if (canvasRef.current) {
-                        canvasRef.current.style.transition = 'none';
-                        canvasRef.current.style.transform = `rotate(${angle}deg)`;
-                    }
-                    handleRotationEnd(prize);
-                }, 5000);
+          // Запрос к Firebase Function
+          const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId }),
+          });
+      
+          const data = await response.json();
+      
+          if (data.success) {
+            const { prize, angle, prizes, sectorAngle } = data;
+      
+            // Обновляем локальные значения
+            setPrizes(prizes);
+            setSectorAngle(sectorAngle);
+      
+            // Количество полных оборотов
+            const spins = 5;
+            const finalRotation = spins * 360 + angle;
+      
+            if (canvasRef.current) {
+              canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
+              canvasRef.current.style.transform = `rotate(${finalRotation}deg)`;
             }
+      
+            setTimeout(() => {
+              // Убедимся, что колесо осталось на конечной позиции
+              canvasRef.current.style.transition = 'none';
+              canvasRef.current.style.transform = `rotate(${angle}deg)`;
+              handleRotationEnd(prize);
+            }, 5000);
+          }
         } catch (error) {
-            console.error('Error spinning the wheel:', error);
-            setIsSpinning(false);
+          console.error('Error spinning the wheel:', error);
+          setIsSpinning(false);
         }
-    };
+      };
 
     const handleRotationEnd = (prize) => {
         if (canvasRef.current) {
