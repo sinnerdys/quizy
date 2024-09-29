@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './QuizyWheel.css';
+import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 
 const QuizyWheel = () => {
@@ -144,23 +145,9 @@ const QuizyWheel = () => {
           <img src={TicketImage} alt="Ticket" className="ticket-image" />
         </div>
       </div>
-      <div className="wheel-container" style={{ position: 'relative' }}>
-        <div
-          className="wheel-pointer"
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -100%)',
-            width: '0',
-            height: '0',
-            borderLeft: '50px solid transparent',
-            borderRight: '50px solid transparent',
-            borderBottom: '100px solid #284286',
-            zIndex: 10,
-          }}
-        ></div>
+      <div className="wheel-container">
         <canvas ref={canvasRef} width="500" height="500"></canvas>
+        <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
       </div>
       <div className="button-container">
         <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
