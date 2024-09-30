@@ -3,16 +3,21 @@ import './GameTimer.css'; // Стили для экрана GameTimer
 import TimeIcon from '../assets/icons/time.svg'; // Импорт иконки времени
 
 function GameTimer({ onBack }) {
-  const [hours, setHours] = useState(3);
-  const [minutes, setMinutes] = useState(0);
+  const [minutes, setMinutes] = useState(5);
   const [seconds, setSeconds] = useState(0);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [randomTimes, setRandomTimes] = useState([]); // Состояние для хранения случайных времен
+  const [isBetPlaced, setIsBetPlaced] = useState(false); // Отслеживаем, сделана ли ставка
+  const [userId, setUserId] = useState(''); // Идентификатор пользователя из Telegram
 
-  // Инициализация кнопки "Back" в Telegram Web App
   useEffect(() => {
-    const tg = window.Telegram.WebApp;
+    // Получаем ID пользователя из Telegram WebApp
+    if (window.Telegram && window.Telegram.WebApp) {
+      setUserId(window.Telegram.WebApp.initDataUnsafe.user.id);
+    }
 
     // Показываем кнопку "Back"
+    const tg = window.Telegram.WebApp;
     tg.BackButton.show();
     tg.BackButton.onClick(() => {
       onBack(); // Возвращаемся на предыдущий экран через пропс onBack
@@ -23,32 +28,79 @@ function GameTimer({ onBack }) {
     };
   }, [onBack]);
 
-  // Функция обратного отсчета таймера
+  // Получение состояния таймера из Firebase
   useEffect(() => {
-    const countdown = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      } else if (minutes > 0) {
-        setMinutes(minutes - 1);
-        setSeconds(59);
-      } else if (hours > 0) {
-        setHours(hours - 1);
-        setMinutes(59);
-        setSeconds(59);
+    const fetchTimerState = async () => {
+      try {
+        const response = await fetch('https://us-central1-your-app-id.cloudfunctions.net/getCurrentTimer');
+        const timerData = await response.json();
+        setMinutes(Math.floor(timerData.remainingTime / 60));
+        setSeconds(timerData.remainingTime % 60);
+      } catch (error) {
+        console.error('Error fetching timer state:', error);
       }
-    }, 1000);
+    };
+    fetchTimerState();
 
-    return () => clearInterval(countdown);
-  }, [hours, minutes, seconds]);
+    // Обновляем таймер каждые 5 секунд
+    const interval = setInterval(fetchTimerState, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-  // Функция для преобразования времени в массив цифр
-  const formatTimeToDigits = (time) => {
-    return String(time).padStart(2, '0').split('');
-  };
+  // Запрос случайных вариантов времени с сервера
+  useEffect(() => {
+    const fetchRandomTimes = async () => {
+      try {
+        const response = await fetch('https://us-central1-your-app-id.cloudfunctions.net/getRandomTimes');
+        if (!response.ok) {
+          throw new Error('Failed to fetch random times');
+        }
+        const times = await response.json();
+        setRandomTimes(times);
+      } catch (error) {
+        console.error('Error fetching random times:', error);
+      }
+    };
+
+    fetchRandomTimes();
+  }, []);
 
   // Функция для выбора времени
   const handleSelectTime = (time) => {
-    setSelectedTime(time);
+    if (!isBetPlaced) {
+      setSelectedTime(time);
+    }
+  };
+
+  // Функция для отправки выбора пользователя на сервер при нажатии кнопки "Make bet"
+  const handleMakeBet = async () => {
+    if (!selectedTime) {
+      alert('Please select a time before making a bet.');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://us-central1-your-app-id.cloudfunctions.net/saveUserSelection', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          selectedTime,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error saving selection');
+      }
+
+      // Блокируем изменение ставки после успешной отправки
+      setIsBetPlaced(true);
+      alert('Your selection has been saved successfully!');
+    } catch (error) {
+      console.error('Error making bet:', error);
+    }
   };
 
   return (
@@ -60,27 +112,14 @@ function GameTimer({ onBack }) {
         <div id="countdown-timer">
           <div className="time-unit">
             <div className="time-digits">
-              {formatTimeToDigits(hours).map((digit, index) => (
-                <span key={`hours-${index}`} className="time-digit">{digit}</span>
-              ))}
-            </div>
-            <div className="time-label">hours</div>
-          </div>
-          <span className="time-colon">:</span>
-          <div className="time-unit">
-            <div className="time-digits">
-              {formatTimeToDigits(minutes).map((digit, index) => (
-                <span key={`minutes-${index}`} className="time-digit">{digit}</span>
-              ))}
+              {String(minutes).padStart(2, '0')}
             </div>
             <div className="time-label">minutes</div>
           </div>
           <span className="time-colon">:</span>
           <div className="time-unit">
             <div className="time-digits">
-              {formatTimeToDigits(seconds).map((digit, index) => (
-                <span key={`seconds-${index}`} className="time-digit">{digit}</span>
-              ))}
+              {String(seconds).padStart(2, '0')}
             </div>
             <div className="time-label">seconds</div>
           </div>
@@ -89,7 +128,7 @@ function GameTimer({ onBack }) {
 
       <div className="select-block">
         <h3 className="select-title">Choose your select</h3>
-        {['02:50:00', '06:30:30', '07:30:30'].map((time, index) => (
+        {randomTimes.map((time, index) => (
           <div
             key={index}
             className={`select-item ${selectedTime === time ? 'selected' : ''}`}
@@ -99,18 +138,25 @@ function GameTimer({ onBack }) {
               type="radio"
               name="select"
               checked={selectedTime === time}
-              onChange={() => handleSelectTime(time)}
+              readOnly
+              disabled={isBetPlaced} // Делаем input неактивным после выбора
             />
             <span className="select-text">
+              <img src={TimeIcon} alt="time icon" className="time-icon" />
               {time}
-              <img src={TimeIcon} alt="time icon" className="time-icon" />  
             </span>
           </div>
         ))}
       </div>
 
       <div className="buttons">
-        <button className="make-bet-button">Make bet</button>
+        <button
+          className="make-bet-button"
+          onClick={handleMakeBet}
+          disabled={isBetPlaced} // Делаем кнопку неактивной после выбора
+        >
+          Make bet
+        </button>
         <button className="bet-multiplier-button">x1</button>
       </div>
     </div>
