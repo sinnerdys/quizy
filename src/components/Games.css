@@ -12,6 +12,7 @@
     font-size: 16px;
     margin-bottom: 20px;
     color: #adc3ff;
+    text-align: center;
   }
   
   .games-list {
@@ -67,7 +68,7 @@
   }
   
   .game-play-button {
-    padding: 10px 20px;
+    padding: 10px 30px;
     background-color: #2f4fa4;
     color: white;
     border: none;
@@ -77,7 +78,7 @@
   }
   
   .game-play-button:disabled {
-    background-color: #555;
+    background-color: #182C5F;
     cursor: not-allowed;
   }
   
