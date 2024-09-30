@@ -50,15 +50,16 @@
   
   .time-labels {
     display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
+    justify-content: center;
+    gap: 5px;
   }
   
   .time-labels span {
     font-size: 14px;
     color: #adc3ff;
-    width: 70px; /* Добавлено для централизованного размещения текста под двумя цифрами */
     text-align: center;
+    flex-basis: 40px; /* Устанавливаем ширину метки равной ширине time-box */
+    flex-shrink: 0;
   }
   
   .select-block {
@@ -99,11 +100,11 @@
   .select-item input:checked::after {
     content: '';
     position: absolute;
-    top: 4px;
-    left: 4px;
-    width: 10px;
-    height: 10px;
-    background-color: #ffffff;
+    top: 5px;
+    left: 5px;
+    width: 7px;
+    height: 7px;
+    background-color: #31A6F5;
     border-radius: 50%;
   }
   
@@ -123,7 +124,6 @@
   .buttons {
     display: flex;
     gap: 10px;
-    padding: 0 20px;
   }
   
   .make-bet-button {
