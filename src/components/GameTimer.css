@@ -1,0 +1,62 @@
+.game-timer {
+    padding: 20px;
+    color: #ffffff;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .game-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+  }
+  
+  .timer-block {
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .timer-subtitle {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .timer {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+  
+  .time-box {
+    width: 30px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #192955;
+    border-radius: 5px;
+    font-size: 24px;
+    color: #ffffff;
+  }
+  
+  .time-colon {
+    font-size: 24px;
+    line-height: 50px;
+  }
+  
+  .time-labels {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5px;
+  }
+  
+  .time-labels span {
+    font-size: 14px;
+    color: #adc3ff;
+  }
+  

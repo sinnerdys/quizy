@@ -8,6 +8,7 @@ import Preloader from './components/Preloader';
 import DailyReward from './components/DailyReward';
 import Games from './components/Games';
 import QuizyWheel from './components/QuizyWheel';
+import GameTimer from './components/GameTimer';
 import './App.css';
 
 function App() {
@@ -236,6 +237,7 @@ function App() {
             <Route path="/games" element={<Games />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/wheel" element={<QuizyWheel />} />
+            <Route path="/game-timer" element={<GameTimer onBack={() => navigate('/games')} />} />
           </Routes>
           <BottomNav />
         </>
