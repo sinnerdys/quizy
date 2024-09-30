@@ -15,12 +15,12 @@
     padding: 20px;
     border-radius: 8px;
     border: 2px solid #284286;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
   
   .timer-subtitle {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     text-align: center;
   }
   
@@ -48,7 +48,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #192955;
+    background-color: #152A60;
     border-radius: 5px;
     font-size: 28px;
     color: #ffffff;
