@@ -24,14 +24,24 @@
     text-align: center;
   }
   
-  .timer {
+  #countdown-timer {
     display: flex;
     justify-content: center;
-    gap: 5px;
-    margin-bottom: 10px;
+    gap: 15px; /* Отступ между элементами времени */
   }
   
-  .time-box {
+  .time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .time-digits {
+    display: flex;
+    gap: 5px; /* Отступ между цифрами */
+  }
+  
+  .time-digit {
     width: 40px;
     height: 60px;
     display: flex;
@@ -43,24 +53,10 @@
     color: #ffffff;
   }
   
-  .time-colon {
-    font-size: 28px;
-    line-height: 60px;
-  }
-  
-  .time-labels {
-    display: flex;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 5px;
-  }
-  
-  .time-labels span {
+  .time-label {
     font-size: 14px;
     color: #adc3ff;
-    text-align: center;
-    width: 40px; /* Устанавливаем ширину метки равной ширине time-box */
-    flex-shrink: 0;
+    margin-top: 5px;
   }
   
   .select-block {
@@ -128,7 +124,7 @@
   }
   
   .make-bet-button {
-    flex: 4; /* Устанавливаем соотношение ширины 80% */
+    flex: 4;
     padding: 15px 0;
     background-color: #2f4fa4;
     color: white;
@@ -139,9 +135,9 @@
   }
   
   .bet-multiplier-button {
-    flex: 1; /* Устанавливаем соотношение ширины 20% */
+    flex: 1;
     padding: 15px 0;
-    background-color: #f39c12; /* Оранжевый цвет */
+    background-color: #f39c12;
     color: white;
     border: none;
     border-radius: 5px;

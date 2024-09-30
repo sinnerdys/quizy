@@ -57,23 +57,31 @@ function GameTimer({ onBack }) {
 
       <div className="timer-container">
         <h2 className="timer-subtitle">When timer will stop?</h2>
-        <div className="timer">
-          {formatTimeToDigits(hours).map((digit, index) => (
-            <div key={`hours-${index}`} className="time-box">{digit}</div>
-          ))}
-          <span className="time-colon">:</span>
-          {formatTimeToDigits(minutes).map((digit, index) => (
-            <div key={`minutes-${index}`} className="time-box">{digit}</div>
-          ))}
-          <span className="time-colon">:</span>
-          {formatTimeToDigits(seconds).map((digit, index) => (
-            <div key={`seconds-${index}`} className="time-box">{digit}</div>
-          ))}
-        </div>
-        <div className="time-labels">
-          <span className="time-label">hours</span>
-          <span className="time-label">minutes</span>
-          <span className="time-label">seconds</span>
+        <div id="countdown-timer">
+          <div className="time-unit">
+            <div className="time-digits">
+              {formatTimeToDigits(hours).map((digit, index) => (
+                <span key={`hours-${index}`} className="time-digit">{digit}</span>
+              ))}
+            </div>
+            <div className="time-label">hours</div>
+          </div>
+          <div className="time-unit">
+            <div className="time-digits">
+              {formatTimeToDigits(minutes).map((digit, index) => (
+                <span key={`minutes-${index}`} className="time-digit">{digit}</span>
+              ))}
+            </div>
+            <div className="time-label">minutes</div>
+          </div>
+          <div className="time-unit">
+            <div className="time-digits">
+              {formatTimeToDigits(seconds).map((digit, index) => (
+                <span key={`seconds-${index}`} className="time-digit">{digit}</span>
+              ))}
+            </div>
+            <div className="time-label">seconds</div>
+          </div>
         </div>
       </div>
 
