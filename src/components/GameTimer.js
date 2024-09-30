@@ -32,7 +32,7 @@ function GameTimer({ onBack }) {
   useEffect(() => {
     const fetchTimerState = async () => {
       try {
-        const response = await fetch('https://us-central1-your-app-id.cloudfunctions.net/getCurrentTimer');
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
         const timerData = await response.json();
         setMinutes(Math.floor(timerData.remainingTime / 60));
         setSeconds(timerData.remainingTime % 60);
@@ -51,7 +51,7 @@ function GameTimer({ onBack }) {
   useEffect(() => {
     const fetchRandomTimes = async () => {
       try {
-        const response = await fetch('https://us-central1-your-app-id.cloudfunctions.net/getRandomTimes');
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getRandomTimes');
         if (!response.ok) {
           throw new Error('Failed to fetch random times');
         }
@@ -80,7 +80,7 @@ function GameTimer({ onBack }) {
     }
 
     try {
-      const response = await fetch('https://us-central1-your-app-id.cloudfunctions.net/saveUserSelection', {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUserSelection', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
