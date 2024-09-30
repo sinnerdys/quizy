@@ -67,6 +67,11 @@ function GameTimer({ onBack }) {
     fetchRandomTimes();
   }, []);
 
+  // Функция для преобразования времени в массив цифр
+  const formatTimeToDigits = (time) => {
+    return String(time).padStart(2, '0').split('');
+  };
+
   // Функция для выбора времени
   const handleSelectTime = (time) => {
     if (!isBetPlaced) {
@@ -114,21 +119,27 @@ function GameTimer({ onBack }) {
         <div id="countdown-timer">
           <div className="time-unit">
             <div className="time-digits">
-              {String(hours).padStart(2, '0')}
+              {formatTimeToDigits(hours).map((digit, index) => (
+                <span key={`hours-${index}`} className="time-digit">{digit}</span>
+              ))}
             </div>
             <div className="time-label">hours</div>
           </div>
           <span className="time-colon">:</span>
           <div className="time-unit">
             <div className="time-digits">
-              {String(minutes).padStart(2, '0')}
+              {formatTimeToDigits(minutes).map((digit, index) => (
+                <span key={`minutes-${index}`} className="time-digit">{digit}</span>
+              ))}
             </div>
             <div className="time-label">minutes</div>
           </div>
           <span className="time-colon">:</span>
           <div className="time-unit">
             <div className="time-digits">
-              {String(seconds).padStart(2, '0')}
+              {formatTimeToDigits(seconds).map((digit, index) => (
+                <span key={`seconds-${index}`} className="time-digit">{digit}</span>
+              ))}
             </div>
             <div className="time-label">seconds</div>
           </div>
