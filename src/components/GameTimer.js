@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './GameTimer.css'; // Стили для экрана GameTimer
-import TimeIcon from '../assets/time_icon.png'; // Импорт иконки времени
+import TimeIcon from '../assets/icons/time.svg'; // Импорт иконки времени
 
 function GameTimer({ onBack }) {
   const [hours, setHours] = useState(3);
