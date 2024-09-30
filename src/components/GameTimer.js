@@ -34,7 +34,7 @@ function GameTimer({ onBack }) {
   useEffect(() => {
     const fetchTimerState = async () => {
       try {
-        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimerr');
         if (!response.ok) {
           throw new Error('Failed to fetch timer state');
         }
