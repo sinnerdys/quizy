@@ -34,16 +34,25 @@ function GameTimer({ onBack }) {
     const fetchTimerState = async () => {
       try {
         const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
+        if (!response.ok) {
+          throw new Error('Failed to fetch timer state');
+        }
         const timerData = await response.json();
+  
+        if (isNaN(timerData.remainingTime)) {
+          throw new Error('Invalid timer data received');
+        }
+  
         setHours(Math.floor(timerData.remainingTime / 3600));
         setMinutes(Math.floor((timerData.remainingTime % 3600) / 60));
         setSeconds(timerData.remainingTime % 60);
       } catch (error) {
         console.error('Error fetching timer state:', error);
+        // Дополнительная обработка ошибок, если необходимо
       }
     };
     fetchTimerState();
-
+  
     // Обновляем таймер каждые 5 секунд
     const interval = setInterval(fetchTimerState, 5000);
     return () => clearInterval(interval);
@@ -58,12 +67,17 @@ function GameTimer({ onBack }) {
           throw new Error('Failed to fetch random times');
         }
         const times = await response.json();
+  
+        if (!Array.isArray(times) || times.some(time => typeof time !== 'string')) {
+          throw new Error('Invalid random times data received');
+        }
+  
         setRandomTimes(times);
       } catch (error) {
         console.error('Error fetching random times:', error);
       }
     };
-
+  
     fetchRandomTimes();
   }, []);
 
