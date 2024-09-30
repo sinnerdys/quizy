@@ -6,6 +6,7 @@ function GameTimer({ onBack }) {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(5);
   const [seconds, setSeconds] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [randomTimes, setRandomTimes] = useState([]); // Состояние для хранения случайных времен
   const [isBetPlaced, setIsBetPlaced] = useState(false); // Отслеживаем, сделана ли ставка
@@ -29,7 +30,7 @@ function GameTimer({ onBack }) {
     };
   }, [onBack]);
 
-  // Получение состояния таймера из Firebase
+  // Получение состояния таймера из Firebase при первой загрузке
   useEffect(() => {
     const fetchTimerState = async () => {
       try {
@@ -38,25 +39,48 @@ function GameTimer({ onBack }) {
           throw new Error('Failed to fetch timer state');
         }
         const timerData = await response.json();
-  
+
         if (isNaN(timerData.remainingTime)) {
           throw new Error('Invalid timer data received');
         }
-  
-        setHours(Math.floor(timerData.remainingTime / 3600));
-        setMinutes(Math.floor((timerData.remainingTime % 3600) / 60));
-        setSeconds(timerData.remainingTime % 60);
+
+        // Устанавливаем начальное значение оставшегося времени
+        setRemainingTime(timerData.remainingTime);
       } catch (error) {
         console.error('Error fetching timer state:', error);
-        // Дополнительная обработка ошибок, если необходимо
       }
     };
+
     fetchTimerState();
-  
-    // Обновляем таймер каждые 5 секунд
-    const interval = setInterval(fetchTimerState, 5000);
-    return () => clearInterval(interval);
   }, []);
+
+  // Локальный отсчет таймера каждую секунду
+  useEffect(() => {
+    if (remainingTime === null) return;
+
+    // Устанавливаем начальные значения часов, минут и секунд
+    setHours(Math.floor(remainingTime / 3600));
+    setMinutes(Math.floor((remainingTime % 3600) / 60));
+    setSeconds(remainingTime % 60);
+
+    // Запускаем интервал для обновления каждую секунду
+    const interval = setInterval(() => {
+      setRemainingTime((prevTime) => {
+        if (prevTime > 0) {
+          const newTime = prevTime - 1;
+          setHours(Math.floor(newTime / 3600));
+          setMinutes(Math.floor((newTime % 3600) / 60));
+          setSeconds(newTime % 60);
+          return newTime;
+        } else {
+          clearInterval(interval);
+          return 0;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [remainingTime]);
 
   // Запрос случайных вариантов времени с сервера
   useEffect(() => {
@@ -67,17 +91,17 @@ function GameTimer({ onBack }) {
           throw new Error('Failed to fetch random times');
         }
         const times = await response.json();
-  
+
         if (!Array.isArray(times) || times.some(time => typeof time !== 'string')) {
           throw new Error('Invalid random times data received');
         }
-  
+
         setRandomTimes(times);
       } catch (error) {
         console.error('Error fetching random times:', error);
       }
     };
-  
+
     fetchRandomTimes();
   }, []);
 
