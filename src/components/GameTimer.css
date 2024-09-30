@@ -50,13 +50,15 @@
   
   .time-labels {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top: 5px;
   }
   
   .time-labels span {
     font-size: 14px;
     color: #adc3ff;
+    width: 70px; /* Добавлено для централизованного размещения текста под двумя цифрами */
+    text-align: center;
   }
   
   .select-block {
@@ -94,23 +96,39 @@
     position: relative;
   }
   
-  .select-item input:checked {
-    background-color: #3f6fb5;
+  .select-item input:checked::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border-radius: 50%;
   }
   
   .select-text {
     font-size: 16px;
     color: #ffffff;
+    display: flex;
+    align-items: center;
+  }
+  
+  .time-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
   }
   
   .buttons {
     display: flex;
-    justify-content: space-between;
+    gap: 10px;
     padding: 0 20px;
   }
   
   .make-bet-button {
-    padding: 15px 25px;
+    flex: 4; /* Устанавливаем соотношение ширины 80% */
+    padding: 15px 0;
     background-color: #2f4fa4;
     color: white;
     border: none;
@@ -120,7 +138,8 @@
   }
   
   .bet-multiplier-button {
-    padding: 15px 25px;
+    flex: 1; /* Устанавливаем соотношение ширины 20% */
+    padding: 15px 0;
     background-color: #f39c12; /* Оранжевый цвет */
     color: white;
     border: none;

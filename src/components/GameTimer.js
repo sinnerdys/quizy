@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './GameTimer.css'; // Стили для экрана GameTimer
+import TimeIcon from '../assets/time_icon.png'; // Импорт иконки времени
 
 function GameTimer({ onBack }) {
   const [hours, setHours] = useState(3);
@@ -70,9 +71,9 @@ function GameTimer({ onBack }) {
           ))}
         </div>
         <div className="time-labels">
-          <span>hours</span>
-          <span>minutes</span>
-          <span>seconds</span>
+          <span className="time-label">hours</span>
+          <span className="time-label">minutes</span>
+          <span className="time-label">seconds</span>
         </div>
       </div>
 
@@ -90,7 +91,10 @@ function GameTimer({ onBack }) {
               checked={selectedTime === time}
               onChange={() => handleSelectTime(time)}
             />
-            <span className="select-text">{time}</span>
+            <span className="select-text">
+              <img src={TimeIcon} alt="time icon" className="time-icon" />
+              {time}
+            </span>
           </div>
         ))}
       </div>
