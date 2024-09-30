@@ -8,14 +8,14 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 20px;
+    margin-top: 50px;
   }
   
   .timer-container {
     padding: 20px;
-    background-color: #1a2b5b;
     border-radius: 8px;
     border: 2px solid #284286;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
   
   .timer-subtitle {
@@ -60,10 +60,6 @@
   }
   
   .select-block {
-    padding: 20px;
-    background-color: #1a2b5b;
-    border-radius: 8px;
-    border: 2px solid #284286;
     margin-bottom: 20px;
   }
   
@@ -76,7 +72,6 @@
     display: flex;
     align-items: center;
     padding: 15px;
-    background-color: #192955;
     border-radius: 8px;
     border: 2px solid #284286;
     margin-bottom: 10px;
@@ -84,7 +79,7 @@
   }
   
   .select-item.selected {
-    border-color: #3f6fb5;
+    border-color: #31A6F5;
   }
   
   .select-item input {

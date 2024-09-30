@@ -78,7 +78,7 @@ function GameTimer({ onBack }) {
 
       <div className="select-block">
         <h3 className="select-title">Choose your select</h3>
-        {['02:50:00', '06:30:30', '06:30:30'].map((time, index) => (
+        {['02:50:00', '06:30:30', '07:30:30'].map((time, index) => (
           <div
             key={index}
             className={`select-item ${selectedTime === time ? 'selected' : ''}`}
