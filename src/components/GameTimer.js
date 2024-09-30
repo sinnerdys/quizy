@@ -66,6 +66,7 @@ function GameTimer({ onBack }) {
             </div>
             <div className="time-label">hours</div>
           </div>
+          <span className="time-colon">:</span>
           <div className="time-unit">
             <div className="time-digits">
               {formatTimeToDigits(minutes).map((digit, index) => (
@@ -74,6 +75,7 @@ function GameTimer({ onBack }) {
             </div>
             <div className="time-label">minutes</div>
           </div>
+          <span className="time-colon">:</span>
           <div className="time-unit">
             <div className="time-digits">
               {formatTimeToDigits(seconds).map((digit, index) => (

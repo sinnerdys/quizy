@@ -27,6 +27,7 @@
   #countdown-timer {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 15px; /* Отступ между элементами времени */
   }
   
@@ -51,6 +52,14 @@
     border-radius: 5px;
     font-size: 28px;
     color: #ffffff;
+  }
+  
+  .time-colon {
+    font-size: 28px;
+    line-height: 60px;
+    display: flex;
+    align-items: center;
+    color: #ffffff; /* Цвет для соответствия */
   }
   
   .time-label {
@@ -92,17 +101,22 @@
     background-color: #192955;
     cursor: pointer;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
-  .select-item input:checked::after {
+  .select-item input::before {
     content: '';
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 7px;
-    height: 7px;
-    background-color: #31A6F5;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
+    background-color: transparent; /* По умолчанию прозрачный */
+    position: absolute;
+  }
+  
+  .select-item input:checked::before {
+    background-color: #31A6F5; /* Цвет внутреннего круга при выборе */
   }
   
   .select-text {
