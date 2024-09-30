@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './GameTimer.css'; // Стили для экрана GameTimer
 
 function GameTimer({ onBack }) {
-  const [hours, setHours] = useState(24);
+  const [hours, setHours] = useState(3);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -52,11 +52,9 @@ function GameTimer({ onBack }) {
 
   return (
     <div className="game-timer">
-      <div className="header">
-        <h1 className="game-title">QUIZY TIMER</h1>
-      </div>
+      <h1 className="game-title">QUIZY TIMER</h1>
 
-      <div className="timer-block">
+      <div className="timer-container">
         <h2 className="timer-subtitle">When timer will stop?</h2>
         <div className="timer">
           {formatTimeToDigits(hours).map((digit, index) => (

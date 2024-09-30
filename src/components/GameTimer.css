@@ -3,50 +3,49 @@
     color: #ffffff;
   }
   
-  .header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
   .game-title {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
-    width: 100%;
+    margin-bottom: 20px;
   }
   
-  .timer-block {
-    margin-bottom: 30px;
-    text-align: center;
+  .timer-container {
+    padding: 20px;
+    background-color: #1a2b5b;
+    border-radius: 8px;
+    border: 2px solid #284286;
+    margin-bottom: 20px;
   }
   
   .timer-subtitle {
     font-size: 18px;
     margin-bottom: 10px;
+    text-align: center;
   }
   
   .timer {
     display: flex;
     justify-content: center;
     gap: 5px;
+    margin-bottom: 10px;
   }
   
   .time-box {
-    width: 30px;
-    height: 50px;
+    width: 40px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #192955;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 28px;
     color: #ffffff;
   }
   
   .time-colon {
-    font-size: 24px;
-    line-height: 50px;
+    font-size: 28px;
+    line-height: 60px;
   }
   
   .time-labels {
@@ -58,5 +57,80 @@
   .time-labels span {
     font-size: 14px;
     color: #adc3ff;
+  }
+  
+  .select-block {
+    padding: 20px;
+    background-color: #1a2b5b;
+    border-radius: 8px;
+    border: 2px solid #284286;
+    margin-bottom: 20px;
+  }
+  
+  .select-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .select-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background-color: #192955;
+    border-radius: 8px;
+    border: 2px solid #284286;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .select-item.selected {
+    border-color: #3f6fb5;
+  }
+  
+  .select-item input {
+    margin-right: 10px;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #3f6fb5;
+    border-radius: 50%;
+    background-color: #192955;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .select-item input:checked {
+    background-color: #3f6fb5;
+  }
+  
+  .select-text {
+    font-size: 16px;
+    color: #ffffff;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+  
+  .make-bet-button {
+    padding: 15px 25px;
+    background-color: #2f4fa4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .bet-multiplier-button {
+    padding: 15px 25px;
+    background-color: #f39c12; /* Оранжевый цвет */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
   }
   
