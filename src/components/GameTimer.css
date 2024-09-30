@@ -52,13 +52,14 @@
     display: flex;
     justify-content: center;
     gap: 5px;
+    margin-top: 5px;
   }
   
   .time-labels span {
     font-size: 14px;
     color: #adc3ff;
     text-align: center;
-    flex-basis: 40px; /* Устанавливаем ширину метки равной ширине time-box */
+    width: 40px; /* Устанавливаем ширину метки равной ширине time-box */
     flex-shrink: 0;
   }
   
