@@ -3,6 +3,7 @@ import './GameTimer.css'; // Стили для экрана GameTimer
 import TimeIcon from '../assets/icons/time.svg'; // Импорт иконки времени
 
 function GameTimer({ onBack }) {
+  const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(5);
   const [seconds, setSeconds] = useState(0);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -34,7 +35,8 @@ function GameTimer({ onBack }) {
       try {
         const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
         const timerData = await response.json();
-        setMinutes(Math.floor(timerData.remainingTime / 60));
+        setHours(Math.floor(timerData.remainingTime / 3600));
+        setMinutes(Math.floor((timerData.remainingTime % 3600) / 60));
         setSeconds(timerData.remainingTime % 60);
       } catch (error) {
         console.error('Error fetching timer state:', error);
@@ -110,6 +112,13 @@ function GameTimer({ onBack }) {
       <div className="timer-container">
         <h2 className="timer-subtitle">When timer will stop?</h2>
         <div id="countdown-timer">
+          <div className="time-unit">
+            <div className="time-digits">
+              {String(hours).padStart(2, '0')}
+            </div>
+            <div className="time-label">hours</div>
+          </div>
+          <span className="time-colon">:</span>
           <div className="time-unit">
             <div className="time-digits">
               {String(minutes).padStart(2, '0')}
