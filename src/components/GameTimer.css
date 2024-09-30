@@ -61,6 +61,7 @@
     align-items: center;
     color: #ffffff; /* Цвет для соответствия */
     margin: 0; /* Убираем лишние отступы */
+    margin-bottom: 20px;
   }
   
   .time-label {
@@ -99,7 +100,6 @@
     height: 20px;
     border: 2px solid #3f6fb5;
     border-radius: 50%;
-    background-color: #192955;
     cursor: pointer;
     position: relative;
     display: flex;
@@ -128,9 +128,9 @@
   }
   
   .time-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
   }
   
   .buttons {

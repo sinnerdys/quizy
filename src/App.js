@@ -21,6 +21,7 @@ function App() {
   const [hasCheckedDailyReward, setHasCheckedDailyReward] = useState(false); // Флаг проверки награды
 
   const navigate = useNavigate();
+  const location = useLocation(); // Добавляем хук для получения текущего маршрута
 
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
@@ -239,7 +240,8 @@ function App() {
             <Route path="/wheel" element={<QuizyWheel />} />
             <Route path="/game-timer" element={<GameTimer onBack={() => navigate('/games')} />} />
           </Routes>
-          <BottomNav />
+                    {/* Условный рендеринг BottomNav */}
+          {location.pathname !== '/game-timer' && <BottomNav />}
         </>
       )}
     </div>

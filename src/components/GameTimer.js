@@ -102,8 +102,8 @@ function GameTimer({ onBack }) {
               onChange={() => handleSelectTime(time)}
             />
             <span className="select-text">
-              <img src={TimeIcon} alt="time icon" className="time-icon" />
               {time}
+              <img src={TimeIcon} alt="time icon" className="time-icon" />  
             </span>
           </div>
         ))}
