@@ -114,73 +114,72 @@ useEffect(() => {
     return String(time).padStart(2, '0').split('');
   };
 
-  // Функция для выбора времени
-  const handleSelectTime = (time) => {
-    if (isBetPlaced) return;
+// Функция для выбора времени
+const handleSelectTime = (time) => {
+  if (isBetPlaced) return;
 
-    const [selectedMinutes, selectedSeconds] = time.split(':').map(Number);
+  const [selectedMinutes, selectedSeconds] = time.split(':').map(Number);
+  const selectedTotalSeconds = selectedMinutes * 60 + selectedSeconds;
+
+  // Проверяем, что выбранное время еще не прошло
+  if (selectedTotalSeconds <= remainingTime) {
+    alert('This time has already passed. Please select another time.');
+  } else {
+    setSelectedTime(time);
+  }
+};
+
+ // Функция для отправки выбора пользователя на сервер при нажатии кнопки "Make bet"
+ const handleMakeBet = async () => {
+  if (!selectedTime) {
+    alert('Please select a time before making a bet.');
+    return;
+  }
+
+  try {
+    // Проверяем текущее состояние таймера перед отправкой ставки
+    const timerResponse = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
+    if (!timerResponse.ok) {
+      throw new Error('Failed to fetch timer state');
+    }
+    const timerData = await timerResponse.json();
+
+    if (isNaN(timerData.remainingTime)) {
+      throw new Error('Invalid timer data received');
+    }
+
+    setRemainingTime(timerData.remainingTime); // Обновляем оставшееся время
+
+    const [selectedMinutes, selectedSeconds] = selectedTime.split(':').map(Number);
     const selectedTotalSeconds = selectedMinutes * 60 + selectedSeconds;
 
     // Проверяем, что выбранное время еще не прошло
-    if (selectedTotalSeconds >= remainingTime) {
-      setSelectedTime(time);
-    } else {
-      alert('This time has already passed. Please select another time.');
-    }
-  };
+    if (selectedTotalSeconds > timerData.remainingTime) {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUserSelection', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          selectedTime,
+        }),
+      });
 
- // Функция для отправки выбора пользователя на сервер при нажатии кнопки "Make bet"
-const handleMakeBet = async () => {
-    if (!selectedTime) {
-      alert('Please select a time before making a bet.');
-      return;
+      if (!response.ok) {
+        throw new Error('Error saving selection');
+      }
+
+      // Блокируем изменение ставки после успешной отправки
+      setIsBetPlaced(true);
+      alert('Your selection has been saved successfully!');
+    } else {
+      alert('The selected time has already passed. Please select a valid time.');
     }
-  
-    try {
-      // Проверяем текущее состояние таймера перед отправкой ставки
-      const timerResponse = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
-      if (!timerResponse.ok) {
-        throw new Error('Failed to fetch timer state');
-      }
-      const timerData = await timerResponse.json();
-  
-      if (isNaN(timerData.remainingTime)) {
-        throw new Error('Invalid timer data received');
-      }
-  
-      // Обновляем оставшееся время из ответа сервера
-      setRemainingTime(timerData.remainingTime);
-  
-      const [selectedMinutes, selectedSeconds] = selectedTime.split(':').map(Number);
-      const selectedTotalSeconds = selectedMinutes * 60 + selectedSeconds;
-  
-      // Проверяем, что выбранное время еще не прошло
-      if (selectedTotalSeconds >= timerData.remainingTime) {
-        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUserSelection', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId,
-            selectedTime,
-          }),
-        });
-  
-        if (!response.ok) {
-          throw new Error('Error saving selection');
-        }
-  
-        // Блокируем изменение ставки после успешной отправки
-        setIsBetPlaced(true);
-        alert('Your selection has been saved successfully!');
-      } else {
-        alert('The selected time has already passed. Please select a valid time.');
-      }
-    } catch (error) {
-      console.error('Error making bet:', error);
-    }
-  };
+  } catch (error) {
+    console.error('Error making bet:', error);
+  }
+};
 
   // Функция для проверки, выиграл ли пользователь
   const checkForWinner = async () => {
