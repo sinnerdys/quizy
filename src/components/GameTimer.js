@@ -97,11 +97,11 @@ function GameTimer({ onBack }) {
     const [selectedMinutes, selectedSeconds] = time.split(':').map(Number);
     const selectedTotalSeconds = selectedMinutes * 60 + selectedSeconds;
 
-    // Проверяем, что выбранное время еще не прошло
-    if (selectedTotalSeconds <= remainingTime) {
-      alert('This time has already passed. Please select another time.');
-    } else {
+    // Позволяем пользователю выбирать время, если текущее значение таймера больше выбранного времени
+    if (selectedTotalSeconds > remainingTime) {
       setSelectedTime(time);
+    } else {
+      alert('This time has already passed. Please select another time.');
     }
   };
 
