@@ -84,29 +84,30 @@ function GameTimer({ onBack }) {
     return () => clearInterval(interval);
   }, [remainingTime]);
 
-  // Запрос случайных вариантов времени с сервера
-  useEffect(() => {
+  // Запрос случайных вариантов времени с сервера при первой загрузке
+useEffect(() => {
     const fetchRandomTimes = async () => {
       try {
-        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getRandomTimes');
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
         if (!response.ok) {
-          throw new Error('Failed to fetch random times');
+          throw new Error('Failed to fetch timer state');
         }
-        const times = await response.json();
-
-        if (!Array.isArray(times) || times.some(time => typeof time !== 'string')) {
+        const timerData = await response.json();
+  
+        if (!Array.isArray(timerData.randomTimes) || timerData.randomTimes.some(time => typeof time !== 'string')) {
           throw new Error('Invalid random times data received');
         }
-
-        setRandomTimes(times);
+  
+        setRandomTimes(timerData.randomTimes);
+        setRemainingTime(timerData.remainingTime);
       } catch (error) {
         console.error('Error fetching random times:', error);
       }
     };
-
+  
     fetchRandomTimes();
   }, []);
-
+  
   // Функция для преобразования времени в массив цифр
   const formatTimeToDigits = (time) => {
     return String(time).padStart(2, '0').split('');
