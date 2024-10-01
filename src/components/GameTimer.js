@@ -11,6 +11,7 @@ function GameTimer({ onBack }) {
   const [randomTimes, setRandomTimes] = useState([]); // Состояние для хранения случайных времен
   const [isBetPlaced, setIsBetPlaced] = useState(false); // Отслеживаем, сделана ли ставка
   const [userId, setUserId] = useState(''); // Идентификатор пользователя из Telegram
+  const [reward, setReward] = useState(null); // Состояние для хранения информации о выигрыше
 
   useEffect(() => {
     // Получаем ID пользователя из Telegram WebApp
@@ -34,7 +35,7 @@ function GameTimer({ onBack }) {
   useEffect(() => {
     const fetchTimerState = async () => {
       try {
-        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimerr');
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
         if (!response.ok) {
           throw new Error('Failed to fetch timer state');
         }
@@ -74,6 +75,7 @@ function GameTimer({ onBack }) {
           return newTime;
         } else {
           clearInterval(interval);
+          checkForWinner(); // Проверяем, выиграл ли пользователь
           return 0;
         }
       });
@@ -112,8 +114,16 @@ function GameTimer({ onBack }) {
 
   // Функция для выбора времени
   const handleSelectTime = (time) => {
-    if (!isBetPlaced) {
+    if (isBetPlaced) return;
+
+    const [selectedMinutes, selectedSeconds] = time.split(':').map(Number);
+    const selectedTotalSeconds = selectedMinutes * 60 + selectedSeconds;
+
+    // Проверяем, что выбранное время еще не прошло
+    if (selectedTotalSeconds >= remainingTime) {
       setSelectedTime(time);
+    } else {
+      alert('This time has already passed. Please select another time.');
     }
   };
 
@@ -125,26 +135,72 @@ function GameTimer({ onBack }) {
     }
 
     try {
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUserSelection', {
+      // Проверяем текущее состояние таймера перед отправкой ставки
+      const timerResponse = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getCurrentTimer');
+      if (!timerResponse.ok) {
+        throw new Error('Failed to fetch timer state');
+      }
+      const timerData = await timerResponse.json();
+
+      if (isNaN(timerData.remainingTime)) {
+        throw new Error('Invalid timer data received');
+      }
+
+      const [selectedMinutes, selectedSeconds] = selectedTime.split(':').map(Number);
+      const selectedTotalSeconds = selectedMinutes * 60 + selectedSeconds;
+
+      // Проверяем, что выбранное время еще не прошло
+      if (selectedTotalSeconds >= timerData.remainingTime) {
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUserSelection', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId,
+            selectedTime,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error saving selection');
+        }
+
+        // Блокируем изменение ставки после успешной отправки
+        setIsBetPlaced(true);
+        alert('Your selection has been saved successfully!');
+      } else {
+        alert('The selected time has already passed. Please select a valid time.');
+      }
+    } catch (error) {
+      console.error('Error making bet:', error);
+    }
+  };
+
+  // Функция для проверки, выиграл ли пользователь
+  const checkForWinner = async () => {
+    try {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/determineWinners', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           userId,
-          selectedTime,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Error saving selection');
+        throw new Error('Error determining winner');
       }
 
-      // Блокируем изменение ставки после успешной отправки
-      setIsBetPlaced(true);
-      alert('Your selection has been saved successfully!');
+      const result = await response.json();
+      if (result.isWinner) {
+        setReward(result.reward);
+        alert(`Congratulations! You've won ${result.reward} tokens!`);
+      }
     } catch (error) {
-      console.error('Error making bet:', error);
+      console.error('Error determining winner:', error);
     }
   };
 
@@ -200,8 +256,8 @@ function GameTimer({ onBack }) {
               disabled={isBetPlaced} // Делаем input неактивным после выбора
             />
             <span className="select-text">
-              <img src={TimeIcon} alt="time icon" className="time-icon" />
               {time}
+              <img src={TimeIcon} alt="time icon" className="time-icon" />
             </span>
           </div>
         ))}
@@ -217,6 +273,12 @@ function GameTimer({ onBack }) {
         </button>
         <button className="bet-multiplier-button">x1</button>
       </div>
+
+      {reward && (
+        <div className="reward-container">
+          <p>Congratulations! You've won {reward} tokens!</p>
+        </div>
+      )}
     </div>
   );
 }
