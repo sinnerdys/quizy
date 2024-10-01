@@ -98,7 +98,7 @@ function GameTimer({ onBack }) {
     const selectedTotalSeconds = selectedMinutes * 60 + selectedSeconds;
 
     // Проверяем, что выбранное время еще не прошло
-    if (selectedTotalSeconds > (300 - remainingTime)) {
+    if (remainingTime > selectedTotalSeconds) {
       setSelectedTime(time);
     } else {
       alert('This time has already passed. Please select another time.');
@@ -130,7 +130,7 @@ function GameTimer({ onBack }) {
       const selectedTotalSeconds = selectedMinutes * 60 + selectedSeconds;
 
       // Проверяем, что выбранное время еще не прошло
-      if (selectedTotalSeconds > (300 - timerData.remainingTime)) {
+      if (timerData.remainingTime > selectedTotalSeconds) {
         const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUserSelection', {
           method: 'POST',
           headers: {
@@ -156,7 +156,7 @@ function GameTimer({ onBack }) {
       console.error('Error making bet:', error);
     }
   };
-
+  
   // Функция для проверки, выиграл ли пользователь
   const checkForWinner = async () => {
     try {
