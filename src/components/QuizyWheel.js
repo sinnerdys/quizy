@@ -111,11 +111,7 @@ const QuizyWheel = () => {
 
         // Количество полных оборотов
         const spins = 5;
-
-        // Начальное смещение, чтобы колесо начало с середины сектора
-        const initialOffset = sectorAngle / 2;
-
-        // Итоговый угол вращения
+        const initialOffset = 0; // Без начального смещения, чтобы начать с середины сектора
         const finalRotation = spins * 360 + angle + initialOffset;
 
         if (canvasRef.current) {
