@@ -80,6 +80,14 @@ const QuizyWheel = () => {
     ctx.fill();
   };
 
+  const setInitialRotation = (sectorAngle) => {
+    // Устанавливаем начальный угол так, чтобы стрелка указывала на середину одного из секторов
+    const initialOffset = sectorAngle / 2;
+    if (canvasRef.current) {
+      canvasRef.current.style.transform = `rotate(${initialOffset}deg)`;
+    }
+  };
+
   const spinWheel = async () => {
     if (isSpinning) return;
 
@@ -111,8 +119,7 @@ const QuizyWheel = () => {
 
         // Количество полных оборотов
         const spins = 5;
-        const initialOffset = 0; // Без начального смещения, чтобы начать с середины сектора
-        const finalRotation = spins * 360 + angle + initialOffset;
+        const finalRotation = spins * 360 + angle;
 
         if (canvasRef.current) {
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
