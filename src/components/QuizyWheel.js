@@ -8,16 +8,14 @@ const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([
     500, 1000, 1500, 2000, 2500, 3000, 5000, 10000
-  ]);
-  const [sectorAngle] = useState(360 / 8); // 8 секторов, угол каждого сектора 45 градусов
+  ]); // Указываем призы сразу
+  const [sectorAngle, setSectorAngle] = useState(360 / 8); // 8 секторов, угол каждого сектора 45 градусов
+  const [currentAngle, setCurrentAngle] = useState(0);
 
   useEffect(() => {
     drawWheel(prizes);
-    // Устанавливаем начальный угол на фронтенде, чтобы колесо началось в правильной позиции
-    if (canvasRef.current) {
-      canvasRef.current.style.transform = `rotate(${sectorAngle / 2}deg)`;
-    }
-  }, [prizes, sectorAngle]);
+    setInitialRotation();
+  }, []);
 
   const drawWheel = (prizes) => {
     const canvas = canvasRef.current;
@@ -71,21 +69,29 @@ const QuizyWheel = () => {
     ctx.fill();
   };
 
+  const setInitialRotation = () => {
+    // Устанавливаем начальный угол только один раз
+    const initialOffset = sectorAngle / 2; // Смещаем на половину угла сектора
+    setCurrentAngle(initialOffset);
+    if (canvasRef.current) {
+      canvasRef.current.style.transform = `rotate(${initialOffset}deg)`;
+    }
+  };
+
   const spinWheel = async () => {
     if (isSpinning) return;
-  
+
     setIsSpinning(true);
-  
+
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id;
-    const currentAngle = parseFloat(canvasRef.current.style.transform.replace('rotate(', '').replace('deg)', '')) || 0;
-  
+
     if (!userId) {
       console.error('User ID not found.');
       setIsSpinning(false);
       return;
     }
-  
+
     try {
       // Запрос к Firebase Function
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
@@ -95,19 +101,20 @@ const QuizyWheel = () => {
         },
         body: JSON.stringify({ userId, prizes, currentAngle }), // Передаем призы и текущий угол на бэкенд
       });
-  
+
       const data = await response.json();
-  
+
       if (data.success) {
         const { prize, angle } = data;
-  
+
         if (canvasRef.current) {
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
           canvasRef.current.style.transform = `rotate(${angle}deg)`;
         }
-  
+
         setTimeout(() => {
           handleRotationEnd(prize);
+          setCurrentAngle(angle % 360); // Обновляем текущий угол после вращения
         }, 5000);
       }
     } catch (error) {
@@ -115,13 +122,14 @@ const QuizyWheel = () => {
       setIsSpinning(false);
     }
   };
-  
+
   const handleRotationEnd = (prize) => {
     if (canvasRef.current) {
       alert(`You won ${prize} tokens!`);
     }
     setIsSpinning(false);
   };
+
   
   return (
     <div className="quizy-wheel-container">
