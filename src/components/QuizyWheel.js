@@ -6,29 +6,17 @@ import TicketImage from '../assets/ticket_image.png';
 const QuizyWheel = () => {
   const canvasRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [prizes, setPrizes] = useState([]);
+  const [prizes, setPrizes] = useState([
+    500, 1000, 1500, 2000, 2500, 3000, 5000, 10000
+  ]); // Указываем призы сразу
   const [sectorAngle, setSectorAngle] = useState(0);
 
   useEffect(() => {
-    initializeWheel();
+    drawWheel(prizes);
+    setInitialRotation();
   }, []);
 
-  const initializeWheel = async () => {
-    try {
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/initializeWheel');
-      const data = await response.json();
-
-      if (data.success) {
-        setPrizes(data.probabilities.map(item => item.prize));
-        setSectorAngle(data.sectorAngle);
-        drawWheel(data.probabilities.map(item => item.prize), data.sectorAngle);
-      }
-    } catch (error) {
-      console.error('Error initializing wheel:', error);
-    }
-  };
-
-  const drawWheel = (prizes, sectorAngle) => {
+  const drawWheel = (prizes) => {
     const canvas = canvasRef.current;
     if (!canvas.getContext) {
       console.error('Canvas not supported by your browser.');
@@ -42,6 +30,7 @@ const QuizyWheel = () => {
 
     // Угол для каждого сектора в радианах
     const sectorAngleRadians = (2 * Math.PI) / prizes.length;
+    setSectorAngle(360 / prizes.length); // Устанавливаем угол сектора в градусах
 
     for (let i = 0; i < prizes.length; i++) {
       const startAngle = i * sectorAngleRadians;
@@ -80,7 +69,7 @@ const QuizyWheel = () => {
     ctx.fill();
   };
 
-  const setInitialRotation = (sectorAngle) => {
+  const setInitialRotation = () => {
     // Устанавливаем начальный угол так, чтобы стрелка указывала на середину одного из секторов
     const initialOffset = sectorAngle / 2;
     if (canvasRef.current) {
