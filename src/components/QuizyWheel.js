@@ -73,18 +73,19 @@ const QuizyWheel = () => {
 
   const spinWheel = async () => {
     if (isSpinning) return;
-
+  
     setIsSpinning(true);
-
+  
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id;
-
+    const currentAngle = parseFloat(canvasRef.current.style.transform.replace('rotate(', '').replace('deg)', '')) || 0;
+  
     if (!userId) {
       console.error('User ID not found.');
       setIsSpinning(false);
       return;
     }
-
+  
     try {
       // Запрос к Firebase Function
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
@@ -92,19 +93,19 @@ const QuizyWheel = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId, prizes }), // Передаем призы на бэкенд
+        body: JSON.stringify({ userId, prizes, currentAngle }), // Передаем призы и текущий угол на бэкенд
       });
-
+  
       const data = await response.json();
-
+  
       if (data.success) {
         const { prize, angle } = data;
-
+  
         if (canvasRef.current) {
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
           canvasRef.current.style.transform = `rotate(${angle}deg)`;
         }
-
+  
         setTimeout(() => {
           handleRotationEnd(prize);
         }, 5000);
