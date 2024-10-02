@@ -103,21 +103,15 @@ const QuizyWheel = () => {
       const data = await response.json();
   
       if (data.success) {
-        const { prize, angle, sectorIndex } = data;
-  
-        // Количество полных оборотов
-        const spins = 5;
-        const finalRotation = spins * 360 + angle;
+        const { prize, angle } = data;
   
         if (canvasRef.current) {
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-          canvasRef.current.style.transform = `rotate(${finalRotation}deg)`;
+          canvasRef.current.style.transform = `rotate(${angle}deg)`;
         }
   
         setTimeout(() => {
-          // Используем индекс сектора, чтобы получить правильный приз из массива
-          const actualPrize = prizes[sectorIndex];
-          handleRotationEnd(actualPrize);
+          handleRotationEnd(prize);
         }, 5000);
       }
     } catch (error) {
@@ -132,7 +126,7 @@ const QuizyWheel = () => {
     }
     setIsSpinning(false);
   };
-
+  
   return (
     <div className="quizy-wheel-container">
       <h1 className="header-title">Quizy Wheel</h1>
