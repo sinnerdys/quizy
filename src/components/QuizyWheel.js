@@ -103,7 +103,7 @@ const QuizyWheel = () => {
       const data = await response.json();
   
       if (data.success) {
-        const { prize, angle } = data;
+        const { prize, angle, sectorIndex } = data;
   
         // Количество полных оборотов
         const spins = 5;
@@ -115,7 +115,9 @@ const QuizyWheel = () => {
         }
   
         setTimeout(() => {
-          handleRotationEnd(prize);
+          // Используем индекс сектора, чтобы получить правильный приз из массива
+          const actualPrize = prizes[sectorIndex];
+          handleRotationEnd(actualPrize);
         }, 5000);
       }
     } catch (error) {
@@ -123,7 +125,7 @@ const QuizyWheel = () => {
       setIsSpinning(false);
     }
   };
-
+  
   const handleRotationEnd = (prize) => {
     if (canvasRef.current) {
       alert(`You won ${prize} tokens!`);
