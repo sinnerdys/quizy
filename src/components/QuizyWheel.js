@@ -8,13 +8,16 @@ const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([
     500, 1000, 1500, 2000, 2500, 3000, 5000, 10000
-  ]); // Указываем призы сразу
-  const [sectorAngle, setSectorAngle] = useState(360 / 8); // 8 секторов, угол каждого сектора 45 градусов
+  ]);
+  const [sectorAngle] = useState(360 / 8); // 8 секторов, угол каждого сектора 45 градусов
 
   useEffect(() => {
     drawWheel(prizes);
-    setInitialRotation();
-  }, []);
+    // Устанавливаем начальный угол на фронтенде, чтобы колесо началось в правильной позиции
+    if (canvasRef.current) {
+      canvasRef.current.style.transform = `rotate(${sectorAngle / 2}deg)`;
+    }
+  }, [prizes, sectorAngle]);
 
   const drawWheel = (prizes) => {
     const canvas = canvasRef.current;
@@ -68,28 +71,20 @@ const QuizyWheel = () => {
     ctx.fill();
   };
 
-  const setInitialRotation = () => {
-    // Устанавливаем начальный угол так, чтобы стрелка указывала на середину одного из секторов
-    const initialOffset = sectorAngle / 2; // Смещаем на половину угла сектора
-    if (canvasRef.current) {
-      canvasRef.current.style.transform = `rotate(${initialOffset}deg)`;
-    }
-  };
-
   const spinWheel = async () => {
     if (isSpinning) return;
-  
+
     setIsSpinning(true);
-  
+
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id;
-  
+
     if (!userId) {
       console.error('User ID not found.');
       setIsSpinning(false);
       return;
     }
-  
+
     try {
       // Запрос к Firebase Function
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
@@ -99,20 +94,17 @@ const QuizyWheel = () => {
         },
         body: JSON.stringify({ userId, prizes }), // Передаем призы на бэкенд
       });
-  
+
       const data = await response.json();
-  
+
       if (data.success) {
         const { prize, angle } = data;
-  
-        // Вращаем колесо на указанный угол
+
         if (canvasRef.current) {
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-          // Начинаем вращение с текущего положения, добавляя угол
-          const currentRotation = parseFloat(canvasRef.current.style.transform.replace(/[^0-9.]/g, "")) || 0;
-          canvasRef.current.style.transform = `rotate(${currentRotation + angle}deg)`;
+          canvasRef.current.style.transform = `rotate(${angle}deg)`;
         }
-  
+
         setTimeout(() => {
           handleRotationEnd(prize);
         }, 5000);
