@@ -9,7 +9,7 @@ const QuizyWheel = () => {
   const [prizes, setPrizes] = useState([
     500, 1000, 1500, 2000, 2500, 3000, 5000, 10000
   ]); // Указываем призы сразу
-  const [sectorAngle, setSectorAngle] = useState(0);
+  const [sectorAngle, setSectorAngle] = useState(360 / 8); // 8 секторов, угол каждого сектора 45 градусов
 
   useEffect(() => {
     drawWheel(prizes);
@@ -30,7 +30,6 @@ const QuizyWheel = () => {
 
     // Угол для каждого сектора в радианах
     const sectorAngleRadians = (2 * Math.PI) / prizes.length;
-    setSectorAngle(360 / prizes.length); // Устанавливаем угол сектора в градусах
 
     for (let i = 0; i < prizes.length; i++) {
       const startAngle = i * sectorAngleRadians;
@@ -71,7 +70,7 @@ const QuizyWheel = () => {
 
   const setInitialRotation = () => {
     // Устанавливаем начальный угол так, чтобы стрелка указывала на середину одного из секторов
-    const initialOffset = sectorAngle / 2;
+    const initialOffset = sectorAngle / 2; // Смещаем на половину угла сектора
     if (canvasRef.current) {
       canvasRef.current.style.transform = `rotate(${initialOffset}deg)`;
     }
