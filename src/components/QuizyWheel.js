@@ -71,10 +71,8 @@ const QuizyWheel = () => {
 
   const setInitialRotation = () => {
     // Устанавливаем начальный угол только один раз
-    const initialOffset = sectorAngle / 2; // Смещаем на половину угла сектора
-    setCurrentAngle(initialOffset);
     if (canvasRef.current) {
-      canvasRef.current.style.transform = `rotate(${initialOffset}deg)`;
+      canvasRef.current.style.transform = `rotate(${currentAngle}deg)`;
     }
   };
 
