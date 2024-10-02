@@ -105,9 +105,12 @@ const QuizyWheel = () => {
       if (data.success) {
         const { prize, angle } = data;
   
+        // Вращаем колесо на указанный угол
         if (canvasRef.current) {
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-          canvasRef.current.style.transform = `rotate(${angle}deg)`;
+          // Начинаем вращение с текущего положения, добавляя угол
+          const currentRotation = parseFloat(canvasRef.current.style.transform.replace(/[^0-9.]/g, "")) || 0;
+          canvasRef.current.style.transform = `rotate(${currentRotation + angle}deg)`;
         }
   
         setTimeout(() => {
