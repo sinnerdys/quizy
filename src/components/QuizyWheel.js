@@ -111,7 +111,12 @@ const QuizyWheel = () => {
 
         // Количество полных оборотов
         const spins = 5;
-        const finalRotation = spins * 360 + angle;
+
+        // Начальное смещение, чтобы колесо начало с середины сектора
+        const initialOffset = sectorAngle / 2;
+
+        // Итоговый угол вращения
+        const finalRotation = spins * 360 + angle + initialOffset;
 
         if (canvasRef.current) {
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
