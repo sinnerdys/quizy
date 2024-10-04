@@ -6,16 +6,35 @@ import TicketImage from '../assets/ticket_image.png';
 const QuizyWheel = () => {
   const canvasRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [prizes, setPrizes] = useState([
-    500, 1000, 1500, 2000, 2500, 3000, 5000, 10000
-  ]); // Указываем призы сразу
-  const [sectorAngle, setSectorAngle] = useState(360 / 8); // 8 секторов, угол каждого сектора 45 градусов
+  const [prizes, setPrizes] = useState([]);
+  const [sectorAngle, setSectorAngle] = useState(0);
   const [currentAngle, setCurrentAngle] = useState(0);
 
   useEffect(() => {
-    drawWheel(prizes);
-    setInitialRotation();
+    fetchPrizes();
   }, []);
+
+  useEffect(() => {
+    if (prizes.length > 0) {
+      drawWheel(prizes);
+      setInitialRotation();
+    }
+  }, [prizes]);
+
+  const fetchPrizes = async () => {
+    try {
+      const response = await fetch('https://quizy-d6ffb-default-rtdb.firebaseio.com/prizes.json');
+      const data = await response.json();
+
+      if (data) {
+        const fetchedPrizes = Object.keys(data).map((key) => data[key].value);
+        setPrizes(fetchedPrizes);
+        setSectorAngle(360 / fetchedPrizes.length); // Обновляем угол каждого сектора в зависимости от количества призов
+      }
+    } catch (error) {
+      console.error('Error fetching prizes:', error);
+    }
+  };
 
   const drawWheel = (prizes) => {
     const canvas = canvasRef.current;
@@ -97,7 +116,7 @@ const QuizyWheel = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId, prizes, currentAngle }), // Передаем призы и текущий угол на бэкенд
+        body: JSON.stringify({ userId, currentAngle }), // Передаем текущий угол на бэкенд
       });
 
       const data = await response.json();
