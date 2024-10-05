@@ -27,7 +27,7 @@ const QuizyWheel = () => {
 
       if (data) {
         const fetchedPrizes = Object.keys(data).map((key) => data[key].value);
-        setPrizes(fetchedPrizes);
+        setPrizes(fetchedPrizes.reverse);
       }
     } catch (error) {
       console.error('Error fetching prizes:', error);
