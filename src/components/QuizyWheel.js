@@ -25,7 +25,7 @@ const QuizyWheel = () => {
   
       if (data) {
         const fetchedPrizes = Object.keys(data).map((key) => data[key].value);
-        setPrizes(fetchedPrizes);
+        setPrizes(fetchedPrizes.reverse()); // Исправлено
       } else {
         setPrizes([]); // Устанавливаем пустой массив, если данные отсутствуют
       }
