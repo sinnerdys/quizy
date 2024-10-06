@@ -136,7 +136,6 @@ const QuizyWheel = () => {
   
         if (canvasRef.current) {
           // Рассчитываем итоговый угол вращения
-          // Добавляем угол к текущему углу, чтобы учесть все предыдущие вращения
           const newAngle = currentAngle + angle;
   
           // Устанавливаем анимацию вращения
@@ -147,6 +146,7 @@ const QuizyWheel = () => {
           setTimeout(() => {
             handleRotationEnd(prize);
             setCurrentAngle(newAngle % 360); // Обновляем текущий угол для следующего вращения
+            setIsSpinning(false); // Обязательно сбрасываем флаг вращения
           }, 5000);
         }
       }
@@ -155,7 +155,6 @@ const QuizyWheel = () => {
       setIsSpinning(false);
     }
   };
-  
   
   const handleRotationEnd = (prize) => {
     if (canvasRef.current) {
