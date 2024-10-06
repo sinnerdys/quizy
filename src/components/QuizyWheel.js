@@ -122,8 +122,7 @@ const QuizyWheel = () => {
 
         if (canvasRef.current) {
           const spins = 5; // Количество полных оборотов
-          const offsetAngle = 45; // Это пример смещения, которое можно корректировать для точности
-          const newAngle = spins * 360 + angle + offsetAngle;
+          const newAngle = spins * 360 + angle;
 
           // Сбрасываем поворот колеса перед новым вращением
           canvasRef.current.style.transition = 'none';
