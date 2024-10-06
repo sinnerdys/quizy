@@ -134,22 +134,25 @@ const QuizyWheel = () => {
         console.log('Angle:', angle);
   
         if (canvasRef.current) {
+          // Общее смещение включает текущий угол + 5 оборотов + целевой угол
+          const newAngle = currentAngle + (5 * 360) + angle;
+  
           // Устанавливаем поворот колеса согласно результату от бэкенда
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-          canvasRef.current.style.transform = `rotate(${angle}deg)`;
-        }
+          canvasRef.current.style.transform = `rotate(${newAngle}deg)`;
   
-        setTimeout(() => {
-          handleRotationEnd(prize);
-          setCurrentAngle(angle % 360); // Обновляем текущий угол после вращения
-        }, 5000);
+          setTimeout(() => {
+            handleRotationEnd(prize);
+            setCurrentAngle(newAngle % 360); // Обновляем текущий угол после вращения
+          }, 5000);
+        }
       }
     } catch (error) {
       console.error('Error spinning the wheel:', error);
       setIsSpinning(false);
     }
   };
-
+  
   const handleRotationEnd = (prize) => {
     if (canvasRef.current) {
       alert(`You won ${prize} tokens!`);
