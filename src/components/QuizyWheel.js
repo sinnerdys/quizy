@@ -136,7 +136,7 @@ const QuizyWheel = () => {
   
         if (canvasRef.current) {
           // Рассчитываем итоговый угол вращения
-          const newAngle = currentAngle + angle;
+          const newAngle = currentAngle + (5 * 360) + angle;
   
           // Устанавливаем анимацию вращения
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
