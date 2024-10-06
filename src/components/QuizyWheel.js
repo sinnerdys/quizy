@@ -7,6 +7,7 @@ const QuizyWheel = () => {
   const canvasRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([]);
+  const [currentAngle, setCurrentAngle] = useState(0); // Восстановили currentAngle
 
   useEffect(() => {
     fetchPrizes();
@@ -122,13 +123,14 @@ const QuizyWheel = () => {
 
         if (canvasRef.current) {
           const spins = 5; // Количество полных оборотов
-          const newAngle = spins * 360 + angle; // Не используем currentAngle
+          const newAngle = currentAngle + spins * 360 + angle; // Используем currentAngle
 
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
           canvasRef.current.style.transform = `rotate(${newAngle}deg)`;
 
           setTimeout(() => {
             handleRotationEnd(prize);
+            setCurrentAngle(newAngle % 360); // Обновляем currentAngle
             setIsSpinning(false);
           }, 5000);
         }
