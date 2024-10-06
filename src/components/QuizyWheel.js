@@ -111,7 +111,7 @@ const QuizyWheel = () => {
     }
   
     try {
-      // Запрос к Firebase Function с передачей текущего угла
+      // Запрос к Firebase Function с передачей текущего угла и флага первого вращения
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
         method: 'POST',
         headers: {
