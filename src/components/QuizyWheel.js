@@ -111,13 +111,13 @@ const QuizyWheel = () => {
     }
   
     try {
-      // Запрос к Firebase Function с передачей текущего угла и флага первого вращения
+      // Запрос к Firebase Function для получения угла вращения
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId, isFirstSpin }), // Передаем userId и isFirstSpin на бэкенд
+        body: JSON.stringify({ userId }),
       });
   
       const data = await response.json();
@@ -135,20 +135,20 @@ const QuizyWheel = () => {
         console.log('Angle:', angle);
   
         if (canvasRef.current) {
-          // Устанавливаем поворот колеса согласно результату от бэкенда
-          const totalAngle = currentAngle + angle; // Добавляем угол от бэкенда к текущему углу
+          // Рассчитываем итоговый угол вращения
+          // Добавляем угол к текущему углу, чтобы учесть все предыдущие вращения
+          const newAngle = currentAngle + angle;
   
+          // Устанавливаем анимацию вращения
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
-          canvasRef.current.style.transform = `rotate(${totalAngle}deg)`;
+          canvasRef.current.style.transform = `rotate(${newAngle}deg)`;
   
+          // Обновляем состояние после завершения анимации
           setTimeout(() => {
             handleRotationEnd(prize);
-            setCurrentAngle(totalAngle % 360); // Обновляем текущий угол после вращения
+            setCurrentAngle(newAngle % 360); // Обновляем текущий угол для следующего вращения
           }, 5000);
         }
-  
-        // После первого вращения больше не нужно добавлять целевой угол
-        setIsFirstSpin(false);
       }
     } catch (error) {
       console.error('Error spinning the wheel:', error);
