@@ -122,7 +122,8 @@ const QuizyWheel = () => {
 
         if (canvasRef.current) {
           const spins = 5; // Количество полных оборотов
-          const newAngle = spins * 360 + angle;
+          const initialOffset = 360 / prizes.length / 2; // Смещение для выравнивания стрелки на центре сектора
+          const newAngle = spins * 360 + angle + initialOffset; // Добавляем смещение
 
           // Сбрасываем поворот колеса перед новым вращением
           canvasRef.current.style.transition = 'none';
