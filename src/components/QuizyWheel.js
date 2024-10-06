@@ -8,6 +8,7 @@ const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([]);
   const [currentAngle, setCurrentAngle] = useState(0);
+  const [isFirstSpin, setIsFirstSpin] = useState(true);
 
   useEffect(() => {
     fetchPrizes();
