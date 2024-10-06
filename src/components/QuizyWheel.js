@@ -98,55 +98,53 @@ const QuizyWheel = () => {
 
   const spinWheel = async () => {
     if (isSpinning) return;
-  
+
     setIsSpinning(true);
-  
+
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id;
-  
+
     if (!userId) {
       console.error('User ID not found.');
       setIsSpinning(false);
       return;
     }
-  
+
     try {
-      // Запрос к Firebase Function для получения угла вращения
+      // Request to Firebase Function to get rotation angle
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId }),
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         console.error('Error response from server:', data);
         throw new Error(data.error || 'Failed to spin the wheel');
       }
-  
+
       if (data.success) {
         const { prize, angle } = data;
-  
-        // Логирование значений prize и angle
+
         console.log('Prize:', prize);
         console.log('Angle:', angle);
-  
+
         if (canvasRef.current) {
-          // Рассчитываем итоговый угол вращения
-          const newAngle = currentAngle + (5 * 360) + angle;
-  
-          // Устанавливаем анимацию вращения
+          // Calculate total rotation angle
+          const spins = 5; // Number of full rotations
+          const newAngle = currentAngle + spins * 360 + angle;
+
+          // Set rotation animation
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
           canvasRef.current.style.transform = `rotate(${newAngle}deg)`;
-  
-          // Обновляем состояние после завершения анимации
+
+          // Update state after animation completes
           setTimeout(() => {
             handleRotationEnd(prize);
-            setCurrentAngle(newAngle % 360); // Обновляем текущий угол для следующего вращения
-            setIsSpinning(false); // Обязательно сбрасываем флаг вращения
+            setCurrentAngle(newAngle % 360); // Update current angle for next spin
+            setIsSpinning(false);
           }, 5000);
         }
       }
@@ -155,6 +153,7 @@ const QuizyWheel = () => {
       setIsSpinning(false);
     }
   };
+
   
   const handleRotationEnd = (prize) => {
     if (canvasRef.current) {
