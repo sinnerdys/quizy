@@ -7,8 +7,6 @@ const QuizyWheel = () => {
   const canvasRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([]);
-  const [currentAngle, setCurrentAngle] = useState(0);
-  const [isFirstSpin, setIsFirstSpin] = useState(true);
 
   useEffect(() => {
     fetchPrizes();
@@ -17,7 +15,6 @@ const QuizyWheel = () => {
   useEffect(() => {
     if (prizes.length > 0) {
       drawWheel(prizes);
-      setInitialRotation();
     }
   }, [prizes]);
 
@@ -89,13 +86,6 @@ const QuizyWheel = () => {
     ctx.fill();
   };
 
-  const setInitialRotation = () => {
-    // Устанавливаем начальный угол только один раз
-    if (canvasRef.current) {
-      canvasRef.current.style.transform = `rotate(${currentAngle}deg)`;
-    }
-  };
-
   const spinWheel = async () => {
     if (isSpinning) return;
 
@@ -111,7 +101,6 @@ const QuizyWheel = () => {
     }
 
     try {
-      // Request to Firebase Function to get rotation angle
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleWheelSpin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -132,18 +121,14 @@ const QuizyWheel = () => {
         console.log('Angle:', angle);
 
         if (canvasRef.current) {
-          // Calculate total rotation angle
-          const spins = 5; // Number of full rotations
-          const newAngle = currentAngle + spins * 360 + angle;
+          const spins = 5; // Количество полных оборотов
+          const newAngle = spins * 360 + angle; // Не используем currentAngle
 
-          // Set rotation animation
           canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
           canvasRef.current.style.transform = `rotate(${newAngle}deg)`;
 
-          // Update state after animation completes
           setTimeout(() => {
             handleRotationEnd(prize);
-            setCurrentAngle(newAngle % 360); // Update current angle for next spin
             setIsSpinning(false);
           }, 5000);
         }
