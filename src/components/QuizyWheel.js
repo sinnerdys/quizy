@@ -51,7 +51,7 @@ const QuizyWheel = () => {
     const sectorAngleRadians = (2 * Math.PI) / prizes.length;
 
     for (let i = 0; i < prizes.length; i++) {
-      const startAngle = i * sectorAngleRadians;
+      const startAngle = i * sectorAngleRadians - sectorAngleRadians / 2;
       const endAngle = startAngle + sectorAngleRadians;
 
       ctx.fillStyle = '#152A60';
