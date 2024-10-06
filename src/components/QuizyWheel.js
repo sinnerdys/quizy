@@ -24,10 +24,12 @@ const QuizyWheel = () => {
     try {
       const response = await fetch('https://quizy-d6ffb-default-rtdb.firebaseio.com/prizes.json');
       const data = await response.json();
-
+  
       if (data) {
         const fetchedPrizes = Object.keys(data).map((key) => data[key].value);
-        setPrizes(fetchedPrizes.reverse);
+        setPrizes(fetchedPrizes.reverse()); // Исправлено
+      } else {
+        setPrizes([]); // Устанавливаем пустой массив, если данные отсутствуют
       }
     } catch (error) {
       console.error('Error fetching prizes:', error);
