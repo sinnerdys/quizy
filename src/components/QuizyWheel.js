@@ -8,7 +8,7 @@ const QuizyWheel = () => {
   const canvasRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([]);
-  const [isExploding, setIsExploding] = useState(false); // Состояние для конфетти
+  const [isExploding, setIsExploding] = useState(false); // Для конфетти
 
   useEffect(() => {
     fetchPrizes();
@@ -24,10 +24,10 @@ const QuizyWheel = () => {
     try {
       const response = await fetch('https://quizy-d6ffb-default-rtdb.firebaseio.com/prizes.json');
       const data = await response.json();
-  
+
       if (data) {
         const fetchedPrizes = Object.keys(data).map((key) => data[key].value);
-        setPrizes(fetchedPrizes.reverse());
+        setPrizes(fetchedPrizes.reverse()); // Изменено на обратный порядок
       } else {
         setPrizes([]);
       }
@@ -151,7 +151,7 @@ const QuizyWheel = () => {
       alert(`You won ${prize} tokens!`);
     }
     setIsExploding(true); // Запускаем конфетти
-    setTimeout(() => setIsExploding(false), 3000); // Убираем конфетти через 3 секунды
+    setTimeout(() => setIsExploding(false), 3000); // Конфетти исчезают через 3 секунды
     setIsSpinning(false);
   };
 
