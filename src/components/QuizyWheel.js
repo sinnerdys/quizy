@@ -27,7 +27,7 @@ const QuizyWheel = () => {
 
       if (data) {
         const fetchedPrizes = Object.keys(data).map((key) => data[key].value);
-        setPrizes(fetchedPrizes.reverse()); // Изменено на обратный порядок
+        setPrizes(fetchedPrizes.reverse());
       } else {
         setPrizes([]);
       }
@@ -165,10 +165,14 @@ const QuizyWheel = () => {
           <img src={TicketImage} alt="Ticket" className="ticket-image" />
         </div>
       </div>
-      <div className="wheel-container">
+      <div className="wheel-container" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <canvas ref={canvasRef} width="500" height="500"></canvas>
         <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
-        {isExploding && <ConfettiExplosion />} {/* Конфетти */}
+        {isExploding && (
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
+            <ConfettiExplosion />
+          </div>
+        )} {/* Конфетти */}
       </div>
       <div className="button-container">
         <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
