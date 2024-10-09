@@ -2,11 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import './QuizyWheel.css';
 import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
+import ConfettiExplosion from 'react-confetti-explosion';
 
 const QuizyWheel = () => {
   const canvasRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([]);
+  const [isExploding, setIsExploding] = useState(false); // Состояние для конфетти
 
   useEffect(() => {
     fetchPrizes();
@@ -25,9 +27,9 @@ const QuizyWheel = () => {
   
       if (data) {
         const fetchedPrizes = Object.keys(data).map((key) => data[key].value);
-        setPrizes(fetchedPrizes.reverse()); // Исправлено
+        setPrizes(fetchedPrizes.reverse());
       } else {
-        setPrizes([]); // Устанавливаем пустой массив, если данные отсутствуют
+        setPrizes([]);
       }
     } catch (error) {
       console.error('Error fetching prizes:', error);
@@ -46,7 +48,6 @@ const QuizyWheel = () => {
     const centerY = canvas.height / 2;
     const radius = 165;
 
-    // Угол для каждого сектора в радианах
     const sectorAngleRadians = (2 * Math.PI) / prizes.length;
 
     for (let i = 0; i < prizes.length; i++) {
@@ -125,11 +126,9 @@ const QuizyWheel = () => {
           const initialOffset = 360 / prizes.length / 2; // Смещение для выравнивания стрелки на центре сектора
           const newAngle = spins * 360 + angle + initialOffset; // Добавляем смещение
 
-          // Сбрасываем поворот колеса перед новым вращением
           canvasRef.current.style.transition = 'none';
           canvasRef.current.style.transform = `rotate(0deg)`;
 
-          // Задержка перед началом анимации для сброса предыдущего состояния
           setTimeout(() => {
             canvasRef.current.style.transition = 'transform 5s cubic-bezier(0.33, 1, 0.68, 1)';
             canvasRef.current.style.transform = `rotate(${newAngle}deg)`;
@@ -138,7 +137,7 @@ const QuizyWheel = () => {
           setTimeout(() => {
             handleRotationEnd(prize);
             setIsSpinning(false);
-          }, 5050); // Учитываем задержку перед началом анимации
+          }, 5050);
         }
       }
     } catch (error) {
@@ -147,15 +146,15 @@ const QuizyWheel = () => {
     }
   };
 
-  
   const handleRotationEnd = (prize) => {
     if (canvasRef.current) {
       alert(`You won ${prize} tokens!`);
     }
+    setIsExploding(true); // Запускаем конфетти
+    setTimeout(() => setIsExploding(false), 3000); // Убираем конфетти через 3 секунды
     setIsSpinning(false);
   };
 
-  
   return (
     <div className="quizy-wheel-container">
       <h1 className="header-title">Quizy Wheel</h1>
@@ -169,6 +168,7 @@ const QuizyWheel = () => {
       <div className="wheel-container">
         <canvas ref={canvasRef} width="500" height="500"></canvas>
         <img src={ArrowImage} alt="Arrow" className="wheel-arrow" />
+        {isExploding && <ConfettiExplosion />} {/* Конфетти */}
       </div>
       <div className="button-container">
         <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
