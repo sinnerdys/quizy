@@ -51,6 +51,10 @@ const QuizyWheel = () => {
 
     const sectorAngleRadians = (2 * Math.PI) / prizes.length;
 
+    // Создание объекта для изображения
+    const tokenImage = new Image();
+    tokenImage.src = TokenImage;
+
     for (let i = 0; i < prizes.length; i++) {
       const startAngle = i * sectorAngleRadians - sectorAngleRadians / 2;
       const endAngle = startAngle + sectorAngleRadians;
@@ -78,7 +82,7 @@ const QuizyWheel = () => {
 
      // Рисуем изображение рядом с текстом
     const imageSize = 30; // Размер изображения
-    ctx.drawImage(TokenImage, radius - 50, -imageSize / 2, imageSize, imageSize);
+    ctx.drawImage(tokenImage, radius - 50, -imageSize / 2, imageSize, imageSize);
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
