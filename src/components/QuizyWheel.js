@@ -17,7 +17,7 @@ const QuizyWheel = () => {
 
   useEffect(() => {
     if (prizes.length > 0) {
-      drawWheel(prizes);
+      setupCanvas();
     }
   }, [prizes]);
 
@@ -37,6 +37,32 @@ const QuizyWheel = () => {
     }
   };
 
+  const setupCanvas = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+
+    // Устанавливаем масштаб с учетом плотности пикселей устройства
+    const scale = window.devicePixelRatio || 1;
+
+    // Определяем размеры канваса
+    const width = 500;  // Визуальная ширина
+    const height = 500; // Визуальная высота
+
+    // Увеличиваем разрешение канваса с учетом плотности пикселей
+    canvas.width = width * scale;
+    canvas.height = height * scale;
+
+    // Устанавливаем стиль канваса на его визуальный размер
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+
+    // Масштабируем контекст для четкости
+    ctx.scale(scale, scale);
+
+    // Отрисовываем колесо
+    drawWheel(prizes);
+  };
+
   const drawWheel = (prizes) => {
     const canvas = canvasRef.current;
     if (!canvas.getContext) {
@@ -45,8 +71,8 @@ const QuizyWheel = () => {
     }
 
     const ctx = canvas.getContext('2d');
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
+    const centerX = canvas.width / 2 / window.devicePixelRatio; // Учитываем масштаб
+    const centerY = canvas.height / 2 / window.devicePixelRatio;
     const radius = 165;
 
     const sectorAngleRadians = (2 * Math.PI) / prizes.length;
@@ -58,39 +84,38 @@ const QuizyWheel = () => {
     // Отрисовка происходит после загрузки изображения
     tokenImage.onload = () => {
       for (let i = 0; i < prizes.length; i++) {
-          const startAngle = i * sectorAngleRadians - sectorAngleRadians / 2;
-          const endAngle = startAngle + sectorAngleRadians;
+        const startAngle = i * sectorAngleRadians - sectorAngleRadians / 2;
+        const endAngle = startAngle + sectorAngleRadians;
 
-          // Рисуем сектора
-          ctx.fillStyle = '#152A60';
-          ctx.beginPath();
-          ctx.moveTo(centerX, centerY);
-          ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-          ctx.closePath();
-          ctx.fill();
+        // Рисуем сектора
+        ctx.fillStyle = '#152A60';
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+        ctx.fill();
 
-          ctx.strokeStyle = '#4365C0';
-          ctx.lineWidth = 2;
-          ctx.stroke();
+        ctx.strokeStyle = '#4365C0';
+        ctx.lineWidth = 2;
+        ctx.stroke();
 
-          // Рисуем текст с призом
-          ctx.save();
-          ctx.translate(centerX, centerY);
-          ctx.rotate(startAngle + sectorAngleRadians / 2);
-          ctx.textAlign = 'right';
-          ctx.fillStyle = '#FFFFFF';
-          ctx.font = '18px Arial';
-          ctx.fillText(prizes[i], radius - 30, 10); // Разместим текст немного левее
+        // Рисуем текст с призом
+        ctx.save();
+        ctx.translate(centerX, centerY);
+        ctx.rotate(startAngle + sectorAngleRadians / 2);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '18px Arial';
+        ctx.fillText(prizes[i], radius - 32, 10); // Разместим текст немного левее
 
-          // Рисуем изображение токена рядом с текстом
-          const imageWidth = 16; // Ширина изображения
-          const imageHeight = 24; // Высота изображения (можете экспериментировать)
-          const imageX = radius - 30; // Позиция изображения по горизонтали
-          const imageY = -imageHeight / 2; // Центрируем по вертикали относительно текста
-          ctx.drawImage(tokenImage, imageX, imageY, imageWidth, imageHeight); // Рисуем изображение токена
+        // Рисуем изображение токена рядом с текстом
+        const imageWidth = 14; // Ширина изображения
+        const imageHeight = 22; // Высота изображения (можете экспериментировать)
+        const imageX = radius - 30; // Позиция изображения по горизонтали
+        const imageY = -imageHeight / 2; // Центрируем по вертикали относительно текста
+        ctx.drawImage(tokenImage, imageX, imageY, imageWidth, imageHeight); // Рисуем изображение токена
 
-
-          ctx.restore();
+        ctx.restore();
       }
 
       // Обводка колеса
@@ -105,8 +130,8 @@ const QuizyWheel = () => {
       ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
       ctx.fillStyle = '#4365C0';
       ctx.fill();
+    };
   };
-};
 
   const spinWheel = async () => {
     if (isSpinning) return;
