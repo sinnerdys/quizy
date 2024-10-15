@@ -11,6 +11,8 @@ const QuizyWheel = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([]);
   const [isExploding, setIsExploding] = useState(false); // Для конфетти
+  const [showModal, setShowModal] = useState(false); // Состояние для управления модальным окном
+  const [prizeAmount, setPrizeAmount] = useState(null); // Состояние для хранения суммы выигрыша
 
   useEffect(() => {
     fetchPrizes();
