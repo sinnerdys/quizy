@@ -79,12 +79,14 @@ const QuizyWheel = () => {
           ctx.rotate(startAngle + sectorAngleRadians / 2);
           ctx.textAlign = 'right';
           ctx.fillStyle = '#FFFFFF';
-          ctx.font = '20px Arial';
+          ctx.font = '18px Arial';
           ctx.fillText(prizes[i], radius - 40, 10); // Разместим текст немного левее
 
           // Рисуем изображение токена рядом с текстом
-          const imageSize = 30; // Размер изображения
-          ctx.drawImage(tokenImage, radius - 50, -imageSize / 2, imageSize, imageSize); // Рисуем изображение токена
+          const imageSize = 16; // Размер изображения
+          const imageX = radius - 30; // Позиция изображения по горизонтали
+          const imageY = -imageSize / 2; // Центрируем по вертикали относительно текста
+          ctx.drawImage(tokenImage, imageX, imageY, imageSize, imageSize); // Рисуем изображение токена
 
           ctx.restore();
       }
