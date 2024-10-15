@@ -80,11 +80,11 @@ const QuizyWheel = () => {
           ctx.textAlign = 'right';
           ctx.fillStyle = '#FFFFFF';
           ctx.font = '18px Arial';
-          ctx.fillText(prizes[i], radius - 40, 10); // Разместим текст немного левее
+          ctx.fillText(prizes[i], radius - 30, 10); // Разместим текст немного левее
 
           // Рисуем изображение токена рядом с текстом
-          const imageWidth = 12; // Ширина изображения
-          const imageHeight = 16; // Высота изображения (можете экспериментировать)
+          const imageWidth = 16; // Ширина изображения
+          const imageHeight = 24; // Высота изображения (можете экспериментировать)
           const imageX = radius - 30; // Позиция изображения по горизонтали
           const imageY = -imageHeight / 2; // Центрируем по вертикали относительно текста
           ctx.drawImage(tokenImage, imageX, imageY, imageWidth, imageHeight); // Рисуем изображение токена
