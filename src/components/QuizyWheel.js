@@ -3,6 +3,7 @@ import './QuizyWheel.css';
 import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 import ConfettiExplosion from 'react-confetti-explosion';
+import TokenImage from '../assets/TokenImage.png'; // Импорт вашего логотипа
 
 const QuizyWheel = () => {
   const canvasRef = useRef(null);
@@ -74,6 +75,10 @@ const QuizyWheel = () => {
       ctx.fillText(prizes[i], radius - 20, 10);
       ctx.restore();
     }
+
+     // Рисуем изображение рядом с текстом
+    const imageSize = 30; // Размер изображения
+    ctx.drawImage(TokenImage, radius - 50, -imageSize / 2, imageSize, imageSize);
 
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
