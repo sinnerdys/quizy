@@ -38,8 +38,8 @@
     opacity: 1;
   }
   
-  /* Стиль для кнопки закрытия */
-  .win-close-button {
+/* Стиль для кнопки закрытия */
+.close-button {
     position: absolute;
     top: 15px;
     right: 15px;
@@ -53,12 +53,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0; /* Убираем padding */
     box-sizing: border-box; /* Убедитесь, что padding и border не влияют на размеры */
   }
   
-  .win-close-button svg {
-    width: 20px;
-    height: 20px;
+  .close-button svg {
+    width: 16px; /* Сделайте размер иконки чуть меньше */
+    height: 16px;
     stroke: white;
   }
   
