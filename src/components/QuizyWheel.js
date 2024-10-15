@@ -198,7 +198,6 @@ const QuizyWheel = () => {
   const handleRotationEnd = (prize) => {
     if (canvasRef.current) {
       // Вместо alert показываем модальное окно с выигрышем
-      setBalance(data.newBalance); // Обновляем баланс в состоянии
       setPrizeAmount(prize); // Устанавливаем выигрыш для отображения в поп-апе
       setShowModal(true); // Показываем поп-ап
     }
