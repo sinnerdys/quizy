@@ -1,0 +1,102 @@
+/* Обновление стилей для overlay */
+.modal-win-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal-win-overlay.open {
+    opacity: 1;
+  }
+  
+  .modal-win {
+    background-color: #091533;
+    padding: 20px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1100;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .modal-win.open {
+    transform: scale(1);
+    opacity: 1;
+  }
+  
+  /* Стиль для кнопки закрытия */
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #182c5f; 
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+  
+  .close-button svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+  }
+  
+  /* Логотип и прочие стили */
+  .modal-win-logo-container {
+    margin-bottom: 20px;
+  }
+  
+  .modal-win-logo {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .modal-win h2 {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 10px;
+  }
+  
+  .prize-amount {
+    font-size: 32px;
+    font-weight: bold;
+    color: #00D4FF;
+    margin-bottom: 20px;
+  }
+  
+  .get-prize-button {
+    background-color: #009ACD;
+    color: white;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .get-prize-button:hover {
+    background-color: #007BB5;
+  }
+  

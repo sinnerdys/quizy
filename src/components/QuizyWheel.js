@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './QuizyWheel.css';
+import ModalWin from './ModalWin'; // Импортируем компонент поп-апа
 import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 import ConfettiExplosion from 'react-confetti-explosion';
@@ -194,11 +195,18 @@ const QuizyWheel = () => {
 
   const handleRotationEnd = (prize) => {
     if (canvasRef.current) {
-      alert(`You won ${prize} tokens!`);
+      // Вместо alert показываем модальное окно с выигрышем
+      setPrizeAmount(prize); // Устанавливаем выигрыш для отображения в поп-апе
+      setShowModal(true); // Показываем поп-ап
     }
+  };
+  
+  // Функция для закрытия поп-апа и запуска конфетти
+  const closeModal = () => {
+    setShowModal(false); // Закрываем поп-ап
     setIsExploding(true); // Запускаем конфетти
     setTimeout(() => setIsExploding(false), 3000); // Конфетти исчезают через 3 секунды
-    setIsSpinning(false);
+    setIsSpinning(false); // Сбрасываем состояние вращения
   };
 
   return (
@@ -226,6 +234,8 @@ const QuizyWheel = () => {
         </button>
         <p className="info-text">Spin to win guaranteed prizes. You have a free spin every 6 hours.</p>
       </div>
+          {/* Модальное окно выигрыша */}
+          {showModal && <ModalWin prizeAmount={prizeAmount} onClose={closeModal} />}
     </div>
   );
 };
