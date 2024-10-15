@@ -53,15 +53,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0; /* Убираем padding */
     box-sizing: border-box; /* Убедитесь, что padding и border не влияют на размеры */
-  }
-  
-  .close-button svg {
-    width: 16px; /* Сделайте размер иконки чуть меньше */
-    height: 16px;
+}
+
+.close-button svg {
+    width: 20px; /* Сделайте иконку чуть меньше, чем сама кнопка */
+    height: 20px;
     stroke: white;
-  }
+    display: block; /* Убираем возможные пробелы */
+}
   
   /* Логотип и прочие стили */
   .modal-win-logo-container {
