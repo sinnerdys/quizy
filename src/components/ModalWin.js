@@ -44,7 +44,7 @@ function ModalWin({ prizeAmount, onClose }) {
         <div className="modal-win-logo-container">
           <img src={logo} alt="QUIZY Logo" className="modal-win-logo" />
         </div>
-        <h2>You win</h2>
+        <h3>You win</h3>
         <p className="prize-amount">+{prizeAmount} $QUIZY</p>
         <button className="get-prize-button" onClick={onClose}>
           Get Prize
