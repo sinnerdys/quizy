@@ -55,46 +55,54 @@ const QuizyWheel = () => {
     const tokenImage = new Image();
     tokenImage.src = TokenImage;
 
-    for (let i = 0; i < prizes.length; i++) {
-      const startAngle = i * sectorAngleRadians - sectorAngleRadians / 2;
-      const endAngle = startAngle + sectorAngleRadians;
+    // Отрисовка происходит после загрузки изображения
+    tokenImage.onload = () => {
+      for (let i = 0; i < prizes.length; i++) {
+          const startAngle = i * sectorAngleRadians - sectorAngleRadians / 2;
+          const endAngle = startAngle + sectorAngleRadians;
 
-      ctx.fillStyle = '#152A60';
+          // Рисуем сектора
+          ctx.fillStyle = '#152A60';
+          ctx.beginPath();
+          ctx.moveTo(centerX, centerY);
+          ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+          ctx.closePath();
+          ctx.fill();
+
+          ctx.strokeStyle = '#4365C0';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Рисуем текст с призом
+          ctx.save();
+          ctx.translate(centerX, centerY);
+          ctx.rotate(startAngle + sectorAngleRadians / 2);
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '20px Arial';
+          ctx.fillText(prizes[i], radius - 40, 10); // Разместим текст немного левее
+
+          // Рисуем изображение токена рядом с текстом
+          const imageSize = 30; // Размер изображения
+          ctx.drawImage(tokenImage, radius - 50, -imageSize / 2, imageSize, imageSize); // Рисуем изображение токена
+
+          ctx.restore();
+      }
+
+      // Обводка колеса
       ctx.beginPath();
-      ctx.moveTo(centerX, centerY);
-      ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-      ctx.closePath();
-      ctx.fill();
-
+      ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
       ctx.strokeStyle = '#4365C0';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 4;
       ctx.stroke();
 
-      ctx.save();
-      ctx.translate(centerX, centerY);
-      ctx.rotate(startAngle + sectorAngleRadians / 2);
-      ctx.textAlign = 'right';
-      ctx.fillStyle = '#FFFFFF';
-      ctx.font = '20px Arial';
-      ctx.fillText(prizes[i], radius - 20, 10);
-      ctx.restore();
-    }
-
-     // Рисуем изображение рядом с текстом
-    const imageSize = 30; // Размер изображения
-    ctx.drawImage(tokenImage, radius - 50, -imageSize / 2, imageSize, imageSize);
-
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    ctx.strokeStyle = '#4365C0';
-    ctx.lineWidth = 4;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
-    ctx.fillStyle = '#4365C0';
-    ctx.fill();
+      // Рисуем центральный круг
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
+      ctx.fillStyle = '#4365C0';
+      ctx.fill();
   };
+};
 
   const spinWheel = async () => {
     if (isSpinning) return;
