@@ -38,32 +38,30 @@
   opacity: 1;
 }
 
-/* Стиль для кнопки закрытия с круглым синим фоном */
-.close-button {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background-color: #182c5f; 
-  border: none;
-  color: white;
-  cursor: pointer;
-  border-radius: 50%; 
-  width: 30px; 
-  height: 30px; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
-  padding-top: 5px;
-}
-
-/* Стиль для SVG внутри кнопки */
-.close-button svg {
-  width: 20px; 
-  height: 20px; 
-  stroke: white;
-}
-
+  /* Стиль для кнопки закрытия */
+  .close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #182c5f; 
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box; /* Убедитесь, что padding и border не влияют на размеры */
+  }
+  
+  .close-button svg {
+    width: 20px;
+    height: 20px;
+    stroke: white;
+  }
+  
 /* Логотип и прочие стили */
 .modal-logo-container {
   margin-bottom: 20px;
