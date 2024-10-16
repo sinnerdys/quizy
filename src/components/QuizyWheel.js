@@ -215,6 +215,7 @@ const QuizyWheel = () => {
           setTimeout(() => {
             handleRotationEnd(prize);
             setIsSpinning(false);
+            fetchTicketInfo();  // Обновляем информацию о билетах
           }, 5050);
         }
       }
@@ -238,6 +239,15 @@ const QuizyWheel = () => {
     setIsExploding(true); // Запускаем конфетти
     setTimeout(() => setIsExploding(false), 3000); // Конфетти исчезают через 3 секунды
     setIsSpinning(false); // Сбрасываем состояние вращения
+  };
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+  
+    return `${hours}:${minutes}:${seconds}`;
   };
 
   return (
@@ -266,7 +276,7 @@ const QuizyWheel = () => {
         {tickets > 0 ? (
         <p className="info-text">Spin to win guaranteed prizes. You have a free spin every 3 hours.</p>
       ) : (
-        <p className="info-text">Next free spin in {Math.floor(nextTicketIn / 1000 / 60)} minutes</p>
+        <p className="info-text">Next free spin in {formatTime(nextTicketIn)}</p>
       )}
       </div>
           {/* Модальное окно выигрыша */}
