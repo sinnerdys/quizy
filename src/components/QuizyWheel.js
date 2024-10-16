@@ -260,7 +260,7 @@ const QuizyWheel = () => {
         )} {/* Конфетти */}
       </div>
       <div className="button-container">
-        <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
+      <button className="spin-button" onClick={spinWheel} disabled={isSpinning || tickets <= 0}>
           {isSpinning ? 'Spinning...' : 'Tap to Spin'}
         </button>
         {tickets > 0 ? (
