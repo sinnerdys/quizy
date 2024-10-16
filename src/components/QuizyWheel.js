@@ -16,30 +16,31 @@ const QuizyWheel = () => {
   const [tickets, setTickets] = useState(0);
   const [nextTicketIn, setNextTicketIn] = useState(0);
 
+  // Функция для получения информации о билетах
+  const fetchTicketInfo = async () => {
+    const tg = window.Telegram.WebApp;
+    const userId = tg.initDataUnsafe?.user?.id;
+
+    const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getTicketInfo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
+
+    const data = await response.json();
+    setTickets(data.tickets);
+    setNextTicketIn(data.nextTicketIn);
+  };
+
   useEffect(() => {
-    const fetchTicketInfo = async () => {
-      const tg = window.Telegram.WebApp;
-      const userId = tg.initDataUnsafe?.user?.id;
-  
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getTicketInfo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }),
-      });
-  
-      const data = await response.json();
-      setTickets(data.tickets);
-      setNextTicketIn(data.nextTicketIn);
-    };
-  
     fetchTicketInfo();
   }, []);
-  
+
   useEffect(() => {
     const interval = setInterval(() => {
       setNextTicketIn(prev => (prev > 0 ? prev - 1000 : 0));
     }, 1000);
-  
+
     return () => clearInterval(interval);
   }, [nextTicketIn]);
 
