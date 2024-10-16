@@ -13,6 +13,35 @@ const QuizyWheel = () => {
   const [isExploding, setIsExploding] = useState(false); // Для конфетти
   const [showModal, setShowModal] = useState(false); // Состояние для управления модальным окном
   const [prizeAmount, setPrizeAmount] = useState(null); // Состояние для хранения суммы выигрыша
+  const [tickets, setTickets] = useState(0);
+  const [nextTicketIn, setNextTicketIn] = useState(0);
+
+  useEffect(() => {
+    const fetchTicketInfo = async () => {
+      const tg = window.Telegram.WebApp;
+      const userId = tg.initDataUnsafe?.user?.id;
+  
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getTicketInfo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId }),
+      });
+  
+      const data = await response.json();
+      setTickets(data.tickets);
+      setNextTicketIn(data.nextTicketIn);
+    };
+  
+    fetchTicketInfo();
+  }, []);
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNextTicketIn(prev => (prev > 0 ? prev - 1000 : 0));
+    }, 1000);
+  
+    return () => clearInterval(interval);
+  }, [nextTicketIn]);
 
   useEffect(() => {
     fetchPrizes();
@@ -217,7 +246,7 @@ const QuizyWheel = () => {
       <div className="tickets-container">
         <p>Your Tickets</p>
         <div className="tickets-count-container">
-          <p className="tickets-count">30</p>
+          <p className="tickets-count">{tickets}</p>
           <img src={TicketImage} alt="Ticket" className="ticket-image" />
         </div>
       </div>
@@ -234,7 +263,11 @@ const QuizyWheel = () => {
         <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
           {isSpinning ? 'Spinning...' : 'Tap to Spin'}
         </button>
-        <p className="info-text">Spin to win guaranteed prizes. You have a free spin every 6 hours.</p>
+        {tickets > 0 ? (
+        <p className="info-text">Spin to win guaranteed prizes. You have a free spin every 3 hours.</p>
+      ) : (
+        <p className="info-text">Next free spin in {Math.floor(nextTicketIn / 1000 / 60)} minutes</p>
+      )}
       </div>
           {/* Модальное окно выигрыша */}
           {showModal && <ModalWin prizeAmount={prizeAmount} onClose={closeModal} />}
