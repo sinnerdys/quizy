@@ -230,7 +230,9 @@ const QuizyWheel = () => {
     if (canvasRef.current) {
       // Вместо alert показываем модальное окно с выигрышем
       setPrizeAmount(prize); // Устанавливаем выигрыш для отображения в поп-апе
-      setShowModal(true); // Показываем поп-ап
+      setTimeout(() => {
+        setShowModal(true); // Показываем поп-ап с задержкой
+      }, 300); // Добавляем задержку в 300 миллисекунд
     }
   };
   
