@@ -36,13 +36,15 @@ const QuizyWheel = () => {
     fetchTicketInfo();
   }, []);
 
+  // Таймер обновления состояния билетов
   useEffect(() => {
-    const interval = setInterval(() => {
-      setNextTicketIn(prev => (prev > 0 ? prev - 1000 : 0));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [nextTicketIn]);
+    if (!showModal) {  // Останавливаем таймер, когда модальное окно открыто
+      const interval = setInterval(() => {
+        setNextTicketIn(prev => (prev > 0 ? prev - 1000 : 0));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [nextTicketIn, showModal]);
 
   useEffect(() => {
     fetchPrizes();
