@@ -6,8 +6,9 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.5);
     display: flex;
-    justify-content: center;
+    justify-content: flex-end; /* Выравнивание по нижней части экрана */
     align-items: flex-end; /* Выравнивание по нижней части экрана */
+    z-index: 1000;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;

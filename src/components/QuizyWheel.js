@@ -38,25 +38,14 @@ const QuizyWheel = () => {
     fetchTicketInfo();
   }, []);
 
-  // Таймер обновления состояния билетов
   useEffect(() => {
-    if (!showModal) {  // Останавливаем таймер, когда модальное окно открыто
+    if (!showModal && !showTicketsModal) {  // Останавливаем таймер, если открыто хоть одно модальное окно
       const interval = setInterval(() => {
         setNextTicketIn(prev => (prev > 0 ? prev - 1000 : 0));
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [nextTicketIn, showModal]);
-
-    // Таймер обновления состояния билетов
-    useEffect(() => {
-      if (!showTicketsModal) {  // Останавливаем таймер, когда поп-ап открыт
-        const interval = setInterval(() => {
-          setNextTicketIn(prev => (prev > 0 ? prev - 1000 : 0));
-        }, 1000);
-        return () => clearInterval(interval);
-      }
-    }, [nextTicketIn, showTicketsModal]);
+  }, [nextTicketIn, showModal, showTicketsModal]);
 
   useEffect(() => {
     fetchPrizes();
