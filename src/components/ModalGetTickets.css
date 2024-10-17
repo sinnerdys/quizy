@@ -7,34 +7,35 @@
     background: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end; /* Выравнивание по нижней части экрана */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
   }
   
-  .modal-get-tickets-overlay.open {
+.modal-get-tickets-overlay.open {
     opacity: 1;
     pointer-events: auto;
-  }
-  
-  .modal-get-tickets {
+}
+
+.modal-get-tickets {
     background: #12203D;
-    border-radius: 16px;
+    border-radius: 30px 30px 0 0; /* Закругляем только верхние углы */
     padding: 20px;
-    width: 300px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 600px;
     text-align: center;
     position: relative;
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(100%);
     transition: opacity 0.3s ease, transform 0.3s ease;
-  }
+}
   
-  .modal-get-tickets.open {
+.modal-get-tickets.open {
     opacity: 1;
     transform: translateY(0);
-  }
+}
+
   
   .modal-logo-container {
     margin-bottom: 16px;

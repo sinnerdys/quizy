@@ -48,6 +48,16 @@ const QuizyWheel = () => {
     }
   }, [nextTicketIn, showModal]);
 
+    // Таймер обновления состояния билетов
+    useEffect(() => {
+      if (!showTicketsModal) {  // Останавливаем таймер, когда поп-ап открыт
+        const interval = setInterval(() => {
+          setNextTicketIn(prev => (prev > 0 ? prev - 1000 : 0));
+        }, 1000);
+        return () => clearInterval(interval);
+      }
+    }, [nextTicketIn, showTicketsModal]);
+
   useEffect(() => {
     fetchPrizes();
   }, []);
@@ -236,6 +246,8 @@ const QuizyWheel = () => {
       setPrizeAmount(prize); // Устанавливаем выигрыш для отображения в поп-апе
       setTimeout(() => {
         setShowModal(true); // Показываем поп-ап с задержкой
+        setIsExploding(true); // Запускаем конфетти после выигрыша
+        setTimeout(() => setIsExploding(false), 3000); // Конфетти исчезают через 3 секунды
       }, 300); // Добавляем задержку в 300 миллисекунд
     }
   };
@@ -248,9 +260,8 @@ const QuizyWheel = () => {
   // Функция для закрытия поп-апа и запуска конфетти
   const closeModal = () => {
     setShowModal(false); // Закрываем поп-ап
-    setIsExploding(true); // Запускаем конфетти
+    if (isExploding) setIsExploding(false); // Конфетти запускаются только при выигрыше
     setShowTicketsModal(false); // Закрываем поп-ап с билетами
-    setTimeout(() => setIsExploding(false), 3000); // Конфетти исчезают через 3 секунды
     setIsSpinning(false); // Сбрасываем состояние вращения
   };
 
