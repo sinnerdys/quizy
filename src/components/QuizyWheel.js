@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './QuizyWheel.css';
 import ModalWin from './ModalWin'; // Импортируем компонент поп-апа
+import ModalGetTickets from './ModalGetTickets'; // Импортируем новый поп-ап для получения билетов
 import ArrowImage from '../assets/arrow_wheel.png';
 import TicketImage from '../assets/ticket_image.png';
 import ConfettiExplosion from 'react-confetti-explosion';
@@ -12,6 +13,7 @@ const QuizyWheel = () => {
   const [prizes, setPrizes] = useState([]);
   const [isExploding, setIsExploding] = useState(false); // Для конфетти
   const [showModal, setShowModal] = useState(false); // Состояние для управления модальным окном
+  const [showTicketsModal, setShowTicketsModal] = useState(false); // Состояние для показа поп-апа билетов
   const [prizeAmount, setPrizeAmount] = useState(null); // Состояние для хранения суммы выигрыша
   const [tickets, setTickets] = useState(0);
   const [nextTicketIn, setNextTicketIn] = useState(0);
@@ -238,10 +240,16 @@ const QuizyWheel = () => {
     }
   };
   
+    // Открытие поп-апа для получения билетов
+    const handleGetTicketsClick = () => {
+      setShowTicketsModal(true); // Показываем поп-ап при нажатии на кнопку "Get tickets for spin"
+    };
+
   // Функция для закрытия поп-апа и запуска конфетти
   const closeModal = () => {
     setShowModal(false); // Закрываем поп-ап
     setIsExploding(true); // Запускаем конфетти
+    setShowTicketsModal(false); // Закрываем поп-ап с билетами
     setTimeout(() => setIsExploding(false), 3000); // Конфетти исчезают через 3 секунды
     setIsSpinning(false); // Сбрасываем состояние вращения
   };
@@ -275,9 +283,15 @@ const QuizyWheel = () => {
         )} {/* Конфетти */}
       </div>
       <div className="button-container">
-      <button className="spin-button" onClick={spinWheel} disabled={isSpinning || tickets <= 0}>
-          {isSpinning ? 'Spinning...' : 'Tap to Spin'}
-        </button>
+      {tickets > 0 ? (
+          <button className="spin-button" onClick={spinWheel} disabled={isSpinning}>
+            Tap to Spin
+          </button>
+        ) : (
+          <button className="spin-button" onClick={handleGetTicketsClick}>
+            Get tickets for spin
+          </button>
+        )}
         {tickets > 0 ? (
         <p className="info-text">Spin to win guaranteed prizes. You have a free spin every 3 hours.</p>
       ) : (
@@ -286,6 +300,7 @@ const QuizyWheel = () => {
       </div>
           {/* Модальное окно выигрыша */}
           {showModal && <ModalWin prizeAmount={prizeAmount} onClose={closeModal} />}
+          {showTicketsModal && <ModalGetTickets onClose={closeModal} />}
     </div>
   );
 };

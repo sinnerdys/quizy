@@ -1,0 +1,91 @@
+.modal-get-tickets-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .modal-get-tickets-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .modal-get-tickets {
+    background: #12203D;
+    border-radius: 16px;
+    padding: 20px;
+    width: 300px;
+    max-width: 100%;
+    text-align: center;
+    position: relative;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  
+  .modal-get-tickets.open {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .modal-logo-container {
+    margin-bottom: 16px;
+  }
+  
+  .modal-ticket-logo {
+    width: 50px;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  h3 {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .modal-subtitle {
+    color: #ccc;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .invite-friends-button, .buy-tickets-button {
+    background-color: #1D74F5;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .invite-friends-button:hover, .buy-tickets-button:hover {
+    background-color: #1748D2;
+  }
+  
+  .star-image {
+    width: 16px;
+    vertical-align: middle;
+  }
+  
