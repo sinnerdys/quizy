@@ -135,9 +135,13 @@ function ModalGetTickets({ onClose }) {
       const result = await response.json();
 
       if (result.success) {
-        // Открываем инвойс в Telegram WebApp
+        // Открываем окно оплаты
         tg.payments.openInvoice({
-          slug: result.invoiceLink,
+          title: result.title,
+          description: result.description,
+          payload: result.payload,
+          currency: result.currency,
+          prices: result.prices,
         });
       } else {
         console.error('Ошибка получения инвойса:', result.error);
