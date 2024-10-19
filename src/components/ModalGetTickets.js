@@ -114,7 +114,7 @@ function ModalGetTickets({ onClose }) {
     tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
   };
 
-  // Функция для покупки билета
+  // Функция для отправки запроса на получение данных для оплаты
   const handleBuyTicket = async () => {
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id || '';
@@ -125,27 +125,31 @@ function ModalGetTickets({ onClose }) {
     }
 
     try {
-      // Отправляем запрос на создание инвойса для оплаты
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createInvoice', {
+      // Отправляем запрос на бэкенд для получения данных платежа
+      const response = await fetch('https://your-cloud-function-url/getPaymentData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          userId: userId,
-          chatId: tg.initDataUnsafe?.user?.id, // ID чата - это ID пользователя
-        }),
+        body: JSON.stringify({ userId: userId }),
       });
 
       const result = await response.json();
 
       if (result.success) {
-        console.log('Инвойс успешно отправлен');
+        // Инициализация платежа через WebApp API
+        tg.payments.openInvoice({
+          slug: result.slug,  // Уникальный идентификатор для оплаты
+          amount: result.amount,  // Сумма
+          currency: result.currency,  // Валюта
+        });
+
+        console.log('Открыто окно оплаты');
       } else {
-        console.error('Ошибка при отправке инвойса:', result.error);
+        console.error('Ошибка получения данных для оплаты:', result.error);
       }
     } catch (error) {
-      console.error('Ошибка при отправке инвойса:', error);
+      console.error('Ошибка при получении данных для оплаты:', error);
     }
   };
 
