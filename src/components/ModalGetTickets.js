@@ -117,38 +117,33 @@ function ModalGetTickets({ onClose }) {
   const handleBuyTicket = async () => {
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id || '';
-
+  
     if (!userId) {
       console.error('Не удалось получить ID пользователя');
       return;
     }
-
+  
     try {
-      // Запрашиваем данные для оплаты с бэкенда
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getPaymentData', {
+      // Отправляем запрос на сервер для получения ссылки на инвойс
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createInvoiceLink', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId: userId }),
+        body: JSON.stringify({ userId }),
       });
-
+  
       const result = await response.json();
-
+  
       if (result.success) {
-        // Используем полученные данные для открытия платежного окна
-        tg.payments.openInvoice({
-          slug: result.slug,
-          amount: result.amount, 
-          currency: result.currency, 
-        });
-
-        console.log('Открыто окно оплаты');
+        const invoiceLink = result.invoiceLink;
+        // Открываем инвойс через Telegram Web App API
+        tg.openInvoice(invoiceLink);
       } else {
-        console.error('Ошибка получения данных для оплаты:', result.error);
+        console.error('Ошибка создания инвойса:', result.error);
       }
     } catch (error) {
-      console.error('Ошибка при получении данных для оплаты:', error);
+      console.error('Ошибка при создании инвойса:', error);
     }
   };
 
