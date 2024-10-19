@@ -71,7 +71,7 @@
   
   .modal-buttons {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
   }
   
   .invite-friends-button, .buy-tickets-button {

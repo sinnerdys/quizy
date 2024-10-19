@@ -114,6 +114,41 @@ function ModalGetTickets({ onClose }) {
     tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
   };
 
+  // Функция для покупки билета
+  const handleBuyTicket = async () => {
+    const tg = window.Telegram.WebApp;
+    const userId = tg.initDataUnsafe?.user?.id || '';
+
+    if (!userId) {
+      console.error('Не удалось получить ID пользователя');
+      return;
+    }
+
+    try {
+      // Отправляем запрос на создание инвойса для оплаты
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createInvoice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          chatId: tg.initDataUnsafe?.user?.id, // ID чата - это ID пользователя
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('Инвойс успешно отправлен');
+      } else {
+        console.error('Ошибка при отправке инвойса:', result.error);
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке инвойса:', error);
+    }
+  };
+
   // Обработчик закрытия окна
   useEffect(() => {
     const overlay = document.querySelector('.modal-get-tickets-overlay');
@@ -164,7 +199,7 @@ function ModalGetTickets({ onClose }) {
           <button className="invite-friends-button" onClick={handleInviteFriends}>
             Invite Friends
           </button>
-          <button className="buy-tickets-button" onClick={() => alert('Buy for 100 stars functionality')}>
+          <button className="buy-tickets-button" onClick={handleBuyTicket}>
             Buy for <img src={TelegramStarImage} alt="Telegram Star" className="star-image" /> 100
           </button>
         </div>
