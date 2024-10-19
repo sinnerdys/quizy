@@ -114,7 +114,6 @@ function ModalGetTickets({ onClose }) {
     tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
   };
 
-  // Функция для отправки запроса на получение данных для оплаты
   const handleBuyTicket = async () => {
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id || '';
@@ -125,7 +124,7 @@ function ModalGetTickets({ onClose }) {
     }
 
     try {
-      // Отправляем запрос на бэкенд для получения данных платежа
+      // Запрашиваем данные для оплаты с бэкенда
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getPaymentData', {
         method: 'POST',
         headers: {
@@ -137,11 +136,11 @@ function ModalGetTickets({ onClose }) {
       const result = await response.json();
 
       if (result.success) {
-        // Инициализация платежа через WebApp API
+        // Используем полученные данные для открытия платежного окна
         tg.payments.openInvoice({
-          slug: result.slug,  // Уникальный идентификатор для оплаты
-          amount: result.amount,  // Сумма
-          currency: result.currency,  // Валюта
+          slug: result.slug,
+          amount: result.amount, 
+          currency: result.currency, 
         });
 
         console.log('Открыто окно оплаты');
