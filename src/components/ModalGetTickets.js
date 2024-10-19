@@ -126,7 +126,7 @@ function ModalGetTickets({ onClose }) {
 
     try {
       // Отправляем запрос на бэкенд для получения данных платежа
-      const response = await fetch('https://your-cloud-function-url/getPaymentData', {
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getPaymentData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
