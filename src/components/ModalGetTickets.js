@@ -114,36 +114,36 @@ function ModalGetTickets({ onClose }) {
     tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
   };
 
+  // Функция для покупки билета
   const handleBuyTicket = async () => {
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id || '';
-  
+
     if (!userId) {
       console.error('Не удалось получить ID пользователя');
       return;
     }
-  
+
     try {
-      // Отправляем запрос на сервер для получения ссылки на инвойс
+      // Получаем инвойс с бэкенда
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createInvoiceLink', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId }),
       });
-  
+
       const result = await response.json();
-  
+
       if (result.success) {
-        const invoiceLink = result.invoiceLink;
-        // Открываем инвойс через Telegram Web App API
-        tg.openInvoice(invoiceLink);
+        // Открываем инвойс в Telegram WebApp
+        tg.payments.openInvoice({
+          slug: result.invoiceLink,
+        });
       } else {
-        console.error('Ошибка создания инвойса:', result.error);
+        console.error('Ошибка получения инвойса:', result.error);
       }
     } catch (error) {
-      console.error('Ошибка при создании инвойса:', error);
+      console.error('Ошибка создания инвойса:', error);
     }
   };
 
