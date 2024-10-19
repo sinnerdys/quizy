@@ -45,7 +45,7 @@ function ModalGetTickets({ onClose }) {
         <div className="modal-logo-container">
           <img src={TicketImage} alt="Ticket Logo" className="modal-ticket-logo" />
         </div>
-        <h3>Get more tickets!</h3>
+        <h3 className="modal-h3">Get more tickets!</h3>
         <p className="modal-subtitle">
           To get additional tickets, you can invite friends or purchase them for 100 stars.
         </p>

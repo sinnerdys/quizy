@@ -43,7 +43,7 @@
   }
   
   .modal-ticket-logo {
-    width: 50px;
+    width: 80px;
   }
   
   .close-button {
@@ -55,21 +55,23 @@
     cursor: pointer;
   }
   
-  h3 {
+  .modal-h3 {
     color: #fff;
-    font-size: 18px;
+    font-size: 24px;
     margin-bottom: 10px;
   }
   
   .modal-subtitle {
-    color: #ccc;
+    color: #ADC3FF;
     font-size: 14px;
     margin-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
   
   .modal-buttons {
     display: flex;
-    justify-content: space-around;
+    gap: 10px;
   }
   
   .invite-friends-button, .buy-tickets-button {
@@ -80,14 +82,30 @@
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s;
+    margin-bottom: 15px;
+    flex: 1;
   }
   
-  .invite-friends-button:hover, .buy-tickets-button:hover {
-    background-color: #1748D2;
+  .invite-friends-button {
+    background-color: #1c4e99; /* Цвет для кнопки "Invite Friends" */
+  }
+  
+  .invite-friends-button:hover {
+    background-color: #1c4e99; /* Цвет при наведении */
+  }
+  
+  .buy-tickets-button {
+    background-color: #1748D2; /* Цвет для кнопки "Buy Tickets" */
+  }
+  
+  .buy-tickets-button:hover {
+    background-color: #1748D2; /* Цвет при наведении */
   }
   
   .star-image {
     width: 16px;
     vertical-align: middle;
+    position: relative;
+    top: -2px;
   }
   
