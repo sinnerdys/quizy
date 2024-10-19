@@ -4,6 +4,23 @@ import TicketImage from '../assets/ticket_image.png'; // Импорт изобр
 import TelegramStarImage from '../assets/telegram_star.png'; // Импорт изображения звезды (нужно добавить картинку)
 
 function ModalGetTickets({ onClose }) {
+
+  // Функция для отправки приглашений друзьям
+  const handleInviteFriends = () => {
+    const tg = window.Telegram.WebApp;
+    const referralCode = tg.initDataUnsafe?.user?.id; // Берем ID пользователя из данных Telegram WebApp
+
+    if (!referralCode) {
+      console.error('Реферальный код не сгенерирован!');
+      return;
+    }
+
+    const referralLink = `https://t.me/Qqzgy_bot/game?startapp=${referralCode}`;
+    const messageText = `Hey! Join QUIZY and get rewards! Use my referral link: ${referralLink}`;
+
+    tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
+  };
+
   useEffect(() => {
     const overlay = document.querySelector('.modal-get-tickets-overlay');
     const modal = document.querySelector('.modal-get-tickets');
@@ -50,7 +67,7 @@ function ModalGetTickets({ onClose }) {
           To get additional tickets, you can invite friends or purchase them for 100 stars.
         </p>
         <div className="modal-buttons">
-          <button className="invite-friends-button" onClick={() => alert('Invite Friends functionality')}>
+          <button className="invite-friends-button" onClick={handleInviteFriends}>
             Invite Friends
           </button>
           <button className="buy-tickets-button" onClick={() => alert('Buy for 100 stars functionality')}>

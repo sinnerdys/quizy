@@ -84,6 +84,7 @@
     transition: background-color 0.3s;
     margin-bottom: 15px;
     flex: 1;
+    padding: 15px;
   }
   
   .invite-friends-button {
