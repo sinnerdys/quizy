@@ -134,15 +134,13 @@ function ModalGetTickets({ onClose }) {
       const result = await response.json();
   
       if (result.success) {
-        // Проверяем, доступен ли объект payments
-        if (tg.payments && typeof tg.payments.openInvoice === 'function') {
-          // Открываем окно оплаты
-          tg.payments.openInvoice({
-            title: result.title,
-            description: result.description,
-            payload: result.payload,
-            currency: result.currency,
-            prices: result.prices,
+        // Открываем инвойс с использованием ссылки
+        if (tg.openInvoice && typeof tg.openInvoice === 'function') {
+          tg.openInvoice(result.invoiceLink, (status) => {
+            console.log('Invoice status:', status);
+            if (status === 'paid') {
+              // Обработка успешной оплаты
+            }
           });
         } else {
           console.error('Telegram Payments API не поддерживается в этом контексте.');
