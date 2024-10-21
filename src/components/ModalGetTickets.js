@@ -139,31 +139,7 @@ function ModalGetTickets({ onClose }) {
           tg.openInvoice(result.invoiceLink, async (status) => {
             console.log('Invoice status:', status);
             if (status === 'paid') {
-              // Обработка успешной оплаты
-              try {
-                const paymentResponse = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/handleSuccessfulPayment', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    userId: userId,
-                    paymentId: result.invoiceLink, // Используйте корректный идентификатор платежа
-                  }),
-                });
-  
-                if (!paymentResponse.ok) {
-                  throw new Error('Ошибка при обработке успешного платежа');
-                }
-  
-                const paymentResult = await paymentResponse.json();
-                console.log('Успешная обработка платежа:', paymentResult);
-  
-                // Обновите состояние пользователя, например, добавьте билет
-                alert('Оплата прошла успешно! Вам добавлен билет.');
-              } catch (error) {
-                console.error('Ошибка при обработке успешного платежа:', error);
-              }
+              alert('Оплата прошла успешно! Вам добавлен билет.');
             } else {
               console.log('Платеж не завершен или был отменен.');
             }
