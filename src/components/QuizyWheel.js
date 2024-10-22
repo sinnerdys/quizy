@@ -253,6 +253,8 @@ const QuizyWheel = () => {
     if (isExploding) setIsExploding(false); // Конфетти запускаются только при выигрыше
     setShowTicketsModal(false); // Закрываем поп-ап с билетами
     setIsSpinning(false); // Сбрасываем состояние вращения
+
+    fetchTicketInfo(); // Обновляем информацию о билетах в родительском компоненте после закрытия поп-апа
   };
 
   const formatTime = (milliseconds) => {
