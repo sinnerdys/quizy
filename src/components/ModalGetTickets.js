@@ -3,7 +3,7 @@ import './ModalGetTickets.css'; // Стили для этого поп-апа
 import TicketImage from '../assets/ticket_image.png'; // Импорт изображения билета
 import TelegramStarImage from '../assets/telegram_star.png'; // Импорт изображения звезды
 
-function ModalGetTickets({ onClose }) {
+function ModalGetTickets({ onClose, fetchTicketInfo }) {
   const [referralCode, setReferralCode] = useState(''); 
 
   // Функция для получения реферального кода
@@ -114,49 +114,49 @@ function ModalGetTickets({ onClose }) {
     tg.openTelegramLink(`https://t.me/share/url?url=${encodeURIComponent(referralLink)}&text=${encodeURIComponent(messageText)}`);
   };
 
-  const handleBuyTicket = async () => {
-    const tg = window.Telegram.WebApp;
-    const userId = tg.initDataUnsafe?.user?.id || '';
+    const handleBuyTicket = async () => {
+      const tg = window.Telegram.WebApp;
+      const userId = tg.initDataUnsafe?.user?.id || '';
   
-    if (!userId) {
-      console.error('Не удалось получить ID пользователя');
-      return;
-    }
-  
-    try {
-      // Получаем инвойс с бэкенда
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createInvoiceLink', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }),
-      });
-  
-      const result = await response.json();
-  
-      if (result.success) {
-        // Открываем инвойс с использованием ссылки
-        if (tg.openInvoice && typeof tg.openInvoice === 'function') {
-          tg.openInvoice(result.invoiceLink, async (status) => {
-            console.log('Invoice status:', status);
-            if (status === 'paid') {
-              alert('Оплата прошла успешно! Вам добавлен билет.');
-  
-              // Обновляем информацию о билетах после успешной оплаты
-              await fetchTicketInfo();
-            } else {
-              console.log('Платеж не завершен или был отменен.');
-            }
-          });
-        } else {
-          console.error('Telegram Payments API не поддерживается в этом контексте.');
-        }
-      } else {
-        console.error('Ошибка получения инвойса:', result.error);
+      if (!userId) {
+        console.error('Не удалось получить ID пользователя');
+        return;
       }
-    } catch (error) {
-      console.error('Ошибка создания инвойса:', error);
-    }
-  };
+  
+      try {
+        // Получаем инвойс с бэкенда
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createInvoiceLink', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId }),
+        });
+  
+        const result = await response.json();
+  
+        if (result.success) {
+          // Открываем инвойс с использованием ссылки
+          if (tg.openInvoice && typeof tg.openInvoice === 'function') {
+            tg.openInvoice(result.invoiceLink, async (status) => {
+              console.log('Invoice status:', status);
+              if (status === 'paid') {
+                alert('Оплата прошла успешно! Вам добавлен билет.');
+  
+                // Обновляем информацию о билетах после успешной оплаты
+                await fetchTicketInfo();
+              } else {
+                console.log('Платеж не завершен или был отменен.');
+              }
+            });
+          } else {
+            console.error('Telegram Payments API не поддерживается в этом контексте.');
+          }
+        } else {
+          console.error('Ошибка получения инвойса:', result.error);
+        }
+      } catch (error) {
+        console.error('Ошибка создания инвойса:', error);
+      }
+    };
   
 
   // Обработчик закрытия окна

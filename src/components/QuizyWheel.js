@@ -301,7 +301,7 @@ const QuizyWheel = () => {
       </div>
           {/* Модальное окно выигрыша */}
           {showModal && <ModalWin prizeAmount={prizeAmount} onClose={closeModal} />}
-          {showTicketsModal && <ModalGetTickets onClose={closeModal} />}
+          {showTicketsModal && <ModalGetTickets onClose={closeModal} fetchTicketInfo={fetchTicketInfo} />}
     </div>
   );
 };
