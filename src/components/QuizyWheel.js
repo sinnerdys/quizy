@@ -38,6 +38,7 @@ const QuizyWheel = () => {
     fetchTicketInfo();
   }, []);
 
+
   useEffect(() => {
     if (!showModal && !showTicketsModal) {  // Останавливаем таймер, если открыто хоть одно модальное окно
       const interval = setInterval(() => {

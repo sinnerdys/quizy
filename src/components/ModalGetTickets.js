@@ -140,6 +140,9 @@ function ModalGetTickets({ onClose }) {
             console.log('Invoice status:', status);
             if (status === 'paid') {
               alert('Оплата прошла успешно! Вам добавлен билет.');
+  
+              // Обновляем информацию о билетах после успешной оплаты
+              await fetchTicketInfo();
             } else {
               console.log('Платеж не завершен или был отменен.');
             }
