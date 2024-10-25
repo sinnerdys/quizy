@@ -21,6 +21,7 @@ function App() {
   const [hasCheckedDailyReward, setHasCheckedDailyReward] = useState(false); // Флаг проверки награды
   const [tickets, setTickets] = useState(0);
   const [nextTicketIn, setNextTicketIn] = useState(0);
+  const [isPremium, setIsPremium] = useState(false); // Добавлено состояние для хранения премиум-статуса пользователя
 
   const navigate = useNavigate();
   const location = useLocation(); // Добавляем хук для получения текущего маршрута
