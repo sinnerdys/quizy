@@ -137,9 +137,9 @@ function Friends() {
   return (
     <div className="friends">
       <h1 className="friends-title">Referrals</h1>
-        <p>Invite new players and get more rewards</p>
+        <p className="friends-description">Invite new players and get more rewards</p>
 
-      <div className="invite-section">
+        <div className="invite-section">
   <div className="invite-item">
     <div className="invite-left">
       <div className="invite-icon">D</div>
@@ -153,15 +153,17 @@ function Friends() {
     </div>
   </div>
 
+  <hr className="divider" />
+
   <div className="invite-item">
     <div className="invite-left">
       <div className="invite-icon">D</div>
       <span className="invite-text">Invite Premium</span>
     </div>
     <div className="invite-right">
-      <span>1</span>
+      <span>2</span>
       <img src={TicketImage} alt="Ticket" className="ticket-logo" />
-      <span>+1000</span>
+      <span>+2000</span>
       <img src={token} alt="QUIZY Token" className="reward-logo" />
     </div>
   </div>

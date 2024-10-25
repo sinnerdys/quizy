@@ -16,18 +16,17 @@
 .invite-section {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 0; /* Объединяем блоки без зазора */
   margin-bottom: 20px;
+  border: 2px dashed #284286;
+  border-radius: 8px;
+  padding: 15px;
 }
 
 .invite-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  border: 2px dashed #284286;
-  border-radius: 8px;
-  background-color: #0d1a3a;
 }
 
 .invite-left {
@@ -59,6 +58,7 @@
   gap: 8px;
 }
 
+
 .friends {
     padding: 20px;
     text-align: center;
@@ -72,6 +72,10 @@
 
 .friends-title {
   font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.friends-description {
   margin-bottom: 20px;
 }
 
@@ -152,9 +156,8 @@
   }
 
   .ticket-logo {
-    width: 18px;
-    height: 16px;
-    margin-left: 5px; /* Отступ между изображением и текстом */
+    width: 22px;
+    height: 18px;
   }
 
   .invite-button-container {
