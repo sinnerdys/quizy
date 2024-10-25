@@ -107,7 +107,7 @@ function App() {
           username: user.username || '',
           balance: referralCode ? 500 : 0, // Если есть реферальный код, добавляем бонус
           referralCode: referralCode || null, // Передаем реферальный код, если есть
-          is_premium: isPremium, // Передаем статус Premium пользователя
+          is_premium: user.is_premium || false // Передаем статус премиум
         }),
       });
 
@@ -179,7 +179,7 @@ function App() {
           username: user.username || '',
           balance: balance, // Сохраняем текущий баланс
           referralCode, // Передаем реферальный код
-          is_premium: isPremium, // Передаем статус Premium пользователя
+          is_premium: user.is_premium || false // Передаем статус премиум
         }),
       });
 
