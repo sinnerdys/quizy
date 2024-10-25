@@ -24,6 +24,11 @@
   margin: 0;
 }
 
+.friends-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
 .friends-list-title {
   text-align: left; /* Выровнять текст по левому краю */
   margin-bottom: 15px;
@@ -98,6 +103,12 @@
   .reward-logo {
     width: 14px; /* Размер логотипа */
     height: 22px;
+  }
+
+  .ticket-logo {
+    width: 18px;
+    height: 16px;
+    margin-left: 5px; /* Отступ между изображением и текстом */
   }
 
   .invite-button-container {

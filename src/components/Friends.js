@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Friends.css'; 
 import logo from '../assets/quizy_logo.png'; 
 import token from '../assets/token.png'; 
+import TicketImage from '../assets/ticket_image.png';
 
 function Friends() {
   const [referralCode, setReferralCode] = useState(''); 
@@ -136,8 +137,23 @@ function Friends() {
   return (
     <div className="friends">
       <div className="header-f">
-        <img src={logo} alt="QUIZY Logo" className="quizy-logo" />
-        <p>Invite friends and get more rewards</p>
+      <h1 className="friends-title">Referrals</h1>
+        <p>Invite new players and get more rewards</p>
+      </div>
+
+      <div className="invite-section">
+        <div className="invite-item">
+          <span className="invite-text">Invite friend</span>
+          <span className="invite-details">
+            <span>1</span> <img src={TicketImage} alt="Ticket" className="ticket-logo" /> +1000 <img src={logo} alt="QUIZY Token" className="reward-logo" />
+          </span>
+        </div>
+        <div className="invite-item">
+          <span className="invite-text">Invite Premium</span>
+          <span className="invite-details">
+            <span>2</span>  <img src={TicketImage} alt="Ticket" className="ticket-logo" /> +2000 <img src={logo} alt="QUIZY Token" className="reward-logo" />
+          </span>
+        </div>
       </div>
 
       <div className="friends-list-title"><h3>My friends</h3></div>
