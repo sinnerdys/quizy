@@ -19,11 +19,11 @@ const QuizyWheel = ({ tickets, nextTicketIn, fetchTicketInfo }) => {  // Пол�
   useEffect(() => {
     if (!showModal && !showTicketsModal) {  // Останавливаем таймер, если открыто хоть одно модальное окно
       const interval = setInterval(() => {
-        setNextTicketIn(prev => (prev > 0 ? prev - 1000 : 0));
+        fetchTicketInfo();  // Обновляем данные о билетах и времени
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [nextTicketIn, showModal, showTicketsModal]);
+  }, [showModal, showTicketsModal, fetchTicketInfo]);
 
   useEffect(() => {
     fetchPrizes();
