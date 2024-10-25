@@ -35,15 +35,10 @@
 }
 
 .invite-icon {
-  background-color: #284286;
-  color: white;
-  font-size: 18px;
-  width: 35px;
-  height: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
+  object-fit: cover; /* Чтобы изображение соответствовало кругу */
   margin-right: 10px;
 }
 
@@ -145,8 +140,7 @@
 
 .reward-text {
     font-size: 16px;
-    color: #ADC3FF;
-    font-weight: bold;
+    color: white;
     margin-right: 5px;
   }
   
@@ -157,7 +151,7 @@
 
   .ticket-logo {
     width: 22px;
-    height: 18px;
+    height: 22px;
   }
 
   .invite-button-container {
@@ -223,4 +217,10 @@
   100% {
     background-color: #182C5F;
   }
+}
+
+.divider {
+  border: none;
+  border-top: 2px dashed #284286; /* Пунктирная линия */
+  margin: 15px 0;
 }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Friends.css'; 
-import logo from '../assets/quizy_logo.png'; 
-import token from '../assets/token.png'; 
+import userIcon from '../assets/friend_icon.png'; 
+import premiumIcon from '../assets/telegram_star.png'; 
+import token from '../assets/TokenImage.png'; 
 import TicketImage from '../assets/ticket_image.png';
 
 function Friends() {
@@ -142,7 +143,7 @@ function Friends() {
         <div className="invite-section">
   <div className="invite-item">
     <div className="invite-left">
-      <div className="invite-icon">D</div>
+    <img src={userIcon} alt="User Icon" className="invite-icon" />
       <span className="invite-text">Invite friend</span>
     </div>
     <div className="invite-right">
@@ -157,7 +158,7 @@ function Friends() {
 
   <div className="invite-item">
     <div className="invite-left">
-      <div className="invite-icon">D</div>
+    <img src={premiumIcon} alt="Premium Icon" className="invite-icon" />
       <span className="invite-text">Invite Premium</span>
     </div>
     <div className="invite-right">
