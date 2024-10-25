@@ -39,6 +39,7 @@ function App() {
         console.log('User data from Telegram:', telegramUser);
         setUser(telegramUser); // Сохраняем пользователя в состоянии
         setReferralCode(referralParam); // Сохраняем реферальный код (если есть)
+        setIsPremium(telegramUser.is_premium || false); // Сохраняем статус премиум-пользователя
         fetchUserData(telegramUser, referralParam); // Загружаем данные пользователя из Firebase
       } else {
         console.log('No user data from Telegram WebApp');
@@ -105,6 +106,7 @@ function App() {
           username: user.username || '',
           balance: referralCode ? 500 : 0, // Если есть реферальный код, добавляем бонус
           referralCode: referralCode || null, // Передаем реферальный код, если есть
+          is_premium: isPremium, // Передаем статус Premium пользователя
         }),
       });
 
@@ -176,6 +178,7 @@ function App() {
           username: user.username || '',
           balance: balance, // Сохраняем текущий баланс
           referralCode, // Передаем реферальный код
+          is_premium: isPremium, // Передаем статус Premium пользователя
         }),
       });
 

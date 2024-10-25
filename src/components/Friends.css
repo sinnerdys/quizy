@@ -97,7 +97,7 @@
 .friends-list-section {
   text-align: left;
   flex-grow: 1; /* Раздел будет занимать все оставшееся место */
-  padding-bottom: 120px; /* Отступ снизу, чтобы кнопка не перекрывала список */
+  padding-bottom: 130px; /* Отступ снизу, чтобы кнопка не перекрывала список */
 }
 
 .friends-list-section h3 {
@@ -172,6 +172,7 @@
     left: 0;
     padding: 20px;
     bottom: 70px; /* Зафиксируем кнопку точно внизу */
+    background-color: #0D1C44; /* Фон, чтобы не было перекрытия контентом */
   }
   
   .invite-button {
