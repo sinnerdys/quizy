@@ -68,6 +68,8 @@
 .friends {
     padding: 20px;
     text-align: center;
+    height: 100vh; /* Высота экрана */
+    overflow-y: auto; /* Скролл для всей страницы */
 }
 
 .header p {
@@ -95,8 +97,6 @@
 .friends-list-section {
   text-align: left;
   flex-grow: 1; /* Раздел будет занимать все оставшееся место */
-  overflow-y: auto; /* Включаем вертикальный скролл */
-  max-height: calc(100vh - 370px); /* Ограничиваем высоту для списка друзей */
 }
 
 .friends-list-section h3 {
