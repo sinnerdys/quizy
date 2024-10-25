@@ -35,11 +35,22 @@
 }
 
 .invite-icon {
-  width: 25px;
-  height: 25px;
+  background-color: #284286;
+  color: white;
+  font-size: 18px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 50%;
-  object-fit: cover; /* Чтобы изображение соответствовало кругу */
   margin-right: 10px;
+}
+
+.icon-image {
+  width: 20px; /* Размер иконки внутри круга */
+  height: 20px;
+  object-fit: cover;
 }
 
 .invite-text {
@@ -72,6 +83,7 @@
 
 .friends-description {
   margin-bottom: 20px;
+  color: #ADC3FF;
 }
 
 .friends-list-title {
@@ -132,7 +144,6 @@
 
 .friend-reward {
   color: #ADC3FF;
-  font-weight: bold;
   font-size: 16px;
   display: flex;
   align-items: center;
