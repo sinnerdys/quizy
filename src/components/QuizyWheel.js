@@ -7,7 +7,7 @@ import TicketImage from '../assets/ticket_image.png';
 import ConfettiExplosion from 'react-confetti-explosion';
 import TokenImage from '../assets/TokenImage.png'; // Импорт вашего логотипа
 
-const QuizyWheel = () => {
+const QuizyWheel = ({ tickets, nextTicketIn, fetchTicketInfo }) => {  // Получаем tickets и nextTicketIn из пропсов
   const canvasRef = useRef(null);
   const [isSpinning, setIsSpinning] = useState(false);
   const [prizes, setPrizes] = useState([]);
@@ -15,29 +15,6 @@ const QuizyWheel = () => {
   const [showModal, setShowModal] = useState(false); // Состояние для управления модальным окном
   const [showTicketsModal, setShowTicketsModal] = useState(false); // Состояние для показа поп-апа билетов
   const [prizeAmount, setPrizeAmount] = useState(null); // Состояние для хранения суммы выигрыша
-  const [tickets, setTickets] = useState(0);
-  const [nextTicketIn, setNextTicketIn] = useState(0);
-
-  // Функция для получения информации о билетах
-  const fetchTicketInfo = async () => {
-    const tg = window.Telegram.WebApp;
-    const userId = tg.initDataUnsafe?.user?.id;
-
-    const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getTicketInfo?userId=${userId}&t=${Date.now()}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId }),
-    });
-
-    const data = await response.json();
-    setTickets(data.tickets);
-    setNextTicketIn(data.nextTicketIn);
-  };
-
-  useEffect(() => {
-    fetchTicketInfo();
-  }, []);
-
 
   useEffect(() => {
     if (!showModal && !showTicketsModal) {  // Останавливаем таймер, если открыто хоть одно модальное окно

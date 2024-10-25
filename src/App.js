@@ -19,6 +19,8 @@ function App() {
   const [referralCode, setReferralCode] = useState(null); // Состояние для реферального кода
   const [dailyRewardData, setDailyRewardData] = useState(null); // Данные для награды
   const [hasCheckedDailyReward, setHasCheckedDailyReward] = useState(false); // Флаг проверки награды
+  const [tickets, setTickets] = useState(0);
+  const [nextTicketIn, setNextTicketIn] = useState(0);
 
   const navigate = useNavigate();
   const location = useLocation(); // Добавляем хук для получения текущего маршрута
@@ -196,6 +198,25 @@ function App() {
     }
   };
 
+  const fetchTicketInfo = async () => {
+    const tg = window.Telegram.WebApp;
+    const userId = tg.initDataUnsafe?.user?.id;
+
+    const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getTicketInfo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId }),
+    });
+
+    const data = await response.json();
+    setTickets(data.tickets);
+    setNextTicketIn(data.nextTicketIn);
+  };
+
+  useEffect(() => {
+    fetchTicketInfo().then(() => setLoading(false));
+  }, []);
+
   // Функция для обновления баланса при возврате на экран
   const fetchBalance = async () => {
     if (user) {
@@ -237,7 +258,7 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/games" element={<Games />} />
             <Route path="/friends" element={<Friends />} />
-            <Route path="/wheel" element={<QuizyWheel />} />
+            <Route path="/wheel" element={<QuizyWheel tickets={tickets} nextTicketIn={nextTicketIn} fetchTicketInfo={fetchTicketInfo} />} />
             <Route path="/game-timer" element={<GameTimer onBack={() => navigate('/games')} />} />
           </Routes>
                     {/* Условный рендеринг BottomNav */}
