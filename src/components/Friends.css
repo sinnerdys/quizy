@@ -13,6 +13,52 @@
   margin-bottom: 10px;
 }
 
+.invite-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.invite-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 2px dashed #284286;
+  border-radius: 8px;
+  background-color: #0d1a3a;
+}
+
+.invite-left {
+  display: flex;
+  align-items: center;
+}
+
+.invite-icon {
+  background-color: #284286;
+  color: white;
+  font-size: 18px;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.invite-text {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.invite-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .friends {
     padding: 20px;
     text-align: center;

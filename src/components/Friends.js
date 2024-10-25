@@ -136,25 +136,36 @@ function Friends() {
 
   return (
     <div className="friends">
-      <div className="header-f">
       <h1 className="friends-title">Referrals</h1>
         <p>Invite new players and get more rewards</p>
-      </div>
 
       <div className="invite-section">
-        <div className="invite-item">
-          <span className="invite-text">Invite friend</span>
-          <span className="invite-details">
-            <span>1</span> <img src={TicketImage} alt="Ticket" className="ticket-logo" /> +1000 <img src={logo} alt="QUIZY Token" className="reward-logo" />
-          </span>
-        </div>
-        <div className="invite-item">
-          <span className="invite-text">Invite Premium</span>
-          <span className="invite-details">
-            <span>2</span>  <img src={TicketImage} alt="Ticket" className="ticket-logo" /> +2000 <img src={logo} alt="QUIZY Token" className="reward-logo" />
-          </span>
-        </div>
-      </div>
+  <div className="invite-item">
+    <div className="invite-left">
+      <div className="invite-icon">D</div>
+      <span className="invite-text">Invite friend</span>
+    </div>
+    <div className="invite-right">
+      <span>1</span>
+      <img src={TicketImage} alt="Ticket" className="ticket-logo" />
+      <span>+1000</span>
+      <img src={token} alt="QUIZY Token" className="reward-logo" />
+    </div>
+  </div>
+
+  <div className="invite-item">
+    <div className="invite-left">
+      <div className="invite-icon">D</div>
+      <span className="invite-text">Invite Premium</span>
+    </div>
+    <div className="invite-right">
+      <span>1</span>
+      <img src={TicketImage} alt="Ticket" className="ticket-logo" />
+      <span>+1000</span>
+      <img src={token} alt="QUIZY Token" className="reward-logo" />
+    </div>
+  </div>
+</div>
 
       <div className="friends-list-title"><h3>My friends</h3></div>
       <div className="friends-list-section">
