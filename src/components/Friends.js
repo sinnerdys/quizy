@@ -95,7 +95,7 @@ function Friends() {
       const tg = window.Telegram.WebApp;
       const user = tg.initDataUnsafe?.user || {};
   
-      console.log('Отправляем запрос с данными:', { userId, referralCode, firstName: user.first_name, username: user.username }); 
+      console.log('Отправляем запрос с данными:', { userId, referralCode, firstName: user.first_name, username: user.username, isPremium: user.is_premium }); 
   
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/saveUser', {
         method: 'POST',
@@ -108,6 +108,7 @@ function Friends() {
           lastName: user.last_name || '',
           username: user.username || user.first_name,
           referralCode,
+          is_premium: user.is_premium || false // Передаем статус премиум
         }),
       });
   
