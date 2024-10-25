@@ -169,7 +169,6 @@
   .invite-button-container {
     width: 100%;
     position: fixed;
-    bottom: 70px; /* Прибиваем кнопку над нижней панелью */
     left: 0;
     padding: 20px;
     bottom: 0; /* Зафиксируем кнопку точно внизу */
