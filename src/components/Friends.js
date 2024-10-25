@@ -144,7 +144,7 @@ function Friends() {
   <div className="invite-item">
     <div className="invite-left">
     <div className="invite-icon">
-    <img src={userIcon} alt="User Icon" className="invite-icon" />
+    <img src={userIcon} alt="User Icon" className="icon-image" />
     </div>
       <span className="invite-text">Invite friend</span>
     </div>
