@@ -23,7 +23,7 @@ const QuizyWheel = () => {
     const tg = window.Telegram.WebApp;
     const userId = tg.initDataUnsafe?.user?.id;
 
-    const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/getTicketInfo', {
+    const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getTicketInfo?userId=${userId}&t=${Date.now()}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId }),
