@@ -172,7 +172,6 @@
     left: 0;
     padding: 20px;
     bottom: 70px; /* Зафиксируем кнопку точно внизу */
-    background-color: #0D1C44; /* Фон, чтобы не было перекрытия контентом */
   }
   
   .invite-button {
@@ -187,38 +186,38 @@
   }
 
   /* Скелетоны для друзей */
-.skeleton-friend {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  border: #284286 2px solid;
-}
-
-.skeleton-friend-icon {
-  width: 35px;
-  height: 35px;
-  background-color: #182C5F; /* Цвет скелетона */
-  border-radius: 50%;
-}
-
-.skeleton-friend-name {
-  width: 100px;
-  height: 16px;
-  background-color: #182C5F; /* Цвет скелетона */
-  border-radius: 4px;
-  margin-left: 10px; /* Отступ для выравнивания текста */
-}
-
-.skeleton-friend-reward {
-  width: 50px;
-  height: 16px;
-  background-color: #182C5F; /* Цвет скелетона */
-  border-radius: 4px;
-  margin-left: 10px; /* Отступ для выравнивания текста */
-}
+  .skeleton-friend {
+    display: flex;
+    justify-content: flex-start; /* Сдвигаем элементы к началу */
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: #284286 2px solid;
+  }
+  
+  .skeleton-friend-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #182C5F; /* Цвет скелетона */
+    border-radius: 50%;
+    margin-right: 10px; /* Отступ справа от иконки */
+  }
+  
+  .skeleton-friend-name {
+    width: 100px;
+    height: 16px;
+    background-color: #182C5F; /* Цвет скелетона */
+    border-radius: 4px;
+  }
+  
+  .skeleton-friend-reward {
+    width: 50px;
+    height: 16px;
+    background-color: #182C5F; /* Цвет скелетона */
+    border-radius: 4px;
+    margin-left: auto; /* Отправляем элемент вправо */
+  }
 
 @keyframes skeleton-loading {
   0% {

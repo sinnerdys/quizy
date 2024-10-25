@@ -174,7 +174,10 @@ function Friends() {
   </div>
 </div>
 
-      <div className="friends-list-title"><h3>My friends</h3></div>
+<div className="friends-list-title">
+    <h3>{isLoading ? 'Loading...' : `My friends (${friends.length})`}</h3> {/* Количество друзей */}
+  </div>
+  
       <div className="friends-list-section">
         <ul className="friends-list">
           {isLoading
