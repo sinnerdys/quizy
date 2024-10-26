@@ -4,6 +4,7 @@ import logo from '../assets/logo.png';
 import completedIcon from '../assets/completedIcon.png'; 
 import failedIcon from '../assets/failedIcon.png'; 
 import ModalTask from './ModalTask'; 
+import token from '../assets/TokenImage.png'; 
 
 function Home({ userId, balance, fetchBalance }) { // Добавляем fetchBalance для обновления баланса
   const [showMoreTasks, setShowMoreTasks] = useState(false);
@@ -129,7 +130,10 @@ function Home({ userId, balance, fetchBalance }) { // Добавляем fetchBa
             <img src={task.imageUrl} alt={task.title} className="task-image" /> {/* Изображение задачи */}
             <div className="task-text"> {/* Контейнер для текста */}
               <span className="task-title">{task.title}</span>
-              <span className="task-reward">+{task.reward} QUIZY</span>
+              <span className="task-reward">
+                +{task.reward}
+                <img src={token} alt="QUIZY Token" className="reward-logo" />
+              </span>
             </div>
           </div>
           <button
