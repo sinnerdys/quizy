@@ -38,31 +38,34 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
 
   const handleBoost = async () => {
     if (task.boostUrl) {
-      window.open(task.boostUrl);
-      setBoostClicked(true);
+        window.open(task.boostUrl);
+        setBoostClicked(true);
 
-      // Проверка статуса буста после клика
-      try {
-        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: window.Telegram.WebApp.initDataUnsafe.user.id, taskId: task.id }),
-        });
+        // Проверка статуса буста после клика
+        try {
+            const userId = window.Telegram.WebApp.initDataUnsafe.user.id;  // Логирование userId
+            console.log("User ID:", userId);  // Логируем userId для проверки
 
-        const result = await response.json();
+            const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId, taskId: task.id }),
+            });
 
-        if (result.success) {
-          showAlert("Boost task completed successfully!", true);
-          onComplete(task.id);
-        } else {
-          showAlert(result.message || "Failed to complete boost task. Try again.", false);
+            const result = await response.json();
+
+            if (result.success) {
+                showAlert("Boost task completed successfully!", true);
+                onComplete(task.id);
+            } else {
+                showAlert(result.message || "Failed to complete boost task. Try again.", false);
+            }
+        } catch (error) {
+            console.error('Error checking boost status:', error);
+            showAlert("Error checking boost status. Please try again.", false);
         }
-      } catch (error) {
-        console.error('Error checking boost status:', error);
-        showAlert("Error checking boost status. Please try again.", false);
-      }
     }
-  };
+};
 
   const handleSubscribe = () => {
     if (task.type === 'social') {
