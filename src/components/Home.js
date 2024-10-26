@@ -126,8 +126,8 @@ function Home({ userId, balance, fetchBalance }) { // Добавляем fetchBa
     : displayedTasks.map(task => (
         <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
           <div className="task-info">
-            <img src={task.imageUrl} alt={task.title} className="task-image" /> {/* Новое изображение задачи */}
-            <div>
+            <img src={task.imageUrl} alt={task.title} className="task-image" /> {/* Изображение задачи */}
+            <div className="task-text"> {/* Контейнер для текста */}
               <span className="task-title">{task.title}</span>
               <span className="task-reward">+{task.reward} QUIZY</span>
             </div>

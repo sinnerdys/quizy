@@ -67,7 +67,6 @@ body {
   max-height: calc(100vh - 420px);
 }
 
-/* Стиль задачи */
 .task-item {
   border: #284286 2px solid; /* Прерывистый бордер */
   padding: 15px;
@@ -80,21 +79,24 @@ body {
 
 .task-info {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center; /* Центрирует изображение и текст по вертикали */
+}
+
+.task-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px; /* Отступ между изображением и текстом */
+  border-radius: 8px;
+}
+
+.task-text {
+  display: flex;
+  flex-direction: column; /* Располагаем текст вертикально */
 }
 
 .task-title {
   font-size: 16px;
   color: #FFFFFF;
-  margin-bottom: 5px;
-}
-
-.task-image {
-  width: 40px; /* Размер изображения */
-  height: 40px;
-  margin-right: 10px; /* Отступ между изображением и текстом */
-  border-radius: 8px; /* Скругленные углы, если нужно */
 }
 
 .task-reward {
