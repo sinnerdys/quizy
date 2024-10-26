@@ -36,7 +36,14 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
   }, [onClose]);
 
   const handleSubscribe = () => {
-    window.Telegram.WebApp.openLink(task.subscribeUrl);
+    if (task.type === 'social') {
+      // Для типа 'social' используем openLink для мгновенного перехода без подтверждения
+      window.Telegram.WebApp.openLink(task.subscribeUrl);
+    } else if (task.type === 'subscribe') {
+      // Для типа 'subscribe' используем стандартный window.open с подтверждением
+      window.open(task.subscribeUrl, '_blank');
+      console.log("Subscribe button clicked"); // Проверка
+    }
     setSubscribeClicked(true);
   };
 
