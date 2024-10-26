@@ -38,7 +38,7 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
 
   const handleBoost = () => {
     if (task.boostUrl) {
-      window.Telegram.WebApp.openLink(task.boostUrl);
+      window.open(task.boostUrl);
       setBoostClicked(true); // Устанавливаем стейт после клика на Boost Channel
     }
   };
