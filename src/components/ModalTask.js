@@ -36,10 +36,31 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
     };
   }, [onClose]);
 
-  const handleBoost = () => {
+  const handleBoost = async () => {
     if (task.boostUrl) {
       window.open(task.boostUrl);
-      setBoostClicked(true); // Устанавливаем стейт после клика на Boost Channel
+      setBoostClicked(true);
+
+      // Проверка статуса буста после клика
+      try {
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: window.Telegram.WebApp.initDataUnsafe.user.id, taskId: task.id }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showAlert("Boost task completed successfully!", true);
+          onComplete(task.id);
+        } else {
+          showAlert(result.message || "Failed to complete boost task. Try again.", false);
+        }
+      } catch (error) {
+        console.error('Error checking boost status:', error);
+        showAlert("Error checking boost status. Please try again.", false);
+      }
     }
   };
 
