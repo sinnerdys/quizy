@@ -125,7 +125,7 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
  {task.type === "boost" ? (
           <>
             <button
-              className="boost-button"
+              className="subscribe-button"
               onClick={handleBoost}
             >
               Boost Channel
