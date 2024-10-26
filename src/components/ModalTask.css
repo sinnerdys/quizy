@@ -110,3 +110,9 @@
   color: #007BFF;
   margin-top: 10px;
 }
+
+.claim-reward-button.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

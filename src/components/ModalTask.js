@@ -86,6 +86,8 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
     }
   };
 
+   // Определяем, выполнено ли задание для friends
+   const canClaimReward = task.type === 'friends' && task.currentFriendsCount >= task.requiredFriends;
 
   console.log("task.type:", task.type);
   console.log("isSubscribed:", isSubscribed);
@@ -109,25 +111,43 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
           <span>+{task.reward} $QUIZY</span>
         </div>
 
-        {(task.type === "subscribe" || task.type === "social") && !isSubscribed && (
+          {/* Логика отображения для задания friends */}
+          {task.type === "friends" ? (
           <>
-            <button className="subscribe-button" onClick={handleSubscribe}>
-              Subscribe
-            </button>
+            <p className="task-progress">
+              {`Invite friends (${task.currentFriendsCount}/${task.requiredFriends})`}
+            </p>
             <button
-              className={`check-task-button ${!subscribeClicked ? 'disabled' : ''}`} 
-              onClick={checkSubscription}
-              disabled={!subscribeClicked || checkingSubscription} 
+              className={`claim-reward-button ${canClaimReward ? '' : 'disabled'}`}
+              onClick={() => canClaimReward && onComplete(task.id)}
+              disabled={!canClaimReward}
             >
-              {checkingSubscription ? 'Checking...' : 'Check Task'}
+              Claim Reward
             </button>
           </>
-        )}
-
-         {(task.type !== "subscribe" && task.type !== "social" || isSubscribed) && (
-          <button className="check-task-button" onClick={() => onComplete(task.id)}>
-            Complete Task
-          </button>
+        ) : (
+          // Логика для заданий subscribe и social
+          <>
+            {(task.type === "subscribe" || task.type === "social") && !isSubscribed && (
+              <>
+                <button className="subscribe-button" onClick={handleSubscribe}>
+                  Subscribe
+                </button>
+                <button
+                  className={`check-task-button ${!subscribeClicked ? 'disabled' : ''}`} 
+                  onClick={checkSubscription}
+                  disabled={!subscribeClicked || checkingSubscription} 
+                >
+                  {checkingSubscription ? 'Checking...' : 'Check Task'}
+                </button>
+              </>
+            )}
+            {(task.type !== "subscribe" && task.type !== "social" || isSubscribed) && (
+              <button className="check-task-button" onClick={() => onComplete(task.id)}>
+                Complete Task
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>
