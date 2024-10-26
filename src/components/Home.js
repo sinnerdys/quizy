@@ -16,20 +16,33 @@ function Home({ userId, balance, fetchBalance }) { // Добавляем fetchBa
   const [alertMessage, setAlertMessage] = useState(""); 
   const [isSuccessAlert, setIsSuccessAlert] = useState(false); 
 
-  // Получаем задачи пользователя
-  const fetchUserTasks = async () => {
-    try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserTasks?userId=${userId}`);
-      const data = await response.json();
+// Получаем задачи пользователя
+const fetchUserTasks = async () => {
+  try {
+    const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getUserTasks?userId=${userId}`);
+    const data = await response.json();
 
-      const sortedTasks = data.tasks.sort((a, b) => a.completed - b.completed);
-      setTasks(sortedTasks || []);
-      setTasksLoading(false); // Отключаем загрузку задач
-    } catch (error) {
-      console.error('Error fetching user tasks:', error);
-      setTasksLoading(false); // Отключаем загрузку при ошибке
-    }
-  };
+    // Обрабатываем задачи с учетом завершенных уровней для типа "friends"
+    const formattedTasks = data.tasks.map(task => {
+      if (task.completed && task.type === 'friends') {
+        return {
+          ...task,
+          title: `Invite friends (${task.completedFriends}/${task.completedFriends})`, // Показываем финальный прогресс
+          reward: task.reward, // Отображаем последнюю награду
+        };
+      }
+      return task;
+    });
+
+    // Сортируем и сохраняем задачи
+    const sortedTasks = formattedTasks.sort((a, b) => a.completed - b.completed);
+    setTasks(sortedTasks || []);
+    setTasksLoading(false); // Отключаем загрузку задач
+  } catch (error) {
+    console.error('Error fetching user tasks:', error);
+    setTasksLoading(false); // Отключаем загрузку при ошибке
+  }
+};
 
   // Загружаем задачи после монтирования компонента
   useEffect(() => {
