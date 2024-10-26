@@ -7,7 +7,7 @@
   width: 100%;
   background-color: #112558;
   padding: 10px 0;
-  border-top: 1px solid #333;
+  border-top: 1px solid #1A3069;
   z-index: 999; /* Нижняя панель всегда на переднем плане */
   touch-action: none; /* Отключаем реакцию на свайпы и перетаскивания на панели */
   overflow: hidden; /* Полностью запрещаем прокрутку в нижнем меню */
@@ -24,6 +24,7 @@
   flex-direction: column; /* Вертикальное расположение */
   justify-content: center; /* Центрируем иконки и текст по вертикали */
   align-items: center; /* Центрируем иконки и текст по горизонтали */
+  margin-bottom: 5px;
 }
 
 .nav-link.active {
@@ -38,7 +39,6 @@
   width: 40px; /* Размер иконки */
   height: 40px;
   background-color: transparent;
-  margin-bottom: 5px; /* Отступ между иконкой и текстом */
 }
 
 .icon-svg {

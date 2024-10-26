@@ -24,6 +24,11 @@
     margin-bottom: 50px;
 }
 
+.tickets-flag {
+    color: #ADC3FF;
+    font-weight: 500;
+}
+
 .tickets-count-container {
     display: flex;
     align-items: center;
@@ -34,12 +39,12 @@
     font-size: 24px;
     font-weight: bold;
     color: white;
-    margin-right: 8px;
+    margin-right: 5px;
 }
 
 .ticket-image {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
 }
 
 /* Контейнер для колеса и стрелки */

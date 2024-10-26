@@ -247,7 +247,7 @@ const QuizyWheel = ({ tickets, nextTicketIn, fetchTicketInfo }) => {  // Пол�
     <div className="quizy-wheel-container">
       <h1 className="header-title">Quizy Wheel</h1>
       <div className="tickets-container">
-        <p>Your Tickets</p>
+        <p className="tickets-flag">Your Tickets</p>
         <div className="tickets-count-container">
           <p className="tickets-count">{tickets}</p>
           <img src={TicketImage} alt="Ticket" className="ticket-image" />
