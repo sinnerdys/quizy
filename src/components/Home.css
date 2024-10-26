@@ -108,8 +108,10 @@ body {
 }
 
 .reward-logo-tasks {
-  width: 12px;
+  width: 13px;
   height: 16px;
+  position: relative;
+  top: 2px; /* Смещает изображение на 2 пикселя вниз */
 }
 
 .task-button {
