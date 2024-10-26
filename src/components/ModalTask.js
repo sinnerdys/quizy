@@ -83,7 +83,7 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
           </svg>
         </button>
         <div className="modal-logo-container">
-          <img src={logo} alt="QUIZY Logo" className="modal-logo" />
+        <img src={task.imageUrl} alt={task.title} className="modal-logo" />
         </div>
         <h2>{task.title}</h2>
         <p>{task.description}</p>
