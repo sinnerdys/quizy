@@ -90,6 +90,13 @@ body {
   margin-bottom: 5px;
 }
 
+.task-image {
+  width: 40px; /* Размер изображения */
+  height: 40px;
+  margin-right: 10px; /* Отступ между изображением и текстом */
+  border-radius: 8px; /* Скругленные углы, если нужно */
+}
+
 .task-reward {
   color: #00BFFF;
   font-weight: bold;

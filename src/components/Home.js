@@ -113,34 +113,37 @@ function Home({ userId, balance, fetchBalance }) { // Добавляем fetchBa
       <div className="tasks-section">
         <h3>Tasks</h3>
         <ul className="task-list">
-          {tasksLoading
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <li key={index} className="task-item skeleton-item">
-                  <div className="task-info">
-                    <div className="skeleton-text skeleton-title" />
-                    <div className="skeleton-text skeleton-reward" />
-                  </div>
-                  <div className="skeleton-button" />
-                </li>
-              ))
-            : displayedTasks.map(task => (
-                <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
-                  <div className="task-info">
-                    <span className="task-title">{task.title}</span>
-                    <span className="task-reward">+{task.reward} $QUIZY</span>
-                  </div>
-                  <button
-                    className="task-button"
-                    onClick={() => handleTaskOpen(task)}
-                    disabled={task.completed}
-                  >
-                    {task.completed 
-                      ? <img src={completedIcon} alt="Completed" className="completed-icon" />
-                      : 'Open'}
-                  </button>
-                </li>
-              ))}
-        </ul>
+  {tasksLoading
+    ? Array.from({ length: 4 }).map((_, index) => (
+        <li key={index} className="task-item skeleton-item">
+          <div className="task-info">
+            <div className="skeleton-text skeleton-title" />
+            <div className="skeleton-text skeleton-reward" />
+          </div>
+          <div className="skeleton-button" />
+        </li>
+      ))
+    : displayedTasks.map(task => (
+        <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>
+          <div className="task-info">
+            <img src={task.imageUrl} alt={task.title} className="task-image" /> {/* Новое изображение задачи */}
+            <div>
+              <span className="task-title">{task.title}</span>
+              <span className="task-reward">+{task.reward} QUIZY</span>
+            </div>
+          </div>
+          <button
+            className="task-button"
+            onClick={() => handleTaskOpen(task)}
+            disabled={task.completed}
+          >
+            {task.completed 
+              ? <img src={completedIcon} alt="Completed" className="completed-icon" />
+              : 'Open'}
+          </button>
+        </li>
+      ))}
+</ul>
 
         <div className="see-more-container">
           <button className="see-more-button" onClick={() => setShowMoreTasks(!showMoreTasks)}>
