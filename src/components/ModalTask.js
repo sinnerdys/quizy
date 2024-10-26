@@ -114,13 +114,18 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
           {/* Логика отображения для задания friends */}
           {task.type === "friends" ? (
           <>
-            <button
-              className={`check-task-button ${canClaimReward ? '' : 'disabled'}`}
-              onClick={() => canClaimReward && onComplete(task.id)}
-              disabled={!canClaimReward}
-            >
-              Claim Reward
-            </button>
+          <button
+            className={`check-task-button ${canClaimReward ? '' : 'disabled'}`}
+            onClick={() => {
+              if (canClaimReward) {
+                onComplete(task.id);
+                onClose(); // Закрываем поп-ап после успешного выполнения задания
+              }
+            }}
+            disabled={!canClaimReward}
+          >
+            Claim Reward
+          </button>
           </>
         ) : (
           // Логика для заданий subscribe и social
