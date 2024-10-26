@@ -27,7 +27,7 @@ const fetchUserTasks = async () => {
       if (task.completed && task.type === 'friends') {
         return {
           ...task,
-          title: `Invite friends (${task.completedFriends}/${task.completedFriends})`, // Показываем финальный прогресс
+          title: `Invite friends (${task.currentFriendsCount}/${task.requiredFriends})`, // Показываем финальный прогресс
           reward: task.reward, // Отображаем последнюю награду
         };
       }
