@@ -116,13 +116,21 @@ function Home({ userId, balance, fetchBalance }) { // Добавляем fetchBa
         <ul className="task-list">
   {tasksLoading
     ? Array.from({ length: 4 }).map((_, index) => (
-        <li key={index} className="task-item skeleton-item">
-          <div className="task-info">
-            <div className="skeleton-text skeleton-title" />
-            <div className="skeleton-text skeleton-reward" />
-          </div>
-          <div className="skeleton-button" />
-        </li>
+      <li key={index} className="task-item skeleton-item">
+      <div className="task-info">
+        {/* Скелетон для изображения */}
+        <div className="skeleton-image" />
+        
+        {/* Скелетон для текста */}
+        <div className="task-text">
+          <div className="skeleton-text skeleton-title" />
+          <div className="skeleton-reward" /> {/* Объединенный скелетон для награды */}
+        </div>
+      </div>
+      
+      {/* Скелетон для кнопки */}
+      <div className="skeleton-button" />
+    </li>
       ))
     : displayedTasks.map(task => (
         <li key={task.id} className={`task-item ${task.completed ? 'task-completed' : ''}`}>

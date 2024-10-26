@@ -108,7 +108,7 @@ body {
 }
 
 .reward-logo-tasks {
-  width: 13px;
+  width: 12px;
   height: 16px;
   position: relative;
   top: 2px; /* Смещает изображение на 2 пикселя вниз */
@@ -198,7 +198,6 @@ body {
   }
 }
 
-/* Скелетроны */
 .skeleton-item {
   display: flex;
   justify-content: space-between;
@@ -206,31 +205,48 @@ body {
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
-  border: #182C5F 2px solid; /* Цвет для скелетронов */
+  border: #182C5F 2px solid;
 }
 
-.skeleton-text {
-  background-color: #182C5F; /* Цвет для скелетонов */
-  border-radius: 4px;
-  animation: skeleton-loading 1.5s infinite ease-in-out; /* Анимация переливания цвета */
+/* Скелетон для изображения */
+.skeleton-image {
+  width: 40px;
+  height: 40px;
+  background-color: #182C5F;
+  border-radius: 8px;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+  margin-right: 10px;
 }
 
+/* Скелетон для заголовка */
 .skeleton-title {
   width: 100px;
   height: 16px;
+  background-color: #182C5F;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
   margin-bottom: 8px;
 }
 
+/* Объединенный скелетон для награды (текста и иконки) */
 .skeleton-reward {
-  width: 60px;
+  width: 60px; /* Ширина для комбинации текста и иконки */
   height: 16px;
+  background-color: #182C5F;
+  border-radius: 4px;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Отступ между текстом и иконкой */
 }
 
+/* Скелетон для кнопки */
 .skeleton-button {
   width: 75px;
   height: 35px;
   background-color: #182C5F;
   border-radius: 8px;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
 }
 
 /* Анимация переливания */
