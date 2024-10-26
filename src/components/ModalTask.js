@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './ModalTask.css'; // Стили для модального окна
-import logo from '../assets/logo.png'; // Импортируем логотип
+
 
 function ModalTask({ task, onComplete, onClose, showAlert }) { 
   const [checkingSubscription, setCheckingSubscription] = useState(false);
@@ -36,8 +36,9 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
   }, [onClose]);
 
   const handleSubscribe = () => {
-    window.open(task.subscribeUrl, '_blank'); 
-    setSubscribeClicked(true); 
+    window.open(task.subscribeUrl, '_blank');
+    console.log("Subscribe button clicked"); // Проверка
+    setSubscribeClicked(true);
   };
 
   const checkSubscription = async () => {
@@ -71,6 +72,10 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
       setCheckingSubscription(false);
     }
   };
+
+  console.log("subscribeClicked:", subscribeClicked);
+console.log("checkingSubscription:", checkingSubscription);
+console.log("isSubscribed:", isSubscribed);
 
   return (
     <div className="modal-task-overlay">
