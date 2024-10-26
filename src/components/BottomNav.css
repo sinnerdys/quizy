@@ -47,11 +47,11 @@
   fill: #C0C5E0; /* Цвет для неактивных иконок */
 }
 
-/* Стиль для активного состояния (синий квадрат под иконкой) */
-.nav-link.active .icon {
+.nav-link.active .active-icon-bg {
   background-color: #1A3069; /* Фон для активной иконки */
   border-radius: 8px; /* Скругленные углы */
 }
+
 
 .nav-link.active .icon-svg {
   fill: white; /* Цвет активной иконки — белый */
