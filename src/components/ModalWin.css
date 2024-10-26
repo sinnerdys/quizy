@@ -97,6 +97,7 @@
     font-size: 16px;
     cursor: pointer;
     margin-bottom: 25px;
+    font-weight: 600;
   }
   
   .get-prize-button:hover {

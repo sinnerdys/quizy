@@ -113,6 +113,7 @@ body {
 .task-completed .task-button {
   background-color: #182C5F; /* Цвет кнопки для завершенных заданий */
   width: 75px;
+  height: 40px;
 }
 
 .completed-icon {

@@ -97,7 +97,7 @@
 }
 
 .check-task-button.disabled {
-  background-color: #ccc;
+  background-color: #182C5F;
   cursor: not-allowed;
 }
 

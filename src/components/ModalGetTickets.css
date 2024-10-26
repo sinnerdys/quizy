@@ -85,6 +85,8 @@
     margin-bottom: 15px;
     flex: 1;
     padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
   }
   
   .invite-friends-button {
@@ -96,7 +98,7 @@
   }
   
   .buy-tickets-button {
-    background-color: #1748D2; /* Цвет для кнопки "Buy Tickets" */
+    background-color: #31A6F5; /* Цвет для кнопки "Buy Tickets" */
   }
   
   .buy-tickets-button:hover {

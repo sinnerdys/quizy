@@ -184,6 +184,7 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
   }
 
   /* Скелетоны для друзей */
