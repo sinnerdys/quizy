@@ -73,9 +73,8 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
     }
   };
 
-  console.log("subscribeClicked:", subscribeClicked);
-console.log("checkingSubscription:", checkingSubscription);
-console.log("isSubscribed:", isSubscribed);
+  console.log("task.type:", task.type);
+  console.log("isSubscribed:", isSubscribed);
 
   return (
     <div className="modal-task-overlay">
