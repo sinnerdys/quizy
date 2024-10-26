@@ -101,7 +101,15 @@ body {
 
 .task-reward {
   color: #ADC3FF;
-  
+}
+
+.reward-text-tasks {
+  margin-right: 5px;
+}
+
+.reward-logo-tasks {
+  width: 18px;
+  height: 12px;
 }
 
 .task-button {

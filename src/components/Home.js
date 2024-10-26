@@ -131,8 +131,8 @@ function Home({ userId, balance, fetchBalance }) { // Добавляем fetchBa
             <div className="task-text"> {/* Контейнер для текста */}
               <span className="task-title">{task.title}</span>
               <span className="task-reward">
-                +{task.reward}
-                <img src={token} alt="QUIZY Token" className="reward-logo" />
+                <span className="reward-text-tasks">+{task.reward}</span>
+                <img src={token} alt="QUIZY Token" className="reward-logo-tasks" />
               </span>
             </div>
           </div>
