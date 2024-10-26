@@ -36,8 +36,7 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
   }, [onClose]);
 
   const handleSubscribe = () => {
-    window.open(task.subscribeUrl, '_blank');
-    console.log("Subscribe button clicked"); // Проверка
+    window.Telegram.WebApp.openLink(task.subscribeUrl);
     setSubscribeClicked(true);
   };
 
