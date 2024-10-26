@@ -6,6 +6,7 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
   const [checkingSubscription, setCheckingSubscription] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [subscribeClicked, setSubscribeClicked] = useState(false); 
+  const [boostClicked, setBoostClicked] = useState(false); // Новый стейт для boost
 
   useEffect(() => {
     const overlay = document.querySelector('.modal-task-overlay');
@@ -34,6 +35,13 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
       }
     };
   }, [onClose]);
+
+  const handleBoost = () => {
+    if (task.boostUrl) {
+      window.Telegram.WebApp.openLink(task.boostUrl);
+      setBoostClicked(true); // Устанавливаем стейт после клика на Boost Channel
+    }
+  };
 
   const handleSubscribe = () => {
     if (task.type === 'social') {
@@ -89,6 +97,8 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
    // Определяем, выполнено ли задание для friends
    const canClaimReward = task.type === 'friends' && task.currentFriendsCount >= task.requiredFriends;
 
+
+
   console.log("task.type:", task.type);
   console.log("isSubscribed:", isSubscribed);
 
@@ -111,24 +121,37 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
           <span>+{task.reward} $QUIZY</span>
         </div>
 
-          {/* Логика отображения для задания friends */}
-          {task.type === "friends" ? (
+ {/* Логика для задания boost */}
+ {task.type === "boost" ? (
           <>
+            <button
+              className="boost-button"
+              onClick={handleBoost}
+            >
+              Boost Channel
+            </button>
+            <button
+              className={`check-task-button ${boostClicked ? '' : 'disabled'}`}
+              onClick={() => boostClicked && onComplete(task.id)}
+              disabled={!boostClicked}
+            >
+              Check Task
+            </button>
+          </>
+        ) : task.type === "friends" ? (
           <button
             className={`check-task-button ${canClaimReward ? '' : 'disabled'}`}
             onClick={() => {
               if (canClaimReward) {
                 onComplete(task.id);
-                onClose(); // Закрываем поп-ап после успешного выполнения задания
+                onClose();
               }
             }}
             disabled={!canClaimReward}
           >
             Claim Reward
           </button>
-          </>
         ) : (
-          // Логика для заданий subscribe и social
           <>
             {(task.type === "subscribe" || task.type === "social") && !isSubscribed && (
               <>
