@@ -114,11 +114,8 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
           {/* Логика отображения для задания friends */}
           {task.type === "friends" ? (
           <>
-            <p className="task-progress">
-              {`Invite friends (${task.currentFriendsCount}/${task.requiredFriends})`}
-            </p>
             <button
-              className={`claim-reward-button ${canClaimReward ? '' : 'disabled'}`}
+              className={`check-task-button ${canClaimReward ? '' : 'disabled'}`}
               onClick={() => canClaimReward && onComplete(task.id)}
               disabled={!canClaimReward}
             >
