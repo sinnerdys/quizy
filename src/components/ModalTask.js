@@ -42,36 +42,44 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
   };
 
   const checkSubscription = async () => {
-    setCheckingSubscription(true);
-    try {
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/checkSubscription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId: window.Telegram.WebApp.initDataUnsafe.user.id, 
-          channelUrl: task.subscribeUrl,
-        }),
-      });
+    // Проверка для типа 'subscribe'
+    if (task.type === 'subscribe') {
+      setCheckingSubscription(true);
+      try {
+        const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/checkSubscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: window.Telegram.WebApp.initDataUnsafe.user.id, 
+            channelUrl: task.subscribeUrl,
+          }),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (result.success && result.isSubscribed) {
-        setIsSubscribed(true);
-        onComplete(task.id); 
-        onClose(); 
-      } else {
-        showAlert("You are not subscribed to the channel.", false); 
+        if (result.success && result.isSubscribed) {
+          setIsSubscribed(true);
+          onComplete(task.id); 
+          onClose(); 
+        } else {
+          showAlert("You are not subscribed to the channel.", false); 
+          onClose();
+        }
+      } catch (error) {
+        showAlert("Failed to check subscription. Try again.", false); 
         onClose();
+      } finally {
+        setCheckingSubscription(false);
       }
-    } catch (error) {
-      showAlert("Failed to check subscription. Try again.", false); 
+    } else if (task.type === 'social') {
+      // Если тип 'social', сразу завершаем задание без проверки
+      onComplete(task.id);
       onClose();
-    } finally {
-      setCheckingSubscription(false);
     }
   };
+
 
   console.log("task.type:", task.type);
   console.log("isSubscribed:", isSubscribed);
@@ -95,7 +103,7 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
           <span>+{task.reward} $QUIZY</span>
         </div>
 
-        {task.type === "subscribe" && !isSubscribed && (
+        {(task.type === "subscribe" || task.type === "social") && !isSubscribed && (
           <>
             <button className="subscribe-button" onClick={handleSubscribe}>
               Subscribe
@@ -110,7 +118,7 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
           </>
         )}
 
-        {(task.type !== "subscribe" || isSubscribed) && (
+         {(task.type !== "subscribe" && task.type !== "social" || isSubscribed) && (
           <button className="check-task-button" onClick={() => onComplete(task.id)}>
             Complete Task
           </button>
