@@ -7,6 +7,7 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [subscribeClicked, setSubscribeClicked] = useState(false); 
   const [boostClicked, setBoostClicked] = useState(false); // Новый стейт для boost
+  const [checkingBoost, setCheckingBoost] = useState(false); // Добавили состояние для проверки буста
 
   useEffect(() => {
     const overlay = document.querySelector('.modal-task-overlay');
@@ -36,36 +37,43 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
     };
   }, [onClose]);
 
-  const handleBoost = async () => {
+  const handleBoost = () => {
     if (task.boostUrl) {
-        window.open(task.boostUrl);
-        setBoostClicked(true);
-
-        // Проверка статуса буста после клика
-        try {
-            const userId = window.Telegram.WebApp.initDataUnsafe.user.id;  // Логирование userId
-            console.log("User ID:", userId);  // Логируем userId для проверки
-
-            const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, taskId: task.id }),
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                showAlert("Boost task completed successfully!", true);
-                onComplete(task.id);
-            } else {
-                showAlert(result.message || "Failed to complete boost task. Try again.", false);
-            }
-        } catch (error) {
-            console.error('Error checking boost status:', error);
-            showAlert("Error checking boost status. Please try again.", false);
-        }
+      window.open(task.boostUrl);
+      setBoostClicked(true);
     }
-};
+  };
+
+  const checkBoostStatus = async () => {
+    if (!boostClicked) return;
+
+    setCheckingBoost(true);
+    try {
+      const userId = window.Telegram.WebApp.initDataUnsafe.user.id;
+      console.log("User ID:", userId);
+
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeTask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, taskId: task.id }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showAlert("Boost task completed successfully!", true);
+        onComplete(task.id);
+      } else {
+        showAlert(result.message || "Failed to complete boost task. Try again.", false);
+      }
+    } catch (error) {
+      console.error('Error checking boost status:', error);
+      showAlert("Error checking boost status. Please try again.", false);
+    } finally {
+      setCheckingBoost(false);
+      onClose(); // Закрываем модальное окно в любом случае
+    }
+  };
 
   const handleSubscribe = () => {
     if (task.type === 'social') {
@@ -144,9 +152,8 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
         <div className="reward-info">
           <span>+{task.reward} $QUIZY</span>
         </div>
-
- {/* Логика для задания boost */}
- {task.type === "boost" ? (
+        {/* Логика для задания boost */}
+        {task.type === "boost" ? (
           <>
             <button
               className="subscribe-button"
@@ -156,10 +163,10 @@ function ModalTask({ task, onComplete, onClose, showAlert }) {
             </button>
             <button
               className={`check-task-button ${boostClicked ? '' : 'disabled'}`}
-              onClick={() => boostClicked && onComplete(task.id)}
-              disabled={!boostClicked}
+              onClick={checkBoostStatus}
+              disabled={!boostClicked || checkingBoost}
             >
-              Check Task
+              {checkingBoost ? 'Checking...' : 'Check Task'}
             </button>
           </>
         ) : task.type === "friends" ? (
