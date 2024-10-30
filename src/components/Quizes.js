@@ -30,13 +30,18 @@ function Quizes() {
       <h3>Quizes</h3>
       <p>Play exciting games and earn more $QUIZY!</p>
       
-      <div className="progress">
-        <span>Your progress:</span>
-        <span>⚡ 1</span>
+      <div className="progress-container">
+        <div className="progress-header">
+          <span>Your progress:</span>
+          <div className="energy-container">
+            ⚡ 1
+            <button className="energy-button">+</button>
+          </div>
+        </div>
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: '100%' }}></div>
         </div>
-        <span>10/10 quizzes completed</span>
+        <span className="progress-status">10/10 quizzes completed</span>
       </div>
 
       <ul className="quiz-list">
