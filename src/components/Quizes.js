@@ -1,5 +1,7 @@
 import React from 'react';
 import './Quizes.css'; 
+import QuestionIcon from '../assets/question_icon.png'; // Импорт иконки для Coming Soon игр
+import TimeIcon from '../assets/icons/time.svg'; // Импорт иконки времени
 
 function Quizes() {
   const quizzes = [
@@ -47,13 +49,14 @@ function Quizes() {
       <ul className="quiz-list">
         {quizzes.map((quiz, index) => (
           <li key={index} className="quiz-item">
+            <div className="quiz-avatar">
+              <img src={QuestionIcon} alt="Timer icon" />
+            </div>
             <div className="quiz-info">
               <div className="quiz-title">{quiz.title}</div>
-              <div className="quiz-reward">
-                +{quiz.reward} ⚡
-              </div>
-              <div className="quiz-time">
-                {quiz.time} ⏰
+              <div className="quiz-details">
+                <span className="quiz-reward">+{quiz.reward} ⚡</span>
+                <span className="quiz-time">{quiz.time} <img src={TimeIcon} alt="Time icon" className="time-icon" /></span>
               </div>
             </div>
             <button className="quiz-button">Open</button>

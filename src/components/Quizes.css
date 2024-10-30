@@ -11,7 +11,7 @@
   
   .quizes-section p {
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
     color: #ADC3FF;
   }
   
@@ -27,12 +27,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   
   .progress-header span {
-    font-size: 14px;
-    color: #ADC3FF;
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
   }
   
   .energy-container {
@@ -57,8 +58,9 @@
   }
   
   .progress-bar {
+    margin-top: 3px;
     width: 100%;
-    height: 8px;
+    height: 10px;
     background-color: #2F4F90;
     border-radius: 4px;
   }
@@ -70,13 +72,13 @@
   }
   
   .progress-status {
-    font-size: 14px;
+    font-size: 16px;
     color: white;
     margin-top: 5px;
   }
   
-  /* Список квизов */
-  .quiz-list {
+/* Список квизов */
+.quiz-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -84,28 +86,50 @@
   
   .quiz-item {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     padding: 15px;
     border-radius: 8px;
-    background-color: #182C5F;
     margin-bottom: 10px;
   }
   
-  .quiz-info {
+  .quiz-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #2F4F90;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
+    margin-right: 15px;
+  }
+  
+  .quiz-avatar img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .quiz-info {
+    flex-grow: 1;
   }
   
   .quiz-title {
     font-size: 16px;
+    font-weight: bold;
     color: #FFFFFF;
+    margin-bottom: 5px;
   }
   
-  .quiz-reward, .quiz-time {
+  .quiz-details {
+    display: flex;
+    gap: 15px;
     font-size: 14px;
     color: #ADC3FF;
+  }
+  
+  .time-icon {
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
   }
   
   .quiz-button {
@@ -115,5 +139,6 @@
     padding: 10px 20px;
     border-radius: 8px;
     cursor: pointer;
+    font-weight: 600;
   }
   
