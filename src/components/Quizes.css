@@ -1,0 +1,132 @@
+/* Общие стили */
+
+.quizes-section {
+    padding: 20px;
+}
+  
+  /* Заголовок и описание */
+  .quizes-section h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .quizes-section p {
+    text-align: center;
+    font-size: 14px;
+    color: #ADC3FF;
+  }
+  
+  /* Прогресс */
+  .progress {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .progress span {
+    font-size: 12px;
+    color: #ADC3FF;
+  }
+  
+  .progress-bar {
+    width: 80%;
+    height: 8px;
+    background-color: #284286;
+    border-radius: 4px;
+    margin: 5px 0;
+  }
+  
+  .progress-fill {
+    height: 100%;
+    background-color: #FFE600;
+    border-radius: 4px;
+  }
+  
+  /* Список квизов */
+  .quiz-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .quiz-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #182C5F;
+    margin-bottom: 10px;
+  }
+  
+  .quiz-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .quiz-title {
+    font-size: 16px;
+    color: #FFFFFF;
+  }
+  
+  .quiz-reward, .quiz-time {
+    font-size: 14px;
+    color: #ADC3FF;
+  }
+  
+  .quiz-button {
+    background-color: #284286;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  /* Скелетоны */
+  .skeleton-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #182C5F;
+  }
+  
+  .skeleton-icon, .skeleton-text, .skeleton-time, .skeleton-button {
+    background-color: #284286;
+    border-radius: 4px;
+    animation: skeleton-loading 1.5s infinite ease-in-out;
+  }
+  
+  .skeleton-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .skeleton-text {
+    width: 100px;
+    height: 16px;
+  }
+  
+  .skeleton-time {
+    width: 50px;
+    height: 16px;
+  }
+  
+  .skeleton-button {
+    width: 75px;
+    height: 35px;
+  }
+  
+  /* Анимация скелетона */
+  @keyframes skeleton-loading {
+    0% { background-color: #182C5F; }
+    50% { background-color: #284286; }
+    100% { background-color: #182C5F; }
+  }
+  

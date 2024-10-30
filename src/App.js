@@ -6,7 +6,7 @@ import Friends from './components/Friends';
 import BottomNav from './components/BottomNav';
 import Preloader from './components/Preloader';
 import DailyReward from './components/DailyReward';
-import Games from './components/Games';
+import Quizes from './components/Quizes';
 import QuizyWheel from './components/QuizyWheel';
 import GameTimer from './components/GameTimer';
 import './App.css';
@@ -260,7 +260,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/games" element={<Games />} />
+            <Route path="/quizes" element={<Quizes />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/wheel" element={<QuizyWheel tickets={tickets} nextTicketIn={nextTicketIn} fetchTicketInfo={fetchTicketInfo} />} />
             <Route path="/game-timer" element={<GameTimer onBack={() => navigate('/games')} />} />

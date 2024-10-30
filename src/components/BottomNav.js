@@ -22,11 +22,11 @@ function BottomNav() {
         </div>
         <span>Leaderboard</span>
       </NavLink>
-      <NavLink to="/games" className="nav-link" activeClassName="active">
+      <NavLink to="/quizes" className="nav-link" activeClassName="active">
       <div className="menu-icon active-icon-bg">
           <img src={gamesIcon} alt="Games" className="icon-svg" />
         </div>
-        <span>Games</span>
+        <span>Quizes</span>
       </NavLink>
       <NavLink to="/friends" className="nav-link" activeClassName="active">
       <div className="menu-icon active-icon-bg">
