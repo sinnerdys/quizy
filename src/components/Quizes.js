@@ -38,10 +38,10 @@ function Quizes() {
             <button className="energy-button">+</button>
           </div>
         </div>
+        <span className="progress-status">10/10 quizzes completed</span>
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: '100%' }}></div>
         </div>
-        <span className="progress-status">10/10 quizzes completed</span>
       </div>
 
       <ul className="quiz-list">

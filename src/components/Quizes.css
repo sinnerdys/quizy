@@ -17,7 +17,7 @@
   
   /* Контейнер прогресса */
   .progress-container {
-    background-color: #192A56;
+    background-color: #172D68;
     padding: 15px;
     border-radius: 8px;
     margin: 20px 0;
@@ -27,7 +27,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
   
   .progress-header span {
@@ -39,17 +39,21 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 14px;
-    color: #ADC3FF;
+    font-size: 16px;
+    color: white;
+    font-weight: 600;
   }
   
   .energy-button {
-    background-color: #1E1E2C;
-    color: #ADC3FF;
+    background-color: #213C84;
+    color: white;
     border: none;
-    padding: 2px 6px;
+    padding: 8px 14px;
     border-radius: 4px;
     cursor: pointer;
+    margin-left: 6px;
+    font-weight: 600;
+    font-size: 18px;
   }
   
   .progress-bar {
@@ -61,13 +65,13 @@
   
   .progress-fill {
     height: 100%;
-    background-color: #FFE600;
+    background-color: #34519C;
     border-radius: 4px;
   }
   
   .progress-status {
-    font-size: 12px;
-    color: #ADC3FF;
+    font-size: 14px;
+    color: white;
     margin-top: 5px;
   }
   
