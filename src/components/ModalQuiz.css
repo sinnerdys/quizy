@@ -62,7 +62,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
     font-size: 18px;
     color: #ADC3FF;
     margin-bottom: 20px;
@@ -71,7 +71,7 @@
   .start-quiz-button {
     width: 100%;
     padding: 15px;
-    background-color: #009ACD;
+    background-color: #284286;
     color: white;
     border: none;
     border-radius: 8px;
