@@ -57,7 +57,7 @@ function Quizes({ userId }) {
         </div>
       </div>
 
-      <div className="quiz-list-desc"><p>Available quizzes</p></div>
+      <div className="quiz-list-desc">Available quizzes</div>
       <ul className="quiz-list">
         {quizzes.map((quiz, index) => (
           <li key={index} className="quiz-item">
