@@ -58,11 +58,11 @@
     margin-bottom: 20px;
   }
   
-  .quiz-moda-info {
+  .quiz-modal-info {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     font-size: 18px;
     color: #ADC3FF;
     margin-bottom: 20px;
