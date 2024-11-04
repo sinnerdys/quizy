@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './Quizes.css';
+import ModalQuiz from './ModalQuiz'; // Импортируем компонент модального окна
 import TimeIcon from '../assets/timer.png';
 import token from '../assets/TokenImage.png';
 
 function Quizes({ userId }) {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedQuiz, setSelectedQuiz] = useState(null); // Состояние для выбранного квиза
 
   // Получаем список квизов пользователя
   const fetchUserQuizzes = async () => {
@@ -35,6 +37,15 @@ function Quizes({ userId }) {
   useEffect(() => {
     fetchUserQuizzes();
   }, [userId]);
+
+  const openQuizModal = (quiz) => {
+    setSelectedQuiz(quiz);
+  };
+
+  const closeQuizModal = () => {
+    setSelectedQuiz(null);
+  };
+
 
   if (loading) return <p>Loading...</p>;
 
@@ -72,10 +83,11 @@ function Quizes({ userId }) {
                 <span className="quiz-time">{quiz.time} <img src={TimeIcon} alt="Time icon" className="time-icon" /></span>
               </div>
             </div>
-            <button className="quiz-button" disabled={quiz.completed}>Open</button>
+            <button className="quiz-button" onClick={() => openQuizModal(quiz)} disabled={quiz.completed}>Open</button>
           </li>
         ))}
       </ul>
+      {selectedQuiz && <ModalQuiz quiz={selectedQuiz} onClose={closeQuizModal} />}
     </div>
   );
 }
