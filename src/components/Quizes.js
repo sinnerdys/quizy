@@ -46,7 +46,7 @@ function Quizes() {
           <div className="progress-fill" style={{ width: '100%' }}></div>
         </div>
       </div>
-
+      <h3>Available quizes</h3>
       <ul className="quiz-list">
         {quizzes.map((quiz, index) => (
           <li key={index} className="quiz-item">
@@ -56,7 +56,7 @@ function Quizes() {
             <div className="quiz-info">
               <div className="quiz-title">{quiz.title}</div>
               <div className="quiz-details">
-                <span className="quiz-reward">+{quiz.reward}</span><img src={token} alt="QUIZY Token" className="reward-logo-tasks" />
+                <span className="quiz-reward">+{quiz.reward}</span><img src={token} alt="QUIZY Token" className="reward-logo-guizes" />
                 <span className="quiz-time">{quiz.time} <img src={TimeIcon} alt="Time icon" className="time-icon" /></span>
               </div>
             </div>
