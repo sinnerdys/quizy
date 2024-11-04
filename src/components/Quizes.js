@@ -66,7 +66,6 @@ function Quizes({ userId }) {
             </div>
             <div className="quiz-info">
               <div className="quiz-title">{quiz.title}</div>
-              <p className="quiz-description">{quiz.description}</p>
               <div className="quiz-details">
                 <span className="quiz-reward">+{quiz.reward}</span>
                 <img src={token} alt="QUIZY Token" className="reward-logo-quizes" />
