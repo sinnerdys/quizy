@@ -46,7 +46,7 @@ function Quizes() {
           <div className="progress-fill" style={{ width: '100%' }}></div>
         </div>
       </div>
-      <h3 className="quiz-list-desc">Available quizes</h3>
+      <div className="quiz-list-desc"><h3>Available quizes</h3></div>
       <ul className="quiz-list">
         {quizzes.map((quiz, index) => (
           <li key={index} className="quiz-item">
