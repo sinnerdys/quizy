@@ -2,6 +2,7 @@ import React from 'react';
 import './Quizes.css'; 
 import QuestionIcon from '../assets/question_icon.png'; // Импорт иконки для Coming Soon игр
 import TimeIcon from '../assets/icons/time.svg'; // Импорт иконки времени
+import token from '../assets/TokenImage.png'; 
 
 function Quizes() {
   const quizzes = [
@@ -55,7 +56,7 @@ function Quizes() {
             <div className="quiz-info">
               <div className="quiz-title">{quiz.title}</div>
               <div className="quiz-details">
-                <span className="quiz-reward">+{quiz.reward} ⚡</span>
+                <span className="quiz-reward">+{quiz.reward}</span><img src={token} alt="QUIZY Token" className="reward-logo-tasks" />
                 <span className="quiz-time">{quiz.time} <img src={TimeIcon} alt="Time icon" className="time-icon" /></span>
               </div>
             </div>
