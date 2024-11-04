@@ -58,7 +58,7 @@
     margin-bottom: 20px;
   }
   
-  .quiz-info {
+  .quiz-moda-info {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,6 +77,7 @@
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
+    margin-bottom: 15px;
   }
   
   .start-quiz-button:hover {

@@ -43,7 +43,7 @@ function ModalQuiz({ quiz, onClose }) {
         </div>
         <h2>{quiz.title}</h2>
         <p>{quiz.description}</p>
-        <div className="quiz-info">
+        <div className="quiz-modal-info">
           <span className="quiz-reward">+{quiz.reward}</span><img src={token} alt="QUIZY Token" className="reward-logo-quizes" />
           <span className="quiz-time">{quiz.time} <img src={TimeIcon} alt="Time icon" className="time-icon" /></span>
         </div>
