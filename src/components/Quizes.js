@@ -1,7 +1,7 @@
 import React from 'react';
 import './Quizes.css'; 
 import QuestionIcon from '../assets/question_icon.png'; // Импорт иконки для Coming Soon игр
-import TimeIcon from '../assets/icons/time.svg'; // Импорт иконки времени
+import TimeIcon from '../assets/timer.png'; // Импорт иконки времени
 import token from '../assets/TokenImage.png'; 
 
 function Quizes() {

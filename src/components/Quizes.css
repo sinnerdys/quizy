@@ -72,7 +72,7 @@
   }
   
   .progress-status {
-    font-size: 16px;
+    font-size: 14px;
     color: white;
     margin-top: 5px;
   }
@@ -119,8 +119,8 @@
   
   .quiz-details {
     display: flex;
-    gap: 15px;
-    font-size: 14px;
+    gap: 5px;
+    font-size: 16px;
     color: #ADC3FF;
   }
   
@@ -128,6 +128,8 @@
     width: 16px;
     height: 16px;
     margin-left: 5px;
+    position: relative;
+    top: 2px; /* Смещает изображение на 2 пикселя вниз */
   }
   
   .quiz-button {
