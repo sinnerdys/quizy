@@ -9,13 +9,22 @@ function Quizes({ userId }) {
 
   // Получаем список квизов пользователя
   const fetchUserQuizzes = async () => {
+    if (!userId) {
+      console.error('User ID is undefined');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch quizzes');
+      }
       const data = await response.json();
 
-      // Сортируем и сохраняем квизы
-      const sortedQuizzes = data.quizzes.sort((a, b) => a.completed - b.completed);
-      setQuizzes(sortedQuizzes || []);
+      // Проверяем, что data.quizzes определен перед сортировкой
+      const sortedQuizzes = data.quizzes ? data.quizzes.sort((a, b) => a.completed - b.completed) : [];
+      setQuizzes(sortedQuizzes);
       setLoading(false); // Отключаем загрузку квизов
     } catch (error) {
       console.error('Error fetching user quizzes:', error);
@@ -24,9 +33,7 @@ function Quizes({ userId }) {
   };
 
   useEffect(() => {
-    if (userId) {
-      fetchUserQuizzes();
-    }
+    fetchUserQuizzes();
   }, [userId]);
 
   if (loading) return <p>Loading...</p>;
