@@ -24,7 +24,9 @@ function Quizes({ userId }) {
   };
 
   useEffect(() => {
-    fetchUserQuizzes();
+    if (userId) {
+      fetchUserQuizzes();
+    }
   }, [userId]);
 
   if (loading) return <p>Loading...</p>;

@@ -260,7 +260,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/quizes" element={<Quizes />} />
+            <Route path="/quizes" element={<Quizes userId={user?.id} />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/wheel" element={<QuizyWheel tickets={tickets} nextTicketIn={nextTicketIn} fetchTicketInfo={fetchTicketInfo} />} />
             <Route path="/game-timer" element={<GameTimer onBack={() => navigate('/games')} />} />
