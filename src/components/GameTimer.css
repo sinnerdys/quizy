@@ -127,11 +127,7 @@
     align-items: center;
   }
   
-  .time-icon {
-    width: 16px;
-    height: 16px;
-    margin-left: 5px;
-  }
+
   
   .buttons {
     display: flex;
