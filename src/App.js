@@ -9,7 +9,7 @@ import DailyReward from './components/DailyReward';
 import Quizes from './components/Quizes';
 import QuizyWheel from './components/QuizyWheel';
 import GameTimer from './components/GameTimer';
-import QuizPage from './QuizPage';
+import QuizPage from './components/QuizPage';
 import './App.css';
 
 function App() {
