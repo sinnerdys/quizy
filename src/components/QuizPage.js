@@ -89,19 +89,27 @@ function QuizPage({ userId, onComplete }) {
       <div className="question-section">
         <h3>{currentQuestionIndex + 1}. {currentQuestion.question}</h3>
         <div className="options">
-        {Object.entries(currentQuestion.options || {}).map(([key, option]) => (
-  option && ( // Проверяем, что опция не пустая
-    <button
-      key={key}
-      className={`option ${selectedOption === key ? 'selected' : ''}`}
-      onClick={() => setSelectedOption(key)}
-    >
-      {option}
-    </button>
-  )
-))}
+          {Object.entries(currentQuestion.options || {}).map(([key, option]) => (
+            option && (
+              <div
+                key={key}
+                className={`option ${selectedOption === key ? 'selected' : ''}`}
+                onClick={() => setSelectedOption(key)}
+              >
+                <input
+                  type="radio"
+                  name="option"
+                  checked={selectedOption === key}
+                  onChange={() => setSelectedOption(key)}
+                  className="radio-input"
+                />
+                <span className="option-text">{option}</span>
+              </div>
+            )
+          ))}
         </div>
       </div>
+
 
       <button
         className="next-question-button"

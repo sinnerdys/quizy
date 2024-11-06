@@ -77,26 +77,53 @@
     margin-bottom: 10px;
   }
   
-  .options {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
   .option {
+    display: flex;
+    align-items: center;
     background-color: #112A46;
     border: 2px solid #1E3A5F;
     padding: 10px;
     border-radius: 8px;
-    text-align: center;
     color: #ADC3FF;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  
+  .radio-input {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ADC3FF;
+    border-radius: 50%;
+    margin-right: 10px;
+    position: relative;
+  }
+  
+  .radio-input:checked {
+    background-color: #007BB5;
+    border-color: #007BB5;
+  }
+  
+  .radio-input:checked::after {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
   }
   
   .option.selected {
     background-color: #2A4A72;
     border-color: #007BB5;
+  }
+  
+  .option-text {
+    flex: 1;
+    text-align: left;
   }
   
   .next-question-button {
