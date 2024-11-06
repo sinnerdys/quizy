@@ -9,6 +9,7 @@ import DailyReward from './components/DailyReward';
 import Quizes from './components/Quizes';
 import QuizyWheel from './components/QuizyWheel';
 import GameTimer from './components/GameTimer';
+import QuizPage from './QuizPage';
 import './App.css';
 
 function App() {
@@ -261,6 +262,7 @@ function App() {
             <Route path="/" element={<Home userId={user?.id} balance={balance} updateBalance={updateBalance} fetchBalance={fetchBalance} />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/quizes" element={<Quizes userId={user?.id} />} />
+            <Route path="/quiz/:quizId" element={<QuizPage />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/wheel" element={<QuizyWheel tickets={tickets} nextTicketIn={nextTicketIn} fetchTicketInfo={fetchTicketInfo} />} />
             <Route path="/game-timer" element={<GameTimer onBack={() => navigate('/games')} />} />

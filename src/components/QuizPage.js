@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import './QuizPage.css';
 
-function QuizPage({ quizId, onComplete, userId }) {
+function QuizPage({ onComplete }) {
+  const { quizId } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -11,9 +13,9 @@ function QuizPage({ quizId, onComplete, userId }) {
 
   const fetchQuizData = async () => {
     try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?quizId=${quizId}`);
       const data = await response.json();
-      console.log('Fetched quiz data:', data); // Проверка структуры данных
+      console.log('Fetched quiz data:', data);
 
       if (data.quizzes && data.quizzes[0].questions) {
         setQuiz({ ...data.quizzes[0], questions: data.quizzes[0].questions });
@@ -30,26 +32,25 @@ function QuizPage({ quizId, onComplete, userId }) {
 
   useEffect(() => {
     fetchQuizData();
-  }, [quizId, userId]);
+  }, [quizId]);
 
-  // Таймер
   useEffect(() => {
     if (timer > 0) {
       const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
       setIntervalId(id);
     } else if (timer === 0 && intervalId) {
       clearInterval(intervalId);
-      onComplete(); // Завершаем квиз по окончании времени
+      onComplete();
     }
     return () => clearInterval(intervalId);
   }, [timer]);
 
   const handleNextQuestion = () => {
-    setSelectedOption(null); // Сбрасываем выбранный ответ
+    setSelectedOption(null);
     if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      onComplete(); // Завершаем квиз, если вопросы закончились
+      onComplete();
     }
   };
 
