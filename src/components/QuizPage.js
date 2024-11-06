@@ -92,15 +92,17 @@ function QuizPage({ userId, onComplete }) {
       <div className="question-section">
         <h3>{currentQuestionIndex + 1}. {currentQuestion.question}</h3>
         <div className="options">
-          {Object.entries(currentQuestion.options || {}).map(([key, option]) => (
-            <button
-              key={key}
-              className={`option ${selectedOption === key ? 'selected' : ''}`}
-              onClick={() => setSelectedOption(key)}
-            >
-              {option}
-            </button>
-          ))}
+        {Object.entries(currentQuestion.options || {}).map(([key, option]) => (
+  option && ( // Проверяем, что опция не пустая
+    <button
+      key={key}
+      className={`option ${selectedOption === key ? 'selected' : ''}`}
+      onClick={() => setSelectedOption(key)}
+    >
+      {option}
+    </button>
+  )
+))}
         </div>
       </div>
 
