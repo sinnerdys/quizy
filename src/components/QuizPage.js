@@ -9,12 +9,13 @@ function QuizPage({ quizId, onComplete, userId }) {
   const [timer, setTimer] = useState(0);
   const [intervalId, setIntervalId] = useState(null);
 
+  // Функция для загрузки данных квиза
   const fetchQuizData = async () => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
       const data = await response.json();
       console.log('Fetched quiz data:', data); // Для проверки структуры данных
-  
+
       if (data.questions) {
         // Преобразуем объект вопросов в массив
         const questionsArray = Object.keys(data.questions).map((key) => ({
@@ -22,7 +23,7 @@ function QuizPage({ quizId, onComplete, userId }) {
           ...data.questions[key],
         }));
         setQuiz({ ...data, questions: questionsArray });
-        setTimer(data.time);
+        setTimer(data.time || 0); // Используем значение таймера из данных квиза или устанавливаем 0 по умолчанию
       } else {
         console.error('Quiz has no questions.');
       }
@@ -83,7 +84,7 @@ function QuizPage({ quizId, onComplete, userId }) {
       <div className="question-section">
         <h3>{currentQuestionIndex + 1}. {currentQuestion.question}</h3>
         <div className="options">
-          {Object.entries(currentQuestion.options).map(([key, option]) => (
+          {Object.entries(currentQuestion.options || {}).map(([key, option]) => (
             <button
               key={key}
               className={`option ${selectedOption === key ? 'selected' : ''}`}
