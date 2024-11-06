@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './QuizPage.css';
 
-function QuizPage({ onComplete }) {
+function QuizPage({ userId, onComplete }) {
   const { quizId } = useParams();
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
