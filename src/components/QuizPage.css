@@ -95,7 +95,7 @@
     appearance: none;
     width: 20px;
     height: 20px;
-    border: 2px solid #ADC3FF;
+    border: 2px solid #ADC3FF; /* Цвет обводки внешнего круга */
     border-radius: 50%;
     margin-right: 10px;
     position: relative;
@@ -105,21 +105,21 @@
   .radio-input::after {
     content: '';
     position: absolute;
-    top: 5px;
-    left: 5px;
-    width: 8px;
-    height: 8px;
-    background-color: transparent;
+    top: 4px; /* Смещаем для центрирования внутреннего круга */
+    left: 4px;
+    width: 10px; /* Размер внутреннего круга */
+    height: 10px;
+    background-color: transparent; /* Прозрачный по умолчанию */
     border-radius: 50%;
   }
   
   .radio-input:checked {
-    border-color: #007BB5;
-    background-color: #007BB5;
+    border-color: #31A6F5; /* Цвет внешней обводки при выборе */
+    background-color: transparent; /* Убираем фон при выборе */
   }
   
   .radio-input:checked::after {
-    background-color: white;
+    background-color: #31A6F5; /* Цвет внутреннего круга при выборе */
   }
   
   .option.selected {
