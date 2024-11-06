@@ -268,7 +268,7 @@ function App() {
             <Route path="/game-timer" element={<GameTimer onBack={() => navigate('/games')} />} />
           </Routes>
                     {/* Условный рендеринг BottomNav */}
-          {location.pathname !== '/game-timer' && <BottomNav />}
+            {location.pathname !== '/game-timer' && !location.pathname.startsWith('/quiz/') && <BottomNav />}
         </>
       )}
     </div>

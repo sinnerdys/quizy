@@ -68,12 +68,25 @@ function QuizPage({ userId, onComplete }) {
         <div className="progress-fill" style={{ width: `${progress}%` }}></div>
       </div>
 
-      <h2>{quiz.title}</h2>
-      <p>Play exciting games and earn more $QUIZY!</p>
+      <div className="quiz-header">
+        <h2>{quiz.title}</h2>
+        <p>Play exciting games and earn more $QUIZY!</p>
+      </div>
 
-      <div className="timer">
-        <span>{Math.floor(timer / 60).toString().padStart(2, '0')}</span>:
-        <span>{(timer % 60).toString().padStart(2, '0')}</span>
+      <div className="timer-container">
+        <div id="countdown-timer">
+          <div className="time-unit">
+            <div className="time-digits">
+              {String(Math.floor(timer / 60)).padStart(2, '0')}
+            </div>
+          </div>
+          <span className="time-colon">:</span>
+          <div className="time-unit">
+            <div className="time-digits">
+              {String(timer % 60).padStart(2, '0')}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="question-section">
