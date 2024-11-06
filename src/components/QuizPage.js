@@ -14,8 +14,14 @@ function QuizPage({ quizId, onComplete, userId }) {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
       const data = await response.json();
-      setQuiz(data);
-      setTimer(data.time);
+      console.log('Fetched quiz data:', data); // Для проверки структуры данных
+
+      if (data.questions && data.questions.length > 0) {
+        setQuiz(data);
+        setTimer(data.time);
+      } else {
+        console.error('Quiz has no questions.');
+      }
       setLoading(false);
     } catch (error) {
       console.error('Error fetching quiz data:', error);
@@ -48,7 +54,10 @@ function QuizPage({ quizId, onComplete, userId }) {
     }
   };
 
-  if (loading || !quiz) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
+  if (!quiz || !quiz.questions || quiz.questions.length === 0) {
+    return <p>No questions available for this quiz.</p>;
+  }
 
   const currentQuestion = quiz.questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
