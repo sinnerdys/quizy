@@ -110,6 +110,7 @@ function Quizes({ userId }) {
       {showQuizPage && quizId && (
         <QuizPage
           quizId={quizId}
+          userId={userId}
           onComplete={closeQuizPage} // Закрываем QuizPage при завершении квиза
         />
       )}

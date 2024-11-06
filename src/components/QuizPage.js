@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './QuizPage.css';
 
-function QuizPage({ quizId, onComplete }) {
+function QuizPage({ quizId, onComplete, userId }) {
   const [quiz, setQuiz] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -25,7 +25,7 @@ function QuizPage({ quizId, onComplete }) {
 
   useEffect(() => {
     fetchQuizData();
-  }, [quizId]);
+  }, [quizId, userId]);
 
   // Таймер
   useEffect(() => {

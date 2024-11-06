@@ -3,7 +3,7 @@ import './ModalQuiz.css'; // Стили для модального окна
 import TimeIcon from '../assets/timer.png';
 import token from '../assets/TokenImage.png';
 
-function ModalQuiz({ quiz, onClose }) {
+function ModalQuiz({ quiz, onClose, onStart }) { // Добавляем onStart
   useEffect(() => {
     const overlay = document.querySelector('.modal-quiz-overlay');
     const modal = document.querySelector('.modal-quiz');
