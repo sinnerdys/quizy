@@ -160,7 +160,7 @@
     display: flex;
     align-items: center;
     gap: 7px; /* Отступ между иконкой и текстом */
-    font-size: 18px;
+    font-size: 20px;
     color: white;
     margin-bottom: 20px; /* Отступ снизу, чтобы разделить награду и заголовок */
     font-weight: 600;
