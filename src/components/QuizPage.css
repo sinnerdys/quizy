@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 1000px;
   }
   
   .progress-bar {
@@ -76,11 +77,14 @@
     margin-top: 20px;
     margin-bottom: 10px;
   }
+
+  .question-section h3 {
+    margin-bottom: 10px; /* Добавляем отступ снизу у вопроса */
+  }
   
   .option {
     display: flex;
     align-items: center;
-    background-color: #0D1C44;
     border: 2px solid #284286;
     padding: 10px;
     border-radius: 8px;
@@ -105,26 +109,27 @@
   .radio-input::after {
     content: '';
     position: absolute;
-    top: 4px; /* Смещаем для центрирования внутреннего круга */
-    left: 4px;
+    top: 50%;
+    left: 50%;
     width: 10px; /* Размер внутреннего круга */
     height: 10px;
     background-color: transparent; /* Прозрачный по умолчанию */
     border-radius: 50%;
+    transform: translate(-50%, -50%); /* Центрирование по горизонтали и вертикали */
   }
   
   .radio-input:checked {
-    border-color: #31A6F5; /* Цвет внешней обводки при выборе */
+    border-color: #8DADFE; /* Цвет внешней обводки при выборе */
     background-color: transparent; /* Убираем фон при выборе */
   }
   
   .radio-input:checked::after {
-    background-color: #31A6F5; /* Цвет внутреннего круга при выборе */
+    background-color: #8DADFE; /* Цвет внутреннего круга при выборе */
   }
   
   .option.selected {
     background-color: #102458;
-    border-color: #007BB5;
+    border-color: #8DADFE;
   }
   
   .option-text {
