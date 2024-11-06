@@ -11,12 +11,7 @@
     margin-top: 50px;
   }
   
-  .timer-container {
-    padding: 20px;
-    border-radius: 8px;
-    border: 2px solid #284286;
-    margin-bottom: 30px;
-  }
+
   
   .timer-subtitle {
     font-size: 18px;
@@ -54,15 +49,7 @@
     color: #ffffff;
   }
   
-  .time-colon {
-    font-size: 28px;
-    line-height: 60px;
-    display: flex;
-    align-items: center;
-    color: #ffffff; /* Цвет для соответствия */
-    margin: 0; /* Убираем лишние отступы */
-    margin-bottom: 20px;
-  }
+
   
   .time-label {
     font-size: 14px;

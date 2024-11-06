@@ -29,17 +29,24 @@
 
   .quiz-header h2 {
     font-size: 24px;
+    margin-bottom: 10px;
   }
   
+  .quiz-header p {
+    margin-bottom: 15px;
+    color: #ADC3FF;
+  }
+
   .timer-container {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    background-color: #091533;
-    padding: 10px;
+    background-color: #0B183B;
+    padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
+    width: 100%;
   }
   
   .time-digit {
@@ -52,6 +59,7 @@
     border-radius: 8px;
     font-size: 28px;
     color: #ffffff;
+    font-weight: 600;
   }
   
   .time-colon {
@@ -64,8 +72,9 @@
   
   .question-section {
     width: 100%;
-    text-align: center;
+    text-align: left;
     margin-top: 20px;
+    margin-bottom: 10px;
   }
   
   .options {
