@@ -13,7 +13,7 @@ function QuizPage({ userId, onComplete }) {
 
   const fetchQuizData = async () => {
     try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?quizId=${quizId}`);
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
       const data = await response.json();
       console.log('Fetched quiz data:', data);
 
@@ -32,7 +32,7 @@ function QuizPage({ userId, onComplete }) {
 
   useEffect(() => {
     fetchQuizData();
-  }, [quizId]);
+  }, [quizId, userId]);
 
   useEffect(() => {
     if (timer > 0) {
