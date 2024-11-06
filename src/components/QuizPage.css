@@ -12,11 +12,11 @@
   .progress-bar {
     width: 100%;
     height: 10px;
-    background-color: #112A46;
+    background-color: #0E2258;
   }
   
   .progress-fill {
-    height: 5px;
+    height: 10px;
     background-color: #34519C;
     transition: width 0.3s ease;
   }
@@ -25,6 +25,9 @@
     text-align: center;
     margin-bottom: 10px;
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .quiz-header h2 {
@@ -50,7 +53,7 @@
   }
   
   .time-digit {
-    width: 60px;
+    width: 40px;
     height: 60px;
     display: flex;
     justify-content: center;
@@ -160,9 +163,10 @@
     font-size: 18px;
     color: #8DADFE;
     margin-bottom: 10px; /* Отступ снизу, чтобы разделить награду и заголовок */
+    font-weight: 600;
   }
   
   .token-icon-quiz {
-    width: 20px; /* Размер иконки токена */
-    height: 20px;
+    width: 30px; /* Размер иконки токена */
+    height: 30px;
   }
