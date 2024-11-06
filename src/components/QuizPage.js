@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './QuizPage.css';
+import logo from '../assets/logo.png'; 
 
 function QuizPage({ userId, onComplete }) {
   const { quizId } = useParams();
@@ -74,9 +75,15 @@ function QuizPage({ userId, onComplete }) {
       </div>
 
       <div className="quiz-header">
-        <h2>{quiz.title}</h2>
-        <p>{quiz.description}</p>
-      </div>
+    {/* Отображаем награду с токеном */}
+    <div className="reward-display-quiz">
+    <img src={logo} alt="QUIZY Logo" className="token-icon-quiz" />
+      <span>0 $QUIZY</span> {/* Можно заменить 0 на динамическое значение, если будет доступно */}
+    </div>
+    
+    <h2>{quiz.title}</h2>
+    <p>{quiz.description}</p>
+  </div>
 
       <div className="timer-container">
         <div className="time-digit">{minutes[0]}</div>

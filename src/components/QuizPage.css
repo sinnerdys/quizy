@@ -11,14 +11,13 @@
   
   .progress-bar {
     width: 100%;
-    height: 5px;
+    height: 10px;
     background-color: #112A46;
-    margin-bottom: 20px;
   }
   
   .progress-fill {
     height: 5px;
-    background-color: #009ACD;
+    background-color: #34519C;
     transition: width 0.3s ease;
   }
   
@@ -34,7 +33,7 @@
   }
   
   .quiz-header p {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     color: #ADC3FF;
   }
 
@@ -46,17 +45,17 @@
     background-color: #0B183B;
     padding: 15px;
     border-radius: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     width: 100%;
   }
   
   .time-digit {
-    width: 40px;
+    width: 60px;
     height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #152A60;
+    background-color: #284286;
     border-radius: 8px;
     font-size: 28px;
     color: #ffffff;
@@ -86,7 +85,7 @@
     display: flex;
     align-items: center;
     border: 2px solid #284286;
-    padding: 10px;
+    padding: 15px;
     border-radius: 8px;
     color: #ADC3FF;
     cursor: pointer;
@@ -141,7 +140,7 @@
     margin-top: 20px;
     width: 100%;
     padding: 15px;
-    background-color: #009ACD;
+    background-color: #284286;
     color: white;
     border: none;
     border-radius: 8px;
@@ -152,4 +151,18 @@
   .next-question-button:disabled {
     background-color: #182C5F;
     cursor: not-allowed;
+  }
+
+  .reward-display-quiz {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Отступ между иконкой и текстом */
+    font-size: 18px;
+    color: #8DADFE;
+    margin-bottom: 10px; /* Отступ снизу, чтобы разделить награду и заголовок */
+  }
+  
+  .token-icon-quiz {
+    width: 20px; /* Размер иконки токена */
+    height: 20px;
   }
