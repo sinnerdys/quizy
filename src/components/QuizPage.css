@@ -31,22 +31,15 @@
     font-size: 24px;
   }
   
-  #countdown-timer {
+  .timer-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px; /* Уменьшение отступов между элементами времени */
-  }
-  
-  .time-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .time-digits {
-    display: flex;
-    gap: 5px; /* Отступ между цифрами */
+    gap: 10px;
+    background-color: #091533;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
   }
   
   .time-digit {
@@ -56,7 +49,7 @@
     justify-content: center;
     align-items: center;
     background-color: #152A60;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 28px;
     color: #ffffff;
   }
@@ -66,15 +59,7 @@
     line-height: 60px;
     display: flex;
     align-items: center;
-    color: #ffffff; /* Цвет для соответствия */
-    margin: 0; /* Убираем лишние отступы */
-    margin-bottom: 20px;
-  }
-  
-  .time-label {
-    font-size: 14px;
-    color: #adc3ff;
-    margin-top: 5px;
+    color: #ffffff;
   }
   
   .question-section {

@@ -62,6 +62,11 @@ function QuizPage({ userId, onComplete }) {
   const currentQuestion = quiz.questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
+    // Получаем минуты и секунды для таймера
+    const minutes = String(Math.floor(timer / 60)).padStart(2, '0');
+    const seconds = String(timer % 60).padStart(2, '0');
+  
+
   return (
     <div className="quiz-page">
       <div className="progress-bar">
@@ -70,23 +75,15 @@ function QuizPage({ userId, onComplete }) {
 
       <div className="quiz-header">
         <h2>{quiz.title}</h2>
-        <p>Play exciting games and earn more $QUIZY!</p>
+        <p>{quiz.description}</p>
       </div>
 
       <div className="timer-container">
-        <div id="countdown-timer">
-          <div className="time-unit">
-            <div className="time-digits">
-              {String(Math.floor(timer / 60)).padStart(2, '0')}
-            </div>
-          </div>
-          <span className="time-colon">:</span>
-          <div className="time-unit">
-            <div className="time-digits">
-              {String(timer % 60).padStart(2, '0')}
-            </div>
-          </div>
-        </div>
+        <div className="time-digit">{minutes[0]}</div>
+        <div className="time-digit">{minutes[1]}</div>
+        <span className="time-colon">:</span>
+        <div className="time-digit">{seconds[0]}</div>
+        <div className="time-digit">{seconds[1]}</div>
       </div>
 
       <div className="question-section">
