@@ -11,12 +11,12 @@
   
   .progress-bar {
     width: 100%;
-    height: 5px;
+    height: 8px;
     background-color: #0E2258;
   }
   
   .progress-fill {
-    height: 5px;
+    height: 8px;
     background-color: #34519C;
     transition: width 0.3s ease;
   }
@@ -60,7 +60,7 @@
     align-items: center;
     background-color: #284286;
     border-radius: 8px;
-    font-size: 28px;
+    font-size: 18px;
     color: #ffffff;
     font-weight: 600;
   }
@@ -160,7 +160,7 @@
     display: flex;
     align-items: center;
     gap: 7px; /* Отступ между иконкой и текстом */
-    font-size: 20px;
+    font-size: 18px;
     color: white;
     margin-bottom: 20px; /* Отступ снизу, чтобы разделить награду и заголовок */
     font-weight: 600;
