@@ -90,7 +90,7 @@
     border: 2px solid #284286;
     padding: 15px;
     border-radius: 8px;
-    color: #ADC3FF;
+    color: white;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s, border-color 0.3s;
@@ -159,9 +159,9 @@
   .reward-display-quiz {
     display: flex;
     align-items: center;
-    gap: 5px; /* Отступ между иконкой и текстом */
+    gap: 7px; /* Отступ между иконкой и текстом */
     font-size: 20px;
-    color: #8DADFE;
+    color: white;
     margin-bottom: 20px; /* Отступ снизу, чтобы разделить награду и заголовок */
     font-weight: 600;
   }
