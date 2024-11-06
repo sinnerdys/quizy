@@ -9,15 +9,19 @@ function QuizPage({ quizId, onComplete, userId }) {
   const [timer, setTimer] = useState(0);
   const [intervalId, setIntervalId] = useState(null);
 
-  // Функция для получения данных квиза
   const fetchQuizData = async () => {
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
       const data = await response.json();
       console.log('Fetched quiz data:', data); // Для проверки структуры данных
-
-      if (data.questions && data.questions.length > 0) {
-        setQuiz(data);
+  
+      if (data.questions) {
+        // Преобразуем объект вопросов в массив
+        const questionsArray = Object.keys(data.questions).map((key) => ({
+          id: key,
+          ...data.questions[key],
+        }));
+        setQuiz({ ...data, questions: questionsArray });
         setTimer(data.time);
       } else {
         console.error('Quiz has no questions.');
