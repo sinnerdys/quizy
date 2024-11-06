@@ -44,10 +44,10 @@ function ModalQuiz({ quiz, onClose }) {
         <h2>{quiz.title}</h2>
         <p>{quiz.description}</p>
         <div className="quiz-modal-info">
-          <span className="quiz-reward">+{quiz.reward}</span><img src={token} alt="QUIZY Token" className="reward-logo-quizes" />
-          <span className="quiz-time">{quiz.time} <img src={TimeIcon} alt="Time icon" className="time-icon" /></span>
+          <span className="quiz-reward">+{quiz.reward} <img src={token} alt="QUIZY Token" className="reward-logo-quizes" /></span>
+          <span className="quiz-time">{quiz.displayTime} <img src={TimeIcon} alt="Time icon" className="time-icon" /></span>
         </div>
-        <button className="start-quiz-button">Start quiz</button>
+        <button className="start-quiz-button" onClick={onStart}>Start quiz</button>
       </div>
     </div>
   );

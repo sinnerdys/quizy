@@ -1,0 +1,68 @@
+.quiz-page {
+    background-color: #091533;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .progress-bar {
+    height: 5px;
+    background-color: #112A46;
+    margin-bottom: 10px;
+  }
+  
+  .progress-fill {
+    height: 5px;
+    background-color: #009ACD;
+    transition: width 0.3s ease;
+  }
+  
+  .timer {
+    font-size: 24px;
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  .question-section {
+    margin-top: 20px;
+  }
+  
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .option {
+    background-color: #112A46;
+    border: 2px solid #1E3A5F;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: left;
+    color: #ADC3FF;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .option.selected {
+    background-color: #2A4A72;
+    border-color: #007BB5;
+  }
+  
+  .next-question-button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 15px;
+    background-color: #009ACD;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .next-question-button:disabled {
+    background-color: #182C5F;
+    cursor: not-allowed;
+  }
+  
