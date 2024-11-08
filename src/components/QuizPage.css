@@ -188,6 +188,11 @@
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 20px; /* Отступ снизу, чтобы разделить награду и заголовок */
+    border: 2px solid; /* Контурная обводка */
+    border-color: #284286;
+    border-style: dashed; /* Прерывистый бордер для завершенного задания */
+    padding: 10px; /* Отступ внутри блока */
+    border-radius: 8px; /* Скругление углов */
   }
   
   .token-icon-quiz {
@@ -202,9 +207,9 @@
   
   .progress-circle {
     position: relative;
-    width: 100px; /* Размер круга */
-    height: 100px;
-    margin: 0 auto 20px; /* Центрирование и отступ снизу */
+    width: 120px; /* Размер круга */
+    height: 120px;
+    margin: 20px auto; /* Центрирование и отступ сверху и снизу */
   }
   
   .circle {
@@ -236,16 +241,26 @@
     font-weight: bold;
   }
   
+  h3 {
+    margin: 10px 0; /* Отступ сверху и снизу */
+  }
+  
+  .congratulations-text {
+    color: #ADC3FF; /* Цвет текста поздравления */
+  }
+  
   .claim-reward-button {
     margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #28a745; /* Цвет кнопки для подтверждения */
+    padding: 15px;
+    width: 100%; /* На всю ширину */
+    background-color: #284286; /* Цвет кнопки */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
   }
   
   .claim-reward-button:hover {
-    background-color: #218838; /* Цвет при наведении */
+    background-color: #2a65b0; /* Цвет при наведении */
   }
