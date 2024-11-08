@@ -207,8 +207,8 @@
   
   .progress-circle {
     position: relative;
-    width: 120px; /* Размер круга */
-    height: 120px;
+    width: 16px; /* Размер круга */
+    height: 160px;
     margin: 20px auto; /* Центрирование и отступ сверху и снизу */
   }
   
@@ -237,8 +237,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 24px;
+    font-size: 28px; /* Размер текста */
     font-weight: bold;
+    text-align: center; /* Центрирование текста */
+    color: white; /* Цвет текста */
   }
   
   h3 {
