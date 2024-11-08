@@ -175,6 +175,65 @@
     text-align: center;
     margin-top: 20px;
     color: white;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #091533; /* Цвет фона для завершенного экрана */
+  }
+  
+  .reward-display-quiz {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px; /* Отступ между иконкой и текстом */
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px; /* Отступ снизу, чтобы разделить награду и заголовок */
+  }
+  
+  .token-icon-quiz {
+    width: 30px; /* Размер иконки токена */
+    height: 30px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
+  
+  .progress-circle {
+    position: relative;
+    width: 100px; /* Размер круга */
+    height: 100px;
+    margin: 0 auto 20px; /* Центрирование и отступ снизу */
+  }
+  
+  .circle {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  circle {
+    fill: none;
+    stroke: #0E2258; /* Цвет фона круга */
+    stroke-width: 10;
+  }
+  
+  circle:nth-child(2) {
+    fill: none;
+    stroke: #34519C; /* Цвет прогресс-бара */
+    stroke-width: 10;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.5s ease; /* Анимация */
+  }
+  
+  .percentage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
   }
   
   .claim-reward-button {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './QuizPage.css';
 import logo from '../assets/logo.png'; 
+import token from '../assets/TokenImage.png';
 
 function QuizPage({ userId, onComplete }) {
   const { quizId } = useParams();
@@ -74,11 +75,37 @@ function QuizPage({ userId, onComplete }) {
   return (
     <div className="quiz-page">
       {quizCompleted ? (
-        <div className="completion-screen">
+          <div className="completion-screen">
+          {/* Блок с наградой */}
+          <div className="reward-display-quiz">
+            <span>+1000</span>
+            <img src={token} alt="QUIZY Logo" className="token-icon-quiz" />
+          </div>
+      
+          {/* Заголовок результатов */}
           <h2>Your results</h2>
+      
+          {/* Круговой прогресс-бар */}
+          <div className="progress-circle">
+            <div className="circle">
+              <svg>
+                <circle cx="50" cy="50" r="45" />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  style={{ strokeDashoffset: `calc(283 - (283 * ${Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}) / 100)` }}
+                />
+              </svg>
+              <div className="percentage">{Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%</div>
+            </div>
+          </div>
+      
+          {/* Поздравительный текст */}
           <p>Congratulations, you’ve completed this quiz! 🎉</p>
-          <p>Your score: {Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%</p>
-          <p>+1000 Tokens</p>
+          <p>Let’s keep testing your knowledge by playing more quizzes!</p>
+      
+          {/* Кнопка для получения награды */}
           <button className="claim-reward-button" onClick={handleCompleteQuiz}>Claim reward</button>
         </div>
       ) : (
