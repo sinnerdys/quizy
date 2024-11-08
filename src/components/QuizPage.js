@@ -11,6 +11,7 @@ function QuizPage({ userId, onComplete }) {
   const [selectedOption, setSelectedOption] = useState(null);
   const [timer, setTimer] = useState(0);
   const [intervalId, setIntervalId] = useState(null);
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   const fetchQuizData = async () => {
     try {
@@ -51,8 +52,12 @@ function QuizPage({ userId, onComplete }) {
     if (currentQuestionIndex < quiz.questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
-      onComplete();
+      setQuizCompleted(true);
     }
+  };
+
+  const handleCompleteQuiz = () => {
+    onComplete();
   };
 
   if (loading) return <p>Loading...</p>;
@@ -63,68 +68,77 @@ function QuizPage({ userId, onComplete }) {
   const currentQuestion = quiz.questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
 
-    // Получаем минуты и секунды для таймера
-    const minutes = String(Math.floor(timer / 60)).padStart(2, '0');
-    const seconds = String(timer % 60).padStart(2, '0');
-  
+  const minutes = String(Math.floor(timer / 60)).padStart(2, '0');
+  const seconds = String(timer % 60).padStart(2, '0');
 
   return (
     <div className="quiz-page">
-      <div className="progress-bar">
-        <div className="progress-fill" style={{ width: `${progress}%` }}></div>
-      </div>
-
-      <div className="quiz-header">
-    {/* Отображаем награду с токеном */}
-    <div className="reward-display-quiz">
-    <img src={logo} alt="QUIZY Logo" className="token-icon-quiz" />
-      <span>0 $QUIZY</span> {/* Можно заменить 0 на динамическое значение, если будет доступно */}
-    </div>
-    
-    <h2>{quiz.title}</h2>
-    <p>{quiz.description}</p>
-  </div>
-
-      <div className="timer-container">
-        <div className="time-digit">{minutes[0]}</div>
-        <div className="time-digit">{minutes[1]}</div>
-        <span className="time-colon">:</span>
-        <div className="time-digit">{seconds[0]}</div>
-        <div className="time-digit">{seconds[1]}</div>
-      </div>
-
-      <div className="question-section">
-        <h3>{currentQuestionIndex + 1}. {currentQuestion.question}</h3>
-        <div className="options">
-          {Object.entries(currentQuestion.options || {}).map(([key, option]) => (
-            option && (
-              <div
-                key={key}
-                className={`option ${selectedOption === key ? 'selected' : ''}`}
-                onClick={() => setSelectedOption(key)}
-              >
-                <input
-                  type="radio"
-                  name="option"
-                  checked={selectedOption === key}
-                  onChange={() => setSelectedOption(key)}
-                  className="radio-input"
-                />
-                <span className="option-text">{option}</span>
-              </div>
-            )
-          ))}
+      {quizCompleted ? (
+        <div className="completion-screen">
+          <h2>Your results</h2>
+          <p>Congratulations, you’ve completed this quiz! 🎉</p>
+          <p>Your score: {Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%</p>
+          <p>+1000 Tokens</p>
+          <button className="claim-reward-button" onClick={handleCompleteQuiz}>Claim reward</button>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+          </div>
 
+          <div className="quiz-header">
+            <div className="reward-display-quiz">
+              <img src={logo} alt="QUIZY Logo" className="token-icon-quiz" />
+              <span>0 $QUIZY</span>
+            </div>
+            <h2>{quiz.title}</h2>
+            <p>{quiz.description}</p>
+          </div>
 
-      <button
-        className="next-question-button"
-        onClick={handleNextQuestion}
-        disabled={selectedOption === null}
-      >
-        Next question ({currentQuestionIndex + 1}/{quiz.questions.length})
-      </button>
+          <div className="timer-container">
+            <div className="time-digit">{minutes[0]}</div>
+            <div className="time-digit">{minutes[1]}</div>
+            <span className="time-colon">:</span>
+            <div className="time-digit">{seconds[0]}</div>
+            <div className="time-digit">{seconds[1]}</div>
+          </div>
+
+          <div className="question-section">
+            <h3>{currentQuestionIndex + 1}. {currentQuestion.question}</h3>
+            <div className="options">
+              {Object.entries(currentQuestion.options || {}).map(([key, option]) => (
+                option && (
+                  <div
+                    key={key}
+                    className={`option ${selectedOption === key ? 'selected' : ''}`}
+                    onClick={() => setSelectedOption(key)}
+                  >
+                    <input
+                      type="radio"
+                      name="option"
+                      checked={selectedOption === key}
+                      onChange={() => setSelectedOption(key)}
+                      className="radio-input"
+                    />
+                    <span className="option-text">{option}</span>
+                  </div>
+                )
+              ))}
+            </div>
+          </div>
+
+          <button
+            className="next-question-button"
+            onClick={handleNextQuestion}
+            disabled={selectedOption === null}
+          >
+            {currentQuestionIndex === quiz.questions.length - 1 ? 
+              `Complete quiz (${currentQuestionIndex + 1}/${quiz.questions.length})` : 
+              `Next question (${currentQuestionIndex + 1}/${quiz.questions.length})`}
+          </button>
+        </>
+      )}
     </div>
   );
 }

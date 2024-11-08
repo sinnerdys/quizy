@@ -170,3 +170,23 @@
     width: 30px; /* Размер иконки токена */
     height: 30px;
   }
+
+  .completion-screen {
+    text-align: center;
+    margin-top: 20px;
+    color: white;
+  }
+  
+  .claim-reward-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #28a745; /* Цвет кнопки для подтверждения */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .claim-reward-button:hover {
+    background-color: #218838; /* Цвет при наведении */
+  }
