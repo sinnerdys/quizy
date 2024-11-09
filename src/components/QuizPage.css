@@ -175,7 +175,6 @@
     text-align: center;
     margin-top: 20px;
     color: white;
-    padding: 20px;
     border-radius: 10px;
     background-color: #091533; /* Цвет фона для завершенного экрана */
   }
@@ -195,15 +194,11 @@
     border-radius: 8px; /* Скругление углов */
   }
   
-  .token-icon-qui-complete {
+  .token-icon-quiz-complete {
     width: 16px; /* Размер иконки токена */
     height: 22px;
   }
   
-  h2 {
-    font-size: 24px;
-    margin-bottom: 15px;
-  }
   
   .progress-circle {
     position: relative;

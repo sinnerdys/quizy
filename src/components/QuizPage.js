@@ -78,7 +78,7 @@ function QuizPage({ userId, onComplete }) {
               <div className="completion-screen">
               {/* Блок с наградой */}
               <div className="reward-display-quiz-complete">
-                <span>+1000 $QUIZY</span>
+                <span>+1000</span>
                 <img src={token} alt="QUIZY Logo" className="token-icon-quiz-complete" />
               </div>
           
