@@ -207,8 +207,8 @@
   
   .progress-circle {
     position: relative;
-    width: 160px; /* Увеличиваем размер круга */
-    height: 160px; /* Увеличиваем размер круга */
+    width: 400px; /* Увеличиваем размер круга */
+    height: 400px; /* Увеличиваем размер круга */
     margin: 20px auto; /* Центрирование круга */
   }
   
@@ -267,6 +267,6 @@
     background-color: #2a65b0; /* Цвет при наведении */
   }
 
-  .results {
+  .results h2 {
     font-size: 24px;
   }
