@@ -207,9 +207,9 @@
   
   .progress-circle {
     position: relative;
-    width: 16px; /* Размер круга */
-    height: 160px;
-    margin: 20px auto; /* Центрирование и отступ сверху и снизу */
+    width: 160px; /* Увеличиваем размер круга */
+    height: 160px; /* Увеличиваем размер круга */
+    margin: 20px auto; /* Центрирование круга */
   }
   
   .circle {
@@ -265,4 +265,8 @@
   
   .claim-reward-button:hover {
     background-color: #2a65b0; /* Цвет при наведении */
+  }
+
+  .results {
+    font-size: 24px;
   }

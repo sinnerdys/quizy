@@ -83,7 +83,7 @@ function QuizPage({ userId, onComplete }) {
               </div>
           
               {/* Заголовок результатов */}
-              <h2>Your results</h2>
+              <div className="results"><h2>Your results</h2></div>
           
               {/* Круговой прогресс-бар */}
               <div className="progress-circle">
