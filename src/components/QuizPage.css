@@ -180,7 +180,7 @@
     background-color: #091533; /* Цвет фона для завершенного экрана */
   }
   
-  .reward-display-quiz {
+  .reward-display-quiz-complete {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -195,9 +195,9 @@
     border-radius: 8px; /* Скругление углов */
   }
   
-  .token-icon-quiz {
-    width: 30px; /* Размер иконки токена */
-    height: 30px;
+  .token-icon-qui-complete {
+    width: 16px; /* Размер иконки токена */
+    height: 22px;
   }
   
   h2 {
@@ -207,8 +207,8 @@
   
   .progress-circle {
     position: relative;
-    width: 400px; /* Увеличиваем размер круга */
-    height: 400px; /* Увеличиваем размер круга */
+    width: 160px; /* Увеличиваем размер круга */
+    height: 160px; /* Увеличиваем размер круга */
     margin: 20px auto; /* Центрирование круга */
   }
   
@@ -254,13 +254,13 @@
   .claim-reward-button {
     margin-top: 20px;
     padding: 15px;
-    width: 100%; /* На всю ширину */
-    background-color: #284286; /* Цвет кнопки */
+    background-color: #284286;
     color: white;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    border-radius: 8px;
     font-size: 16px;
+    cursor: pointer;
+    width: 100%;
   }
   
   .claim-reward-button:hover {

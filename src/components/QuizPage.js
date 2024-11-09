@@ -77,9 +77,9 @@ function QuizPage({ userId, onComplete }) {
       {quizCompleted ? (
               <div className="completion-screen">
               {/* Блок с наградой */}
-              <div className="reward-display-quiz">
+              <div className="reward-display-quiz-complete">
                 <span>+1000 $QUIZY</span>
-                <img src={token} alt="QUIZY Logo" className="token-icon-quiz" />
+                <img src={token} alt="QUIZY Logo" className="token-icon-quiz-complete" />
               </div>
           
               {/* Заголовок результатов */}
@@ -89,11 +89,11 @@ function QuizPage({ userId, onComplete }) {
               <div className="progress-circle">
                 <div className="circle">
                   <svg>
-                    <circle cx="80" cy="80" r="70" />
+                    <circle cx="120" cy="120" r="80" />
                     <circle
-                      cx="80"
-                      cy="80"
-                      r="70"
+                      cx="120"
+                      cy="120"
+                      r="80"
                       style={{ strokeDashoffset: `calc(408 - (408 * ${Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}) / 100)` }}
                     />
                   </svg>
