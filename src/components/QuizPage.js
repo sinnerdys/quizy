@@ -94,7 +94,7 @@ function QuizPage({ userId, onComplete }) {
                       cx="130"
                       cy="130"
                       r="120"
-                      style={{ strokeDashoffset: `calc(754 - (754 * ${Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}) / 100)` }}
+                      style={{ strokeDashoffset: `calc(754 - (754 * ${Math.min(Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100), 100)} / 100))` }}
                     />
                   </svg>
                   <div className="percentage">{Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%</div>
