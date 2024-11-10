@@ -76,6 +76,9 @@ function QuizPage({ userId, onComplete }) {
     <div className="quiz-page">
       {quizCompleted ? (
               <div className="completion-screen">
+                <div className="background-image"></div>  
+
+                <div className="content">
               {/* Блок с наградой */}
               <div className="reward-display-quiz-complete">
                 <span>+1000</span>
@@ -113,6 +116,7 @@ function QuizPage({ userId, onComplete }) {
           
               {/* Кнопка для получения награды */}
               <button className="claim-reward-button" onClick={handleCompleteQuiz}>Claim reward</button>
+            </div>
             </div>
       ) : (
         <>
