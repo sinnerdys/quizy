@@ -73,10 +73,11 @@ function QuizPage({ userId, onComplete }) {
             setQuizCompleted(true);
             // Награда за каждый правильный ответ
             const rewardPerQuestion = quiz.reward / quiz.questions.length;
+            console.log('Reward per question:', rewardPerQuestion); // Логируем награду за вопрос
+            console.log('Correct answers count:', correctAnswersCount); // Логируем количество правильных ответов
             setReward(correctAnswersCount * rewardPerQuestion);
         }
     };
-
     // Анимация прогресса (процент и круг) — теперь хук всегда вызывается
     const progress = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100;
 
