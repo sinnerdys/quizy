@@ -218,7 +218,7 @@
   circle {
     fill: none;
     stroke: #0E2258; /* Фон круга */
-    stroke-width: 10;
+    stroke-width: 15;
   }
   
   circle:nth-child(2) {
@@ -265,7 +265,7 @@
     background-color: #2a65b0; /* Цвет при наведении */
   }
 
-  .results h2 {
-    margin-top: 20px;
+  .results {
+    margin-top: 50px;
     font-size: 24px;
   }
