@@ -83,13 +83,14 @@ function QuizPage({ userId, onComplete }) {
             setPercentage(prev => Math.min(prev + 1, progress)); // Увеличиваем процент
           }
         }, 50); // Интервал обновления процентов
-    
-        const circleLength = 2 * Math.PI * 50; // Длина круга (радиус 50px)
+        
+        // Длина круга (радиус 50px)
+        const circleLength = 2 * Math.PI * 50; 
         setCircleProgress((progress / 100) * circleLength); // Рассчитываем прогресс круга
     
         // Очищаем интервал, когда анимация завершена
         return () => clearInterval(interval);
-      }, [progress, percentage]);
+      }, [progress, percentage]); // Зависимости для корректной работы хука
       
   return (
     <div className="quiz-page">
@@ -118,8 +119,8 @@ function QuizPage({ userId, onComplete }) {
           r="110"
           stroke="#34519C"
           strokeWidth="15"
-          strokeDasharray={circleLength}
-          strokeDashoffset={circleLength - (circleLength * progress) / 100} // Анимация прогресса
+          strokeDasharray={circleProgress}
+          strokeDashoffset={circleProgress}
           style={{
             transition: 'stroke-dashoffset 5s ease-out', // Плавное изменение круга
           }}
