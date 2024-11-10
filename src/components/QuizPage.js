@@ -89,12 +89,12 @@ function QuizPage({ userId, onComplete }) {
               <div className="progress-circle">
                 <div className="circle">
                   <svg>
-                    <circle cx="100" cy="100" r="90" />
+                    <circle cx="110" cy="110" r="100" />
                     <circle
-                      cx="100"
-                      cy="100"
-                      r="90"
-                      style={{ strokeDashoffset: `calc(408 - (408 * ${Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}) / 100)` }}
+                      cx="110"
+                      cy="110"
+                      r="100"
+                      style={{ strokeDashoffset: `calc(628 - (628 * ${Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}) / 100)` }}
                     />
                   </svg>
                   <div className="percentage">{Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%</div>
