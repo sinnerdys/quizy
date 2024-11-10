@@ -78,6 +78,16 @@ function QuizPage({ userId, onComplete }) {
             setReward(correctAnswersCount * rewardPerQuestion);
         }
     };
+
+    useEffect(() => {
+        console.log('Current question index:', currentQuestionIndex);
+    }, [currentQuestionIndex]);
+    
+    useEffect(() => {
+        console.log('Selected option:', selectedOption);
+    }, [selectedOption]);
+
+    
     // Анимация прогресса (процент и круг) — теперь хук всегда вызывается
     const progress = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100;
 
