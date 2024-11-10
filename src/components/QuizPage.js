@@ -83,16 +83,16 @@ function QuizPage({ userId, onComplete }) {
               </div>
           
               {/* Заголовок результатов */}
-              <div className="results"><h2>Your results</h2></div>
+              <div className="results">Your results</div>
           
               {/* Круговой прогресс-бар */}
               <div className="progress-circle">
   <div className="circle">
     <svg>
-      <circle cx="130" cy="130" r="120" />
+      <circle cx="80" cy="80" r="120" />
       <circle
-        cx="130"
-        cy="130"
+        cx="80"
+        cy="80"
         r="120"
         style={{
           strokeDashoffset: `calc(754 - (754 * ${Math.min(Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100), 100)} / 100))`

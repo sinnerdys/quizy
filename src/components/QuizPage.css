@@ -175,7 +175,6 @@
     text-align: center;
     margin-top: 20px;
     color: white;
-    border-radius: 10px;
     background-color: #091533; /* Цвет фона для завершенного экрана */
   }
   
@@ -250,7 +249,7 @@
   }
   
   .claim-reward-button {
-    margin-top: 20px;
+    margin-top: 40px;
     padding: 15px;
     background-color: #284286;
     color: white;
