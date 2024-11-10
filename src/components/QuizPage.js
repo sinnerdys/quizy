@@ -65,16 +65,24 @@ function QuizPage({ userId, onComplete }) {
     };
 
     const handleNextQuestion = () => {
-        setSelectedOption(null);
+        // Проверяем, выбран ли вариант, прежде чем переходить к следующему вопросу
+        if (selectedOption === null) {
+            return; // Останавливаем выполнение, если нет выбора
+        }
+    
+        if (quiz.questions[currentQuestionIndex].correctOption === selectedOption) {
+            setCorrectAnswersCount((prevCount) => prevCount + 1);  // Увеличиваем количество правильных ответов
+        }
+    
+        // Переход к следующему вопросу или завершение квиза
         if (currentQuestionIndex < quiz.questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
         } else {
-            // Когда все вопросы пройдены, вычисляем награду
             setQuizCompleted(true);
-            // Награда за каждый правильный ответ
+            // Когда все вопросы пройдены, вычисляем награду
             const rewardPerQuestion = quiz.reward / quiz.questions.length;
-            console.log('Reward per question:', rewardPerQuestion); // Логируем награду за вопрос
-            console.log('Correct answers count:', correctAnswersCount); // Логируем количество правильных ответов
+            console.log('Reward per question:', rewardPerQuestion);
+            console.log('Correct answers count:', correctAnswersCount);
             setReward(correctAnswersCount * rewardPerQuestion);
         }
     };
