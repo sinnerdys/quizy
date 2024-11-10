@@ -5,73 +5,87 @@ import logo from '../assets/logo.png';
 import token from '../assets/TokenImage.png';
 
 function QuizPage({ userId, onComplete }) {
-  const { quizId } = useParams();
-  const [quiz, setQuiz] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [timer, setTimer] = useState(0);
-  const [intervalId, setIntervalId] = useState(null);
-  const [quizCompleted, setQuizCompleted] = useState(false);
-
-  const fetchQuizData = async () => {
-    try {
-      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
-      const data = await response.json();
-      console.log('Fetched quiz data:', data);
-
-      if (data.quizzes && data.quizzes[0].questions) {
-        setQuiz({ ...data.quizzes[0], questions: data.quizzes[0].questions });
-        setTimer(data.quizzes[0].timerInSeconds || 0);
-      } else {
-        console.error('Quiz has no questions.');
+    const { quizId } = useParams();
+    const [quiz, setQuiz] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [selectedOption, setSelectedOption] = useState(null);
+    const [timer, setTimer] = useState(0);
+    const [intervalId, setIntervalId] = useState(null);
+    const [quizCompleted, setQuizCompleted] = useState(false);
+  
+    const fetchQuizData = async () => {
+      try {
+        const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
+        const data = await response.json();
+        console.log('Fetched quiz data:', data);
+  
+        if (data.quizzes && data.quizzes[0].questions) {
+          setQuiz({ ...data.quizzes[0], questions: data.quizzes[0].questions });
+          setTimer(data.quizzes[0].timerInSeconds || 0);
+        } else {
+          console.error('Quiz has no questions.');
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching quiz data:', error);
+        setLoading(false);
       }
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching quiz data:', error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuizData();
-  }, [quizId, userId]);
-
-  useEffect(() => {
-    if (timer > 0) {
-      const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
-      setIntervalId(id);
-    } else if (timer === 0 && intervalId) {
-      clearInterval(intervalId);
+    };
+  
+    useEffect(() => {
+      fetchQuizData();
+    }, [quizId, userId]);
+  
+    useEffect(() => {
+      if (timer > 0) {
+        const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
+        setIntervalId(id);
+      } else if (timer === 0 && intervalId) {
+        clearInterval(intervalId);
+        onComplete();
+      }
+      return () => clearInterval(intervalId);
+    }, [timer]);
+  
+    const handleNextQuestion = () => {
+      setSelectedOption(null);
+      if (currentQuestionIndex < quiz.questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+      } else {
+        setQuizCompleted(true);
+      }
+    };
+  
+    const handleCompleteQuiz = () => {
       onComplete();
+    };
+  
+    if (loading) return <p>Loading...</p>;
+    if (!quiz || !quiz.questions || quiz.questions.length === 0) {
+      return <p>No questions available for this quiz.</p>;
     }
-    return () => clearInterval(intervalId);
-  }, [timer]);
-
-  const handleNextQuestion = () => {
-    setSelectedOption(null);
-    if (currentQuestionIndex < quiz.questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      setQuizCompleted(true);
-    }
-  };
-
-  const handleCompleteQuiz = () => {
-    onComplete();
-  };
-
-  if (loading) return <p>Loading...</p>;
-  if (!quiz || !quiz.questions || quiz.questions.length === 0) {
-    return <p>No questions available for this quiz.</p>;
-  }
-
-  const currentQuestion = quiz.questions[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
-
-  const minutes = String(Math.floor(timer / 60)).padStart(2, '0');
-  const seconds = String(timer % 60).padStart(2, '0');
-
+  
+    const currentQuestion = quiz.questions[currentQuestionIndex];
+    const progress = ((currentQuestionIndex + 1) / quiz.questions.length) * 100;
+  
+    const minutes = String(Math.floor(timer / 60)).padStart(2, '0');
+    const seconds = String(timer % 60).padStart(2, '0');
+  
+    useEffect(() => {
+        const interval = setInterval(() => {
+          if (percentage < progress) {
+            setPercentage(prev => Math.min(prev + 1, progress)); // Увеличиваем процент
+          }
+        }, 50); // Интервал обновления процентов
+    
+        const circleLength = 2 * Math.PI * 50; // Длина круга (радиус 50px)
+        setCircleProgress((progress / 100) * circleLength); // Рассчитываем прогресс круга
+    
+        // Очищаем интервал, когда анимация завершена
+        return () => clearInterval(interval);
+      }, [progress, percentage]);
+      
   return (
     <div className="quiz-page">
       {quizCompleted ? (
@@ -91,20 +105,24 @@ function QuizPage({ userId, onComplete }) {
               {/* Круговой прогресс-бар */}
               <div className="progress-circle">
   <div className="circle">
-    <svg className="svg-circle">
-      <circle cx="120" cy="120" r="110" />
-      <circle
-        cx="120"
-        cy="120"
-        r="110"
-        style={{
-          strokeDashoffset: `calc(691.2 - (691.2 * ${Math.min(Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100), 100)} / 100))`
-        }}
-      />
-    </svg>
-    <div className="percentage">
-      {Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%
-    </div>
+  <svg className="svg-circle" width="240" height="240">
+        <circle cx="120" cy="120" r="110" stroke="#0E2258" strokeWidth="15" />
+        <circle
+          cx="120"
+          cy="120"
+          r="110"
+          stroke="#34519C"
+          strokeWidth="15"
+          strokeDasharray={circleLength}
+          strokeDashoffset={circleLength - (circleLength * progress) / 100} // Анимация прогресса
+          style={{
+            transition: 'stroke-dashoffset 5s ease-out', // Плавное изменение круга
+          }}
+        />
+      </svg>
+      <div className="percentage" style={{ opacity: percentage === progress ? 1 : 0 }}>
+        {percentage}%
+      </div>
   </div>
 </div>
           

@@ -241,6 +241,14 @@
     transform: translate(0, 0); /* Центрирование круга внутри контейнера */
   }
   
+  .circle svg circle:nth-child(2) {
+    fill: none;
+    stroke: #34519C;
+    stroke-width: 15;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 5s ease-out; /* Добавляем плавный переход */
+  }
+  
   .percentage {
     position: absolute;
     top: 50%;
@@ -250,6 +258,8 @@
     font-weight: bold;
     text-align: center;
     color: white;
+    opacity: 0;  /* Изначально скрываем процент */
+    transition: opacity 1s ease-in; /* Добавляем плавный переход */
   }
 
   .congratulations {
