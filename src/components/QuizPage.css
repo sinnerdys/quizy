@@ -221,13 +221,13 @@
   circle {
     fill: none;
     stroke: #0E2258; /* Фон круга */
-    stroke-width: 12;
+    stroke-width: 15;
   }
   
   circle:nth-child(2) {
     fill: none;
     stroke: #34519C; /* Прогресс-бара */
-    stroke-width: 12;
+    stroke-width: 15;
     stroke-linecap: round;
     transition: stroke-dashoffset 0.5s ease;
   }
