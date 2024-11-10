@@ -61,14 +61,14 @@ function QuizPage({ userId, onComplete }) {
         setPercentage((prev) => Math.min(prev + 1, progress)); // Увеличиваем процент
       }
     }, 50); // Интервал обновления процентов
-
+  
     // Длина круга (радиус 50px)
-    const circleLength = 2 * Math.PI * 50;
+    const circleLength = 2 * Math.PI * 50; // Рассчитываем длину круга
     setCircleProgress((progress / 100) * circleLength); // Рассчитываем прогресс круга
-
+  
     // Очищаем интервал, когда анимация завершена
     return () => clearInterval(interval);
-  }, [progress, percentage]); // Зависимости для корректной работы хука
+  }, [progress, percentage]);
 
   const handleNextQuestion = () => {
     setSelectedOption(null);

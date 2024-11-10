@@ -207,9 +207,9 @@
   
   .progress-circle {
     position: relative;
-    width: 240px; /* Увеличиваем контейнер для круга */
-    height: 240px; /* Увеличиваем контейнер для круга */
-    margin: 20px auto; /* Центрирование круга */
+    width: 240px; /* Размер контейнера */
+    height: 240px; /* Размер контейнера */
+    margin: 20px auto;
   }
   
   .circle {
@@ -220,25 +220,25 @@
   
   circle {
     fill: none;
-    stroke: #0E2258; /* Фон круга */
+    stroke: #0E2258; /* Цвет фона круга */
     stroke-width: 15;
   }
   
   circle:nth-child(2) {
     fill: none;
-    stroke: #34519C; /* Прогресс-бара */
+    stroke: #34519C; /* Цвет прогресса */
     stroke-width: 15;
     stroke-linecap: round;
-    transition: stroke-dashoffset 0.5s ease;
+    transition: stroke-dashoffset 5s ease-out; /* Плавная анимация */
   }
   
-  /* Новый класс для svg */
-.svg-circle {
+  /* Обновленная анимация круга */
+  .svg-circle {
     display: block;
     margin: 0 auto;
     width: 100%;
     height: 100%;
-    transform: translate(0, 0); /* Центрирование круга внутри контейнера */
+    transform: translate(0, 0); /* Центрирование круга */
   }
   
   .circle svg circle:nth-child(2) {
@@ -246,9 +246,10 @@
     stroke: #34519C;
     stroke-width: 15;
     stroke-linecap: round;
-    transition: stroke-dashoffset 5s ease-out; /* Добавляем плавный переход */
+    transition: stroke-dashoffset 5s ease-out; /* Плавное изменение круга */
   }
   
+  /* Для процентов */
   .percentage {
     position: absolute;
     top: 50%;
@@ -258,8 +259,8 @@
     font-weight: bold;
     text-align: center;
     color: white;
-    opacity: 0;  /* Изначально скрываем процент */
-    transition: opacity 1s ease-in; /* Добавляем плавный переход */
+    opacity: 0; /* Скрыто изначально */
+    transition: opacity 1s ease-in; /* Плавный переход для появления */
   }
 
   .congratulations {
