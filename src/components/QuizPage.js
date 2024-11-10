@@ -56,11 +56,18 @@ function QuizPage({ userId, onComplete }) {
         return () => clearInterval(intervalId);
     }, [timer]);
 
-    // Логика подсчета правильных ответов
     const handleOptionSelect = (selectedOption) => {
         setSelectedOption(selectedOption);
-        if (quiz.questions[currentQuestionIndex].correctOption === selectedOption) {
-            setCorrectAnswersCount((prevCount) => prevCount + 1);
+        const correctOption = quiz.questions[currentQuestionIndex].correctOption;
+    
+        console.log(`Selected option: ${selectedOption}, Correct option: ${correctOption}`); // Логируем выбранный вариант и правильный вариант
+    
+        if (correctOption === selectedOption) {
+            setCorrectAnswersCount((prevCount) => {
+                const newCount = prevCount + 1;
+                console.log('Correct answer selected, correctAnswersCount:', newCount); // Логируем количество правильных ответов
+                return newCount;
+            });
         }
     };
 
