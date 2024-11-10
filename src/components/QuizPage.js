@@ -13,6 +13,10 @@ function QuizPage({ userId, onComplete }) {
     const [timer, setTimer] = useState(0);
     const [intervalId, setIntervalId] = useState(null);
     const [quizCompleted, setQuizCompleted] = useState(false);
+
+      // Добавим состояния для процентов и прогресса круга
+  const [percentage, setPercentage] = useState(0);
+  const [circleProgress, setCircleProgress] = useState(0);
   
     const fetchQuizData = async () => {
       try {
@@ -73,6 +77,7 @@ function QuizPage({ userId, onComplete }) {
     const seconds = String(timer % 60).padStart(2, '0');
   
     useEffect(() => {
+        // Анимация прогресса (процент и круг)
         const interval = setInterval(() => {
           if (percentage < progress) {
             setPercentage(prev => Math.min(prev + 1, progress)); // Увеличиваем процент
