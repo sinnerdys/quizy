@@ -83,7 +83,7 @@ function QuizPage({ userId, onComplete }) {
             setPercentage(prev => Math.min(prev + 1, progress)); // Увеличиваем процент
           }
         }, 50); // Интервал обновления процентов
-        
+    
         // Длина круга (радиус 50px)
         const circleLength = 2 * Math.PI * 50; 
         setCircleProgress((progress / 100) * circleLength); // Рассчитываем прогресс круга
