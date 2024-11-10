@@ -192,7 +192,8 @@
     border-style: dashed; /* Прерывистый бордер для завершенного задания */
     padding: 10px; /* Отступ внутри блока */
     border-radius: 8px; /* Скругление углов */
-    width: 80%;
+    padding-left: 40px;
+    padding-right: 40px;
   }
   
   .token-icon-quiz-complete {
@@ -203,8 +204,8 @@
   
   .progress-circle {
     position: relative;
-    width: 220px; /* Увеличиваем контейнер для круга */
-    height: 220px; /* Увеличиваем контейнер для круга */
+    width: 250px; /* Увеличиваем контейнер для круга */
+    height: 250px; /* Увеличиваем контейнер для круга */
     margin: 20px auto; /* Центрирование круга */
   }
   
