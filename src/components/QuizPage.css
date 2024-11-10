@@ -180,7 +180,6 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    padding: 10px;
   }
   
   .reward-display-quiz-complete {
@@ -208,8 +207,8 @@
   
   .progress-circle {
     position: relative;
-    width: 260px; /* Увеличиваем контейнер для круга */
-    height: 260px; /* Увеличиваем контейнер для круга */
+    width: 240px; /* Увеличиваем контейнер для круга */
+    height: 240px; /* Увеличиваем контейнер для круга */
     margin: 20px auto; /* Центрирование круга */
   }
   
@@ -247,12 +246,17 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 32px;
+    font-size: 42px;
     font-weight: bold;
     text-align: center;
     color: white;
   }
 
+  .congratulations {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
   .congratulations-text-title h3 {
     margin: 10px 0; /* Отступ сверху и снизу */
   }

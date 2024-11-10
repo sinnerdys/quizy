@@ -89,13 +89,13 @@ function QuizPage({ userId, onComplete }) {
               <div className="progress-circle">
   <div className="circle">
     <svg className="svg-circle">
-      <circle cx="130" cy="130" r="120" />
+      <circle cx="120" cy="120" r="110" />
       <circle
-        cx="130"
-        cy="130"
-        r="120"
+        cx="120"
+        cy="120"
+        r="110"
         style={{
-          strokeDashoffset: `calc(754 - (754 * ${Math.min(Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100), 100)} / 100))`
+          strokeDashoffset: `calc(691.2 - (691.2 * ${Math.min(Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100), 100)} / 100))`
         }}
       />
     </svg>
@@ -106,8 +106,10 @@ function QuizPage({ userId, onComplete }) {
 </div>
           
               {/* Поздравительный текст */}
+              <div className="congratulations">
               <h3 className="congratulations-text-title">Congratulations, you’ve completed this quiz! 🎉</h3>
               <p className="congratulations-text">Let’s keep testing your knowledge by playing more quizzes!</p>
+              </div>
           
               {/* Кнопка для получения награды */}
               <button className="claim-reward-button" onClick={handleCompleteQuiz}>Claim reward</button>
