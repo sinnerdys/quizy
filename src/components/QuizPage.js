@@ -88,7 +88,7 @@ function QuizPage({ userId, onComplete }) {
               {/* Круговой прогресс-бар */}
               <div className="progress-circle">
   <div className="circle">
-    <svg>
+    <svg className="svg-circle">
       <circle cx="130" cy="130" r="120" />
       <circle
         cx="130"
@@ -99,7 +99,9 @@ function QuizPage({ userId, onComplete }) {
         }}
       />
     </svg>
-
+    <div className="percentage">
+      {Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%
+    </div>
   </div>
 </div>
           
