@@ -87,22 +87,26 @@ function QuizPage({ userId, onComplete }) {
           
               {/* Круговой прогресс-бар */}
               <div className="progress-circle">
-                <div className="circle">
-                  <svg>
-                    <circle cx="130" cy="130" r="120" />
-                    <circle
-                      cx="130"
-                      cy="130"
-                      r="120"
-                      style={{ strokeDashoffset: `calc(754 - (754 * ${Math.min(Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100), 100)} / 100))` }}
-                    />
-                  </svg>
-                  <div className="percentage">{Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%</div>
-                </div>
-              </div>
+  <div className="circle">
+    <svg>
+      <circle cx="130" cy="130" r="120" />
+      <circle
+        cx="130"
+        cy="130"
+        r="120"
+        style={{
+          strokeDashoffset: `calc(754 - (754 * ${Math.min(Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100), 100)} / 100))`
+        }}
+      />
+    </svg>
+    <div className="percentage">
+      {Math.round((currentQuestionIndex + 1) / quiz.questions.length * 100)}%
+    </div>
+  </div>
+</div>
           
               {/* Поздравительный текст */}
-              <h3>Congratulations, you’ve completed this quiz! 🎉</h3>
+              <h3 className="congratulations-text-title">Congratulations, you’ve completed this quiz! 🎉</h3>
               <p className="congratulations-text">Let’s keep testing your knowledge by playing more quizzes!</p>
           
               {/* Кнопка для получения награды */}

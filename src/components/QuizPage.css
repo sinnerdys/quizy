@@ -192,8 +192,8 @@
     border-style: dashed; /* Прерывистый бордер для завершенного задания */
     padding: 10px; /* Отступ внутри блока */
     border-radius: 8px; /* Скругление углов */
-    padding-left: 40px;
-    padding-right: 40px;
+    margin: 0 auto;
+    width: 60%
   }
   
   .token-icon-quiz-complete {
@@ -217,16 +217,16 @@
   
   circle {
     fill: none;
-    stroke: #0E2258; /* Цвет фона круга */
+    stroke: #0E2258; /* Фон круга */
     stroke-width: 10;
   }
   
   circle:nth-child(2) {
     fill: none;
-    stroke: #34519C; /* Цвет прогресс-бара */
-    stroke-width: 10;
+    stroke: #34519C; /* Прогресс-бара */
+    stroke-width: 15;
     stroke-linecap: round;
-    transition: stroke-dashoffset 0.5s ease; /* Анимация */
+    transition: stroke-dashoffset 0.5s ease;
   }
   
   .percentage {
@@ -234,18 +234,19 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 28px; /* Размер текста */
+    font-size: 28px;
     font-weight: bold;
-    text-align: center; /* Центрирование текста */
-    color: white; /* Цвет текста */
+    text-align: center;
+    color: white;
   }
-  
-  h3 {
+
+  .congratulations-text-title h3 {
     margin: 10px 0; /* Отступ сверху и снизу */
   }
   
   .congratulations-text {
     color: #ADC3FF; /* Цвет текста поздравления */
+    font-size: 16px;
   }
   
   .claim-reward-button {
@@ -265,5 +266,6 @@
   }
 
   .results h2 {
+    margin-top: 20px;
     font-size: 24px;
   }
