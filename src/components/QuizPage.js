@@ -57,10 +57,10 @@ function QuizPage({ userId, onComplete }) {
     }, [timer]);
 
     const handleOptionSelect = (selectedOption) => {
+        console.log('Selected option:', selectedOption); // Логируем выбранный вариант
         setSelectedOption(selectedOption);
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
-    
-        console.log(`Selected option: ${selectedOption}, Correct option: ${correctOption}`); // Логируем выбранный вариант и правильный вариант
+        console.log('Correct option:', correctOption); // Логируем правильный вариант
     
         if (correctOption === selectedOption) {
             setCorrectAnswersCount((prevCount) => {
@@ -71,28 +71,25 @@ function QuizPage({ userId, onComplete }) {
         }
     };
 
-    const handleNextQuestion = () => {
-        // Проверяем, выбран ли вариант, прежде чем переходить к следующему вопросу
-        if (selectedOption === null) {
-            return; // Останавливаем выполнение, если нет выбора
-        }
-    
-        if (quiz.questions[currentQuestionIndex].correctOption === selectedOption) {
-            setCorrectAnswersCount((prevCount) => prevCount + 1);  // Увеличиваем количество правильных ответов
-        }
-    
-        // Переход к следующему вопросу или завершение квиза
-        if (currentQuestionIndex < quiz.questions.length - 1) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-        } else {
-            setQuizCompleted(true);
-            // Когда все вопросы пройдены, вычисляем награду
-            const rewardPerQuestion = quiz.reward / quiz.questions.length;
-            console.log('Reward per question:', rewardPerQuestion);
-            console.log('Correct answers count:', correctAnswersCount);
-            setReward(correctAnswersCount * rewardPerQuestion);
-        }
-    };
+// Кнопка "Next question"
+const handleNextQuestion = () => {
+    console.log('Selected option before next question:', selectedOption); // Логируем выбранный вариант перед переходом к следующему вопросу
+    if (selectedOption === null) {
+        return; // Останавливаем выполнение, если нет выбора
+    }
+
+    // Переход к следующему вопросу
+    if (currentQuestionIndex < quiz.questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+        // Когда все вопросы пройдены, вычисляем награду
+        setQuizCompleted(true);
+        const rewardPerQuestion = quiz.reward / quiz.questions.length;
+        console.log('Reward per question:', rewardPerQuestion);
+        console.log('Correct answers count:', correctAnswersCount);
+        setReward(correctAnswersCount * rewardPerQuestion);
+    }
+};
 
     useEffect(() => {
         console.log('Current question index:', currentQuestionIndex);
@@ -216,19 +213,19 @@ function QuizPage({ userId, onComplete }) {
                             {Object.entries(currentQuestion.options || {}).map(([key, option]) => (
                                 option && (
                                     <div
-                                        key={key}
-                                        className={`option ${selectedOption === key ? 'selected' : ''}`}
-                                        onClick={() => handleOptionSelect(key)}
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="option"
-                                            checked={selectedOption === key}
-                                            onChange={() => setSelectedOption(key)}
-                                            className="radio-input"
-                                        />
-                                        <span className="option-text">{option}</span>
-                                    </div>
+                                    key={key}
+                                    className={`option ${selectedOption === key ? 'selected' : ''}`}
+                                    onClick={() => handleOptionSelect(key)}  // Используем только onClick для изменения selectedOption
+                                >
+                                    <input
+                                        type="radio"
+                                        name="option"
+                                        checked={selectedOption === key} // Обновляем состояние через selectedOption
+                                        className="radio-input"
+                                        readOnly // Только для отображения, не требуется изменять здесь
+                                    />
+                                    <span className="option-text">{option}</span>
+                                </div>
                                 )
                             ))}
                         </div>
