@@ -18,14 +18,10 @@ function QuizPage({ userId, onComplete }) {
     const [percentage, setPercentage] = useState(0);
     const [circleProgress, setCircleProgress] = useState(0);
 
-        // Состояние для правильных ответов и награды
-        const [correctAnswersCount, setCorrectAnswersCount] = useState(0);
-        const [reward, setReward] = useState(0);
+    // Используем useRef для отслеживания правильных ответов
+    const correctAnswersRef = useRef(0);  // Ссылка для отслеживания количества правильных ответов
+    const [reward, setReward] = useState(0);
   
-    // Логируем правильные ответы каждый раз, когда они изменяются
-    useEffect(() => {
-        console.log('Updated correct answers count:', correctAnswersCount);
-    }, [correctAnswersCount]);
 
     
     const fetchQuizData = async () => {
@@ -63,34 +59,26 @@ function QuizPage({ userId, onComplete }) {
     }, [timer]);
 
     const handleOptionSelect = (selectedOption) => {
-        console.log('Selected option:', selectedOption); // Логируем выбранный вариант
+        console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
         setSelectedOption(selectedOption);
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
-        console.log('Correct option:', correctOption); // Логируем правильный вариант
+        console.log('Correct option:', correctOption);  // Логируем правильный вариант
     
         if (correctOption === selectedOption) {
-            setCorrectAnswersCount(prevCount => {
-                const newCount = prevCount + 1;
-                console.log('Correct answer selected, correctAnswersCount:', newCount); // Логируем количество правильных ответов
-                return newCount;
-            });
+            correctAnswersRef.current += 1; // Увеличиваем количество правильных ответов через ref
+            console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current); // Логируем правильные ответы
         }
     };
 
     const handleNextQuestion = () => {
-        console.log('Selected option before next question:', selectedOption); // Логируем выбранный вариант перед переходом к следующему вопросу
+        console.log('Selected option before next question:', selectedOption);  // Логируем выбранный вариант перед переходом к следующему вопросу
         if (selectedOption === null) {
-            return; // Останавливаем выполнение, если нет выбора
+            return;  // Останавливаем выполнение, если нет выбора
         }
-    
+
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
         console.log('Correct option for current question:', correctOption);
-    
-        // Логируем правильный ответ
-        if (correctOption === selectedOption) {
-            console.log('Correct answer!');
-        }
-    
+
         // Переход к следующему вопросу
         if (currentQuestionIndex < quiz.questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -99,8 +87,8 @@ function QuizPage({ userId, onComplete }) {
             setQuizCompleted(true);
             const rewardPerQuestion = quiz.reward / quiz.questions.length;
             console.log('Reward per question:', rewardPerQuestion);
-            console.log('Correct answers count:', correctAnswersCount); // Логируем количество правильных ответов
-            setReward(correctAnswersCount * rewardPerQuestion);
+            console.log('Correct answers count:', correctAnswersRef.current);  // Логируем количество правильных ответов из ref
+            setReward(correctAnswersRef.current * rewardPerQuestion);  // Используем значение из ref
         }
     };
 
