@@ -60,7 +60,7 @@ function QuizPage({ userId, onComplete }) {
 
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
-        setSelectedOption(selectedOption);
+        setSelectedOption(selectedOption); // Просто устанавливаем выбранный вариант
     };
     
     const handleNextQuestion = () => {
