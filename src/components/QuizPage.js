@@ -64,7 +64,8 @@ function QuizPage({ userId, onComplete }) {
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
         console.log('Correct option:', correctOption);  // Логируем правильный вариант
         
-        if (correctOption === selectedOption) {
+        // Приводим оба значения к строкам для корректного сравнения
+        if (String(correctOption) === String(selectedOption)) {
             correctAnswersRef.current += 1;  // Увеличиваем количество правильных ответов через ref
             console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current);  // Логируем правильные ответы
         }
