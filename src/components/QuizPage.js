@@ -71,30 +71,31 @@ function QuizPage({ userId, onComplete }) {
         }
     };
 
-    const handleNextQuestion = () => {
-        // Переход к следующему вопросу
-        if (selectedOption === null) {
-            return; // Останавливаем выполнение, если нет выбора
-        }
-    
-        // Логируем перед переходом
-        console.log('Selected option before next question:', selectedOption); 
-    
-        const correctOption = quiz.questions[currentQuestionIndex].correctOption;
-        console.log('Correct option for current question:', correctOption);
-    
-        // Переход к следующему вопросу
-        if (currentQuestionIndex < quiz.questions.length - 1) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-        } else {
-            // Когда все вопросы пройдены, вычисляем награду
-            setQuizCompleted(true);
-            const rewardPerQuestion = quiz.reward / quiz.questions.length;
-            console.log('Reward per question:', rewardPerQuestion);
-            console.log('Correct answers count:', correctAnswersCount); // Логируем правильные ответы перед расчетом награды
-            setReward(correctAnswersCount * rewardPerQuestion);
-        }
-    };
+ const handleNextQuestion = () => {
+    console.log('Selected option before next question:', selectedOption); // Логируем выбранный вариант перед переходом к следующему вопросу
+    if (selectedOption === null) {
+        return; // Останавливаем выполнение, если нет выбора
+    }
+
+    const correctOption = quiz.questions[currentQuestionIndex].correctOption;
+    console.log('Correct option for current question:', correctOption);
+
+    if (correctOption === selectedOption) {
+        console.log('Correct answer!'); // Логируем, что выбран правильный ответ
+    }
+
+    // Переход к следующему вопросу
+    if (currentQuestionIndex < quiz.questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+        // Когда все вопросы пройдены, вычисляем награду
+        setQuizCompleted(true);
+        const rewardPerQuestion = quiz.reward / quiz.questions.length;
+        console.log('Reward per question:', rewardPerQuestion);
+        console.log('Correct answers count:', correctAnswersCount); // Логируем количество правильных ответов
+        setReward(correctAnswersCount * rewardPerQuestion);
+    }
+};
 
     useEffect(() => {
         console.log('Current question index:', currentQuestionIndex);
