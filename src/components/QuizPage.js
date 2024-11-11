@@ -61,14 +61,6 @@ function QuizPage({ userId, onComplete }) {
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
         setSelectedOption(selectedOption);
-        const correctOption = quiz.questions[currentQuestionIndex].correctOption;
-        console.log('Correct option:', correctOption);  // Логируем правильный вариант
-        
-        // Приводим оба значения к строкам для корректного сравнения
-        if (String(correctOption) === String(selectedOption)) {
-            correctAnswersRef.current += 1;  // Увеличиваем количество правильных ответов через ref
-            console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current);  // Логируем правильные ответы
-        }
     };
     
     const handleNextQuestion = () => {
@@ -80,14 +72,16 @@ function QuizPage({ userId, onComplete }) {
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
         console.log('Correct option for current question:', correctOption);
     
-        // Проверяем, правильно ли срабатывает увеличение правильных ответов
-        if (correctOption === selectedOption) {
-            console.log('Correct answer!'); // Логируем, что выбран правильный ответ
+        // Проверяем правильность ответа при переходе к следующему вопросу
+        if (String(correctOption) === String(selectedOption)) {
+            correctAnswersRef.current += 1; // Увеличиваем количество правильных ответов через ref
+            console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current); // Логируем правильные ответы
         }
     
         // Переход к следующему вопросу
         if (currentQuestionIndex < quiz.questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setSelectedOption(null);  // Сброс выбранной опции после перехода
         } else {
             // Когда все вопросы пройдены, вычисляем награду
             setQuizCompleted(true);
