@@ -63,22 +63,27 @@ function QuizPage({ userId, onComplete }) {
         setSelectedOption(selectedOption);
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
         console.log('Correct option:', correctOption);  // Логируем правильный вариант
-    
+        
         if (correctOption === selectedOption) {
-            correctAnswersRef.current += 1; // Увеличиваем количество правильных ответов через ref
-            console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current); // Логируем правильные ответы
+            correctAnswersRef.current += 1;  // Увеличиваем количество правильных ответов через ref
+            console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current);  // Логируем правильные ответы
         }
     };
-
+    
     const handleNextQuestion = () => {
         console.log('Selected option before next question:', selectedOption);  // Логируем выбранный вариант перед переходом к следующему вопросу
         if (selectedOption === null) {
             return;  // Останавливаем выполнение, если нет выбора
         }
-
+    
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
         console.log('Correct option for current question:', correctOption);
-
+    
+        // Проверяем, правильно ли срабатывает увеличение правильных ответов
+        if (correctOption === selectedOption) {
+            console.log('Correct answer!'); // Логируем, что выбран правильный ответ
+        }
+    
         // Переход к следующему вопросу
         if (currentQuestionIndex < quiz.questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
