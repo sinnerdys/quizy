@@ -174,12 +174,24 @@ function QuizPage({ userId, onComplete }) {
 
                 // Очистка интервала, когда анимация завершена
                 return () => clearInterval(interval);
-            }, 2000); // Задержка 2 секунды перед началом анимации
+            }, 1000); // Задержка 2 секунды перед началом анимации
 
             // Очистка таймера
             return () => clearTimeout(timeout);
         }
     }, [quizCompleted, finalProgress, circumference]); // Запускать хук при завершении квиза
+
+        // Задержка на 5 секунд перед тем, как блок с наградой станет видимым
+        useEffect(() => {
+            if (quizCompleted) {
+                const rewardTimeout = setTimeout(() => {
+                    setIsRewardVisible(true); // Показываем блок награды через 5 секунд
+                }, 5500); // 5000 миллисекунд = 5 секунд
+    
+                // Очистка таймера
+                return () => clearTimeout(rewardTimeout);
+            }
+        }, [quizCompleted]); // Этот эффект срабатывает при завершении квиза
 
     
     if (loading) return <p>Loading...</p>;
@@ -200,7 +212,7 @@ function QuizPage({ userId, onComplete }) {
 
                     <div className="content">
                         {/* Блок с наградой */}
-                        <div className="reward-display-quiz-complete">
+                        <div className={`reward-display-quiz-complete ${isRewardVisible ? 'fade-in' : ''}`}>
                             <span>{reward}</span>
                             <img src={token} alt="QUIZY Logo" className="token-icon-quiz-complete" />
                         </div>

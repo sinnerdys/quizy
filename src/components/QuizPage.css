@@ -196,9 +196,15 @@
     padding: 10px; /* Отступ внутри блока */
     border-radius: 8px; /* Скругление углов */
     margin: 0 auto;
-    width: 60%
+    width: 60%;
+    opacity: 0; /* Начальная невидимость */
+    transition: opacity 1s ease-in-out; /* Плавная анимация */
   }
   
+  .reward-display-quiz-complete.fade-in {
+    opacity: 1; /* Делает элемент видимым */
+  }
+
   .token-icon-quiz-complete {
     width: 16px; /* Размер иконки токена */
     height: 22px;
