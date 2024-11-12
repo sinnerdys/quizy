@@ -152,6 +152,9 @@ function QuizPage({ userId, onComplete }) {
         if (quizCompleted) {
             setPercentage(0); // Начинаем с 0% при завершении квиза
             setCircleProgress(circumference); // Начинаем с полной окружности (пустой круг)
+            setTimeout(() => {
+                setCircleProgress(0); // Скрываем прогресс круга изначально
+            }, 0); // Скрываем моментально
 
             // Добавляем задержку перед началом анимации (2 секунды)
             const timeout = setTimeout(() => {
