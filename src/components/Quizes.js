@@ -4,6 +4,7 @@ import './Quizes.css';
 import ModalQuiz from './ModalQuiz';
 import TimeIcon from '../assets/timer.png';
 import token from '../assets/TokenImage.png';
+import completedIcon from '../assets/completedIcon.png'; // Импортируем иконку завершения
 
 function Quizes({ userId }) {
   const [quizzes, setQuizzes] = useState([]);
@@ -87,7 +88,13 @@ function Quizes({ userId }) {
                 <span className="quiz-time">{quiz.displayTime} <img src={TimeIcon} alt="Time icon" className="time-icon" /></span>
               </div>
             </div>
-            <button className="quiz-button" onClick={() => openQuizModal(quiz)} disabled={quiz.completed}>Open</button>
+            <button
+              className={`quiz-button ${quiz.completed ? 'completed-button' : ''}`}
+              onClick={() => openQuizModal(quiz)}
+              disabled={quiz.completed}
+            >
+              {quiz.completed ? <img src={completedIcon} alt="Completed" className="completed-icon" /> : 'Open'}
+            </button>
           </li>
         ))}
       </ul>

@@ -153,3 +153,20 @@
     font-size: 18px;
     margin-bottom: 10px;
    }
+
+   .quiz-item.quiz-completed {
+    border-style: dashed; /* Делаем бордер прерывистым для завершенных квизов */
+    background-color: #2A3D72; /* Цвет фона для завершенных квизов */
+  }
+  
+  .quiz-button.completed-button {
+    background-color: #182C5F; /* Цвет кнопки для завершенных квизов */
+    width: 75px;
+    height: 40px;
+  }
+  
+  .completed-icon {
+    width: 20px;
+    height: 20px;
+  }
+  
