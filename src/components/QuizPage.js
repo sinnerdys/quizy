@@ -23,7 +23,6 @@ function QuizPage({ userId, onComplete }) {
     const correctAnswersRef = useRef(0);  
     const [reward, setReward] = useState(0);
   
-
     const fetchQuizData = async () => {
         try {
             const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
@@ -140,7 +139,7 @@ function QuizPage({ userId, onComplete }) {
         }, 50);
 
         return () => clearInterval(interval);
-    }, [percentage, correctAnswersRef.current]); // Обновляем только при изменении правильных ответов
+    }, [percentage]); // Обновляем только при изменении правильных ответов
 
     if (loading) return <p>Loading...</p>;
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
