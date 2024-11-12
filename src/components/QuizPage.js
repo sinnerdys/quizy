@@ -23,10 +23,6 @@ function QuizPage({ userId, onComplete }) {
     const correctAnswersRef = useRef(0);  // Ссылка для отслеживания количества правильных ответов
     const [reward, setReward] = useState(0);
 
-        // Радиус круга
-        const radius = 110;
-        // Длина окружности
-        const circumference = 2 * Math.PI * radius;
   
 
     const fetchQuizData = async () => {
@@ -145,12 +141,21 @@ function QuizPage({ userId, onComplete }) {
 
     const finalProgress = (correctAnswersRef.current / quiz?.questions.length) * 100; // Прогресс на основе правильных ответов
 
+    // Радиус круга
+    const radius = 110;
+    // Длина окружности
+    const circumference = 2 * Math.PI * radius;
+
+    // Смещение для начала с верхней точки (вверх на 25%)
+    const circleProgressStartOffset = circumference * 0.25;
+
     // Стартовая установка для анимации
     useEffect(() => {
         if (quizCompleted) {
             setPercentage(0); // Начинаем с 0% при завершении квиза
+            setCircleProgress(circleProgressStartOffset); // Начинаем с верхней точки круга
 
-            const totalDuration = 3000; // Время анимации (например, 4 секунды)
+            const totalDuration = 4000; // Время анимации (например, 4 секунды)
             const steps = 100; // Количество шагов (с 0 до 100%)
             const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
 
@@ -174,8 +179,6 @@ function QuizPage({ userId, onComplete }) {
     }, [quizCompleted, finalProgress, circumference]); // Запускать хук при завершении квиза
 
     
-
-
     if (loading) return <p>Loading...</p>;
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
         return <p>No questions available for this quiz.</p>;
