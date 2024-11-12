@@ -259,6 +259,7 @@
     font-weight: bold;
     text-align: center;
     color: white;
+    transition: opacity 0.5s ease-in-out; /* Плавное изменение прозрачности */
   }
 
   .congratulations {

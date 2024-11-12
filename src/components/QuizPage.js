@@ -138,17 +138,24 @@ function QuizPage({ userId, onComplete }) {
     // Анимация прогресса (процент и круг) — теперь хук всегда вызывается
     const progress = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100;
 
-// Ваша часть с анимацией процентов
-useEffect(() => {
-    const interval = setInterval(() => {
-        if (percentage < progress) {
-            setPercentage((prev) => Math.min(prev + 1, progress)); // Увеличиваем процент
-        }
-    }, 50); // Интервал обновления процентов, чем меньше, тем плавнее
+    const finalProgress = (correctAnswersRef.current / quiz?.questions.length) * 100; // Прогресс на основе правильных ответов
 
-    // Очистка интервала, когда анимация завершена
-    return () => clearInterval(interval);
-}, [progress, percentage]);
+    useEffect(() => {
+        if (quizCompleted) {
+            const totalDuration = 10000; // 10 секунд
+            const steps = 100; // Количество шагов (с 0 до 100%)
+            const stepDuration = totalDuration / steps; // Время на каждый шаг
+    
+            const interval = setInterval(() => {
+                if (percentage < finalProgress) {
+                    setPercentage((prev) => Math.min(prev + 1, finalProgress)); // Увеличиваем процент
+                }
+            }, stepDuration); // Обновляем процент с интервалом, равным stepDuration
+    
+            // Очищаем интервал, когда анимация завершена
+            return () => clearInterval(interval);
+        }
+    }, [quizCompleted, finalProgress, percentage]);
 
 
     if (loading) return <p>Loading...</p>;
@@ -195,7 +202,7 @@ useEffect(() => {
                                         }}
                                     />
                                 </svg>
-                                <div className="percentage" style={{ opacity: percentage === progress ? 1 : 0 }}>
+                                <div className="percentage" style={{ opacity: percentage === finalProgress ? 1 : 0 }}>
                                     {percentage}%
                                 </div>
                             </div>
