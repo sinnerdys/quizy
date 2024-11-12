@@ -52,17 +52,16 @@ function QuizPage({ userId, onComplete }) {
     // Уменьшение времени каждый тик
     useEffect(() => {
         if (currentTime > 0) {
-            const id = setInterval(() => setCurrentTime((prevTime) => prevTime - 1), 1000);
-            setIntervalId(id);
-        } else if (currentTime === 0 && intervalId) {
-            clearInterval(intervalId);
+            const timer = setInterval(() => {
+                setCurrentTime((prevTime) => prevTime - 1);
+            }, 1000);
+
+            return () => clearInterval(timer); // Очищаем интервал при размонтировании компонента
+        } else {
             setQuizCompleted(true); // Завершаем квиз, когда таймер достигает 0
             onComplete(); // Дополнительно вызываем onComplete
         }
-
-        // Очистка интервала при размонтировании компонента
-        return () => clearInterval(intervalId);
-    }, [currentTime, intervalId, onComplete]);
+    }, [currentTime, onComplete]); // Перезапускаем useEffect каждый раз, когда currentTime обновляется
 
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
