@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './QuizPage.css';
 import logo from '../assets/logo.png'; 
 import token from '../assets/TokenImage.png';
