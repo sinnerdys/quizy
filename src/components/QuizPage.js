@@ -6,6 +6,7 @@ import token from '../assets/TokenImage.png';
 
 function QuizPage({ userId, onComplete }) {
     const { quizId } = useParams();
+    const navigate = useNavigate(); // Добавляем навигацию для перехода на другой экран
     const [quiz, setQuiz] = useState(null);
     const [loading, setLoading] = useState(true);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -100,7 +101,41 @@ function QuizPage({ userId, onComplete }) {
         console.log('Selected option:', selectedOption);
     }, [selectedOption]);
 
-    
+    // Функция для начисления награды и перехода на другой экран
+    const handleCompleteQuiz = async () => {
+        try {
+            const totalReward = correctAnswersRef.current * (quiz.reward / quiz.questions.length); // Вычисляем награду
+
+            // Отправляем запрос на сервер для обновления баланса
+            const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeQuiz', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId,
+                    quizId,
+                    correctAnswersCount: correctAnswersRef.current,
+                    totalReward,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                console.log('Quiz completed successfully!');
+                console.log('New balance:', data.newBalance);
+            } else {
+                console.error('Error completing quiz:', data.error);
+            }
+        } catch (error) {
+            console.error('Error sending request to complete quiz:', error);
+        }
+
+        // Переход на страницу Quizes.js
+        navigate('/quizes');
+    };
+
     // Анимация прогресса (процент и круг) — теперь хук всегда вызывается
     const progress = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100;
 
@@ -118,11 +153,6 @@ function QuizPage({ userId, onComplete }) {
         // Очищаем интервал, когда анимация завершена
         return () => clearInterval(interval);
     }, [progress, percentage]);
-
-
-    const handleCompleteQuiz = () => {
-        onComplete();
-    };
 
     if (loading) return <p>Loading...</p>;
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
