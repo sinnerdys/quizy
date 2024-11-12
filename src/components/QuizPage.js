@@ -147,43 +147,42 @@ function QuizPage({ userId, onComplete }) {
     // Длина окружности
     const circumference = 2 * Math.PI * radius;
 
-    // Стартовая установка для анимации
-    useEffect(() => {
-        if (quizCompleted) {
-            setPercentage(0); // Начинаем с 0% при завершении квиза
-            setCircleProgress(circumference); // Начинаем с полной окружности (пустой круг)
-            setTimeout(() => {
-                setCircleProgress(0); // Скрываем прогресс круга изначально
-            }, 0); // Скрываем моментально
+   // Стартовая установка для анимации
+   useEffect(() => {
+    if (quizCompleted) {
+        // Начинаем с 0% при завершении квиза
+        setPercentage(0); 
+        setCircleProgress(circumference); // Скрываем прогресс круга (начиная с полной окружности)
 
-            // Добавляем задержку перед началом анимации (2 секунды)
-            const timeout = setTimeout(() => {
-                const totalDuration = 4000; // Время анимации (например, 4 секунды)
-                const steps = 100; // Количество шагов (с 0 до 100%)
-                const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
+        // Добавляем задержку перед началом анимации (2 секунды)
+        const timeout = setTimeout(() => {
+            const totalDuration = 4000; // Время анимации (например, 4 секунды)
+            const steps = 100; // Количество шагов (с 0 до 100%)
+            const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
 
-                // Для анимации прогресса
-                const interval = setInterval(() => {
-                    setPercentage((prev) => {
-                        const newPercentage = Math.min(prev + 1, finalProgress); // Увеличиваем процент плавно
-                        if (newPercentage === finalProgress) clearInterval(interval); // Останавливаем интервал
+            // Для анимации прогресса
+            const interval = setInterval(() => {
+                setPercentage((prev) => {
+                    const newPercentage = Math.min(prev + 1, finalProgress); // Увеличиваем процент плавно
+                    if (newPercentage === finalProgress) clearInterval(interval); // Останавливаем интервал
 
-                        // Вычисляем новый offset для круга
-                        const progressDashoffset = circumference - (newPercentage / 100) * circumference;
-                        setCircleProgress(progressDashoffset); // Обновляем прогресс круга
+                    // Вычисляем новый offset для круга
+                    const progressDashoffset = circumference - (newPercentage / 100) * circumference;
+                    setCircleProgress(progressDashoffset); // Обновляем прогресс круга
 
-                        return newPercentage;
-                    });
-                }, stepDuration); // Интервал обновления процентов
+                    return newPercentage;
+                });
+            }, stepDuration); // Интервал обновления процентов
 
-                // Очистка интервала, когда анимация завершена
-                return () => clearInterval(interval);
-            }, 1000); // Задержка 2 секунды перед началом анимации
+            // Очистка интервала, когда анимация завершена
+            return () => clearInterval(interval);
+        }, 1000); // Задержка 2 секунды перед началом анимации
 
-            // Очистка таймера
-            return () => clearTimeout(timeout);
-        }
-    }, [quizCompleted, finalProgress, circumference]); // Запускать хук при завершении квиза
+        // Очистка таймера
+        return () => clearTimeout(timeout);
+    }
+}, [quizCompleted, finalProgress, circumference]); // Запускать хук при завершении квиза
+
 
         // Задержка на 5 секунд перед тем, как блок с наградой станет видимым
         useEffect(() => {
