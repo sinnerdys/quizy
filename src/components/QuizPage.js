@@ -142,22 +142,25 @@ function QuizPage({ userId, onComplete }) {
 
     useEffect(() => {
         if (quizCompleted) {
-            setPercentage(0); // Начинаем с 0%
+            // Начинаем с 0% при завершении квиза
+            setPercentage(0);
     
-            const totalDuration = 10000; // 10 секунд
+            const totalDuration = 10000; // 10 секунд для анимации
             const steps = 100; // Количество шагов (с 0 до 100%)
             const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
     
             const interval = setInterval(() => {
-                if (percentage < finalProgress) {
-                    setPercentage((prev) => Math.min(prev + 1, finalProgress)); // Увеличиваем процент
-                }
-            }, stepDuration); // Обновляем процент с интервалом, равным stepDuration
+                setPercentage(prev => {
+                    const newPercentage = Math.min(prev + 1, finalProgress); // Увеличиваем процент плавно
+                    if (newPercentage === finalProgress) clearInterval(interval); // Останавливаем интервал
+                    return newPercentage;
+                });
+            }, stepDuration); // Интервал обновления процентов
     
             // Очистка интервала, когда анимация завершена
             return () => clearInterval(interval);
         }
-    }, [quizCompleted, finalProgress]);  // Перезапускать хук при завершении квиза
+    }, [quizCompleted, finalProgress]);  // Запускать хук при завершении квиза
 
 
     if (loading) return <p>Loading...</p>;
@@ -204,7 +207,7 @@ function QuizPage({ userId, onComplete }) {
                                         }}
                                     />
                                 </svg>
-                                <div className="percentage" style={{ opacity: percentage === finalProgress ? 1 : 0 }}>
+                                <div className="percentage" style={{ opacity: percentage === finalProgress ? 1 : 1 }}>
                                     {percentage}%
                                 </div>
                             </div>
