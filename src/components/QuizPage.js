@@ -23,8 +23,7 @@ function QuizPage({ userId, onComplete }) {
     const correctAnswersRef = useRef(0);  // Ссылка для отслеживания количества правильных ответов
     const [reward, setReward] = useState(0);
   
-
-    
+    // Загружаем данные квиза с сервера
     const fetchQuizData = async () => {
         try {
             const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
@@ -140,29 +139,27 @@ function QuizPage({ userId, onComplete }) {
         navigate('/quizes');
     };
 
-// Для прогресса по вопросам, как было ранее
-const progressByQuestions = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100; // Прогресс по вопросам
+    // Для прогресса по вопросам, как было ранее
+    const progressByQuestions = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100; // Прогресс по вопросам
 
-// Для прогресса по правильным ответам (круговой прогресс-бар)
-const progressByCorrectAnswers = (correctAnswersRef.current / quiz.questions.length) * 100; // Прогресс по правильным ответам
+    // Для прогресса по правильным ответам (круговой прогресс-бар)
+    const progressByCorrectAnswers = (correctAnswersRef.current / quiz.questions.length) * 100; // Прогресс по правильным ответам
 
-useEffect(() => {
-    // Обновляем прогресс в процентах
-    setPercentage(progressByCorrectAnswers); // Круговой прогресс будет зависеть от правильных ответов
-    const circleLength = 2 * Math.PI * 50; // Рассчитываем длину круга
-    setCircleProgress((progressByCorrectAnswers / 100) * circleLength); // Рассчитываем прогресс круга
+    useEffect(() => {
+        // Обновляем прогресс в процентах
+        setPercentage(progressByCorrectAnswers); // Круговой прогресс будет зависеть от правильных ответов
+        const circleLength = 2 * Math.PI * 50; // Рассчитываем длину круга
+        setCircleProgress((progressByCorrectAnswers / 100) * circleLength); // Рассчитываем прогресс круга
 
-    const interval = setInterval(() => {
-        if (percentage < progressByCorrectAnswers) {
-            setPercentage((prev) => Math.min(prev + 1, progressByCorrectAnswers)); // Увеличиваем процент в круге
-        }
-    }, 50); // Интервал обновления процентов
+        const interval = setInterval(() => {
+            if (percentage < progressByCorrectAnswers) {
+                setPercentage((prev) => Math.min(prev + 1, progressByCorrectAnswers)); // Увеличиваем процент в круге
+            }
+        }, 50); // Интервал обновления процентов
 
-    // Очищаем интервал, когда анимация завершена
-    return () => clearInterval(interval);
-}, [percentage, correctAnswersRef.current]); // Обновляем только при изменении правильных ответов
-
-
+        // Очищаем интервал, когда анимация завершена
+        return () => clearInterval(interval);
+    }, [percentage, correctAnswersRef.current]); // Обновляем только при изменении правильных ответов
 
     if (loading) return <p>Loading...</p>;
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
@@ -192,25 +189,25 @@ useEffect(() => {
               
                         {/* Круговой прогресс-бар */}
                         <div className="progress-circle">
-                        <div className="circle">
-        <svg className="svg-circle" width="240" height="240">
-            <circle cx="120" cy="120" r="110" stroke="#0E2258" strokeWidth="15" />
-            <circle
-                cx="120"
-                cy="120"
-                r="110"
-                stroke="#34519C"
-                strokeWidth="15"
-                strokeDasharray={circleProgress}
-                strokeDashoffset={circleProgress}
-                style={{
-                    transition: 'stroke-dashoffset 5s ease-out', // Плавное изменение круга
-                }}
-            />
-        </svg>
-        <div className="percentage" style={{ opacity: percentage === progressByCorrectAnswers ? 1 : 0 }}>
-            {percentage}%
-        </div>
+                            <div className="circle">
+                                <svg className="svg-circle" width="240" height="240">
+                                    <circle cx="120" cy="120" r="110" stroke="#0E2258" strokeWidth="15" />
+                                    <circle
+                                        cx="120"
+                                        cy="120"
+                                        r="110"
+                                        stroke="#34519C"
+                                        strokeWidth="15"
+                                        strokeDasharray={circleProgress}
+                                        strokeDashoffset={circleProgress}
+                                        style={{
+                                            transition: 'stroke-dashoffset 5s ease-out', // Плавное изменение круга
+                                        }}
+                                    />
+                                </svg>
+                                <div className="percentage" style={{ opacity: percentage === progressByCorrectAnswers ? 1 : 0 }}>
+                                    {percentage}%
+                                </div>
                             </div>
                         </div>
               
@@ -228,7 +225,7 @@ useEffect(() => {
                 <>
                     {/* Прогресс-бар по вопросам */}
                     <div className="progress-bar">
-                    <div className="progress-fill" style={{ width: `${progressByQuestions}%` }}></div>
+                        <div className="progress-fill" style={{ width: `${progressByQuestions}%` }}></div>
                     </div>
 
                     <div className="quiz-header">
