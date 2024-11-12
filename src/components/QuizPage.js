@@ -147,41 +147,41 @@ function QuizPage({ userId, onComplete }) {
     // Длина окружности
     const circumference = 2 * Math.PI * radius;
 
-   // Стартовая установка для анимации
-   useEffect(() => {
-    if (quizCompleted) {
-        // Начинаем с 0% при завершении квиза
-        setPercentage(0); 
-        setCircleProgress(circumference); // Скрываем прогресс круга (начиная с полной окружности)
+    useEffect(() => {
+        if (quizCompleted) {
+            // Скрываем прогресс и начинаем с 0%
+            setPercentage(0); 
+            setCircleProgress(circumference); // Это скрывает прогресс круга (начинаем с полного скрытия)
 
-        // Добавляем задержку перед началом анимации (2 секунды)
-        const timeout = setTimeout(() => {
-            const totalDuration = 4000; // Время анимации (например, 4 секунды)
-            const steps = 100; // Количество шагов (с 0 до 100%)
-            const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
+            // Добавляем задержку перед началом анимации (например, 2 секунды)
+            const timeout = setTimeout(() => {
+                // Теперь начинаем анимацию через 2 секунды
+                const totalDuration = 4000; // Время анимации (например, 4 секунды)
+                const steps = 100; // Количество шагов (с 0 до 100%)
+                const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
 
-            // Для анимации прогресса
-            const interval = setInterval(() => {
-                setPercentage((prev) => {
-                    const newPercentage = Math.min(prev + 1, finalProgress); // Увеличиваем процент плавно
-                    if (newPercentage === finalProgress) clearInterval(interval); // Останавливаем интервал
+                // Для анимации прогресса
+                const interval = setInterval(() => {
+                    setPercentage((prev) => {
+                        const newPercentage = Math.min(prev + 1, finalProgress); // Увеличиваем процент плавно
+                        if (newPercentage === finalProgress) clearInterval(interval); // Останавливаем интервал
 
-                    // Вычисляем новый offset для круга
-                    const progressDashoffset = circumference - (newPercentage / 100) * circumference;
-                    setCircleProgress(progressDashoffset); // Обновляем прогресс круга
+                        // Вычисляем новый offset для круга
+                        const progressDashoffset = circumference - (newPercentage / 100) * circumference;
+                        setCircleProgress(progressDashoffset); // Обновляем прогресс круга
 
-                    return newPercentage;
-                });
-            }, stepDuration); // Интервал обновления процентов
+                        return newPercentage;
+                    });
+                }, stepDuration); // Интервал обновления процентов
 
-            // Очистка интервала, когда анимация завершена
-            return () => clearInterval(interval);
-        }, 1000); // Задержка 2 секунды перед началом анимации
+                // Очистка интервала, когда анимация завершена
+                return () => clearInterval(interval);
+            }, 2000); // Задержка 2 секунды перед началом анимации
 
-        // Очистка таймера
-        return () => clearTimeout(timeout);
-    }
-}, [quizCompleted, finalProgress, circumference]); // Запускать хук при завершении квиза
+            // Очистка таймера
+            return () => clearTimeout(timeout);
+        }
+    }, [quizCompleted, finalProgress, circumference]); // Запускать хук при завершении квиза
 
 
         // Задержка на 5 секунд перед тем, как блок с наградой станет видимым
@@ -241,6 +241,7 @@ function QuizPage({ userId, onComplete }) {
                 strokeDasharray={circumference}
                 strokeDashoffset={circleProgress}  // Используем обновленный progress
                 style={{
+                    opacity: circleProgress === circumference ? 0 : 1,  // Скрываем до начала анимации
                     transition: 'stroke-dashoffset 0.2s ease-out', 
                     transform: 'rotate(-90deg)',  // Поворот круга, чтобы начальная точка была сверху // Плавное изменение круга
                     transformOrigin: '50% 50%' // Обеспечивает вращение вокруг центра круга
