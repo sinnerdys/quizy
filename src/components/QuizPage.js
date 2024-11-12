@@ -49,13 +49,14 @@ function QuizPage({ userId, onComplete }) {
         fetchQuizData();
     }, [quizId, userId]);
 
+    // Уменьшение времени каждый тик
     useEffect(() => {
         if (currentTime > 0) {
             const id = setInterval(() => setCurrentTime((prevTime) => prevTime - 1), 1000);
             setIntervalId(id);
         } else if (currentTime === 0 && intervalId) {
             clearInterval(intervalId);
-            setQuizCompleted(true); // Завершаем квиз, когда таймер достиг 0
+            setQuizCompleted(true); // Завершаем квиз, когда таймер достигает 0
             onComplete(); // Дополнительно вызываем onComplete
         }
 
