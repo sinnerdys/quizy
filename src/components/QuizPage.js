@@ -14,6 +14,7 @@ function QuizPage({ userId, onComplete }) {
     const [timer, setTimer] = useState(0);
     const [intervalId, setIntervalId] = useState(null);
     const [quizCompleted, setQuizCompleted] = useState(false);
+    const [isRewardVisible, setIsRewardVisible] = useState(false); // Состояние для видимости блока с наградой
 
     // Добавим состояния для процентов и прогресса круга
     const [percentage, setPercentage] = useState(0);
