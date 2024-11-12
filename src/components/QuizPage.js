@@ -6,7 +6,7 @@ import token from '../assets/TokenImage.png';
 
 function QuizPage({ userId, onComplete }) {
     const { quizId } = useParams();
-    const navigate = useNavigate(); // Добавляем навигацию для перехода на другой экран
+    const navigate = useNavigate(); 
     const [quiz, setQuiz] = useState(null);
     const [loading, setLoading] = useState(true);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -15,12 +15,12 @@ function QuizPage({ userId, onComplete }) {
     const [intervalId, setIntervalId] = useState(null);
     const [quizCompleted, setQuizCompleted] = useState(false);
 
-    // Добавим состояния для процентов и прогресса круга
-    const [percentage, setPercentage] = useState(0);
-    const [circleProgress, setCircleProgress] = useState(0);
+    // Состояния для прогресса и круга
+    const [percentage, setPercentage] = useState(0);  // Процент правильных ответов
+    const [circleProgress, setCircleProgress] = useState(0);  // Прогресс для круга
 
     // Используем useRef для отслеживания правильных ответов
-    const correctAnswersRef = useRef(0);  // Ссылка для отслеживания количества правильных ответов
+    const correctAnswersRef = useRef(0);  
     const [reward, setReward] = useState(0);
   
 
@@ -59,14 +59,14 @@ function QuizPage({ userId, onComplete }) {
     }, [timer]);
 
     const handleOptionSelect = (selectedOption) => {
-        console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
-        setSelectedOption(selectedOption); // Просто устанавливаем выбранный вариант
+        console.log('Selected option:', selectedOption);  
+        setSelectedOption(selectedOption); 
     };
     
     const handleNextQuestion = () => {
-        console.log('Selected option before next question:', selectedOption);  // Логируем выбранный вариант перед переходом к следующему вопросу
+        console.log('Selected option before next question:', selectedOption);  
         if (selectedOption === null) {
-            return;  // Останавливаем выполнение, если нет выбора
+            return;  
         }
     
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
@@ -75,37 +75,29 @@ function QuizPage({ userId, onComplete }) {
         // Проверяем правильность ответа при переходе к следующему вопросу
         if (String(correctOption) === String(selectedOption)) {
             correctAnswersRef.current += 1; // Увеличиваем количество правильных ответов через ref
-            console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current); // Логируем правильные ответы
+            console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current); 
         }
-    
+
+        // Вычисляем процент правильных ответов
+        const progressByCorrectAnswers = (correctAnswersRef.current / quiz.questions.length) * 100;
+        setPercentage(progressByCorrectAnswers); // Обновляем процент правильных ответов
+
         // Переход к следующему вопросу
         if (currentQuestionIndex < quiz.questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setSelectedOption(null);  // Сброс выбранной опции после перехода
+            setSelectedOption(null);  
         } else {
-            // Когда все вопросы пройдены, вычисляем награду
             setQuizCompleted(true);
             const rewardPerQuestion = quiz.reward / quiz.questions.length;
-            console.log('Reward per question:', rewardPerQuestion);
-            console.log('Correct answers count:', correctAnswersRef.current);  // Логируем количество правильных ответов из ref
-            setReward(correctAnswersRef.current * rewardPerQuestion);  // Используем значение из ref
+            setReward(correctAnswersRef.current * rewardPerQuestion);
         }
     };
-
-    useEffect(() => {
-        console.log('Current question index:', currentQuestionIndex);
-    }, [currentQuestionIndex]);
-    
-    useEffect(() => {
-        console.log('Selected option:', selectedOption);
-    }, [selectedOption]);
 
     // Функция для начисления награды и перехода на другой экран
     const handleCompleteQuiz = async () => {
         try {
-            const totalReward = correctAnswersRef.current * (quiz.reward / quiz.questions.length); // Вычисляем награду
+            const totalReward = correctAnswersRef.current * (quiz.reward / quiz.questions.length); 
 
-            // Отправляем запрос на сервер для обновления баланса
             const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/completeQuiz', {
                 method: 'POST',
                 headers: {
@@ -131,27 +123,24 @@ function QuizPage({ userId, onComplete }) {
             console.error('Error sending request to complete quiz:', error);
         }
 
-        // Переход на страницу Quizes.js
         navigate('/quizes');
     };
 
-    // Анимация прогресса (процент и круг) — теперь хук всегда вызывается
-    const progress = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100;
+    // Для прогресса по вопросам
+    const progressByQuestions = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100;
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            if (percentage < progress) {
-                setPercentage((prev) => Math.min(prev + 1, progress)); // Увеличиваем процент
-            }
-        }, 50); // Интервал обновления процентов
-  
-        // Длина круга (радиус 50px)
         const circleLength = 2 * Math.PI * 50; // Рассчитываем длину круга
-        setCircleProgress((progress / 100) * circleLength); // Рассчитываем прогресс круга
-  
-        // Очищаем интервал, когда анимация завершена
+        setCircleProgress((percentage / 100) * circleLength); // Рассчитываем прогресс круга
+
+        const interval = setInterval(() => {
+            if (percentage < progressByCorrectAnswers) {
+                setPercentage((prev) => Math.min(prev + 1, progressByCorrectAnswers)); 
+            }
+        }, 50);
+
         return () => clearInterval(interval);
-    }, [progress, percentage]);
+    }, [percentage, correctAnswersRef.current]); // Обновляем только при изменении правильных ответов
 
     if (loading) return <p>Loading...</p>;
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
@@ -197,7 +186,7 @@ function QuizPage({ userId, onComplete }) {
                                         }}
                                     />
                                 </svg>
-                                <div className="percentage" style={{ opacity: percentage === progress ? 1 : 0 }}>
+                                <div className="percentage" style={{ opacity: percentage === progressByCorrectAnswers ? 1 : 0 }}>
                                     {percentage}%
                                 </div>
                             </div>
@@ -217,7 +206,7 @@ function QuizPage({ userId, onComplete }) {
                 <>
                     {/* Прогресс-бар по вопросам */}
                     <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${progress}%` }}></div>
+                        <div className="progress-fill" style={{ width: `${progressByQuestions}%` }}></div>
                     </div>
 
                     <div className="quiz-header">
@@ -245,14 +234,14 @@ function QuizPage({ userId, onComplete }) {
                                     <div
                                     key={key}
                                     className={`option ${selectedOption === key ? 'selected' : ''}`}
-                                    onClick={() => handleOptionSelect(key)}  // Используем только onClick для изменения selectedOption
+                                    onClick={() => handleOptionSelect(key)}  
                                 >
                                     <input
                                         type="radio"
                                         name="option"
-                                        checked={selectedOption === key} // Обновляем состояние через selectedOption
+                                        checked={selectedOption === key} 
                                         className="radio-input"
-                                        readOnly // Только для отображения, не требуется изменять здесь
+                                        readOnly 
                                     />
                                     <span className="option-text">{option}</span>
                                 </div>
