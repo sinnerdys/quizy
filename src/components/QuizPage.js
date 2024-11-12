@@ -142,9 +142,11 @@ function QuizPage({ userId, onComplete }) {
 
     useEffect(() => {
         if (quizCompleted) {
+            setPercentage(0); // Начинаем с 0%
+    
             const totalDuration = 10000; // 10 секунд
             const steps = 100; // Количество шагов (с 0 до 100%)
-            const stepDuration = totalDuration / steps; // Время на каждый шаг
+            const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
     
             const interval = setInterval(() => {
                 if (percentage < finalProgress) {
@@ -152,10 +154,10 @@ function QuizPage({ userId, onComplete }) {
                 }
             }, stepDuration); // Обновляем процент с интервалом, равным stepDuration
     
-            // Очищаем интервал, когда анимация завершена
+            // Очистка интервала, когда анимация завершена
             return () => clearInterval(interval);
         }
-    }, [quizCompleted, finalProgress, percentage]);
+    }, [quizCompleted, finalProgress]);  // Перезапускать хук при завершении квиза
 
 
     if (loading) return <p>Loading...</p>;
