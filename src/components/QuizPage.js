@@ -23,7 +23,7 @@ function QuizPage({ userId, onComplete }) {
     const correctAnswersRef = useRef(0);  // Ссылка для отслеживания количества правильных ответов
     const [reward, setReward] = useState(0);
   
-    // Загружаем данные квиза с сервера
+
     const fetchQuizData = async () => {
         try {
             const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
@@ -77,10 +77,6 @@ function QuizPage({ userId, onComplete }) {
             correctAnswersRef.current += 1; // Увеличиваем количество правильных ответов через ref
             console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current); // Логируем правильные ответы
         }
-    
-        // Обновляем процент правильных ответов для кругового прогресс-бара
-        const progressByCorrectAnswers = (correctAnswersRef.current / quiz.questions.length) * 100;
-        setPercentage(progressByCorrectAnswers); // Обновляем процент для правильных ответов
     
         // Переход к следующему вопросу
         if (currentQuestionIndex < quiz.questions.length - 1) {
@@ -139,27 +135,23 @@ function QuizPage({ userId, onComplete }) {
         navigate('/quizes');
     };
 
-    // Для прогресса по вопросам, как было ранее
-    const progressByQuestions = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100; // Прогресс по вопросам
-
-    // Для прогресса по правильным ответам (круговой прогресс-бар)
-    const progressByCorrectAnswers = (correctAnswersRef.current / quiz.questions.length) * 100; // Прогресс по правильным ответам
+    // Анимация прогресса (процент и круг) — теперь хук всегда вызывается
+    const progress = ((currentQuestionIndex + 1) / quiz?.questions.length) * 100;
 
     useEffect(() => {
-        // Обновляем прогресс в процентах
-        setPercentage(progressByCorrectAnswers); // Круговой прогресс будет зависеть от правильных ответов
-        const circleLength = 2 * Math.PI * 50; // Рассчитываем длину круга
-        setCircleProgress((progressByCorrectAnswers / 100) * circleLength); // Рассчитываем прогресс круга
-
         const interval = setInterval(() => {
-            if (percentage < progressByCorrectAnswers) {
-                setPercentage((prev) => Math.min(prev + 1, progressByCorrectAnswers)); // Увеличиваем процент в круге
+            if (percentage < progress) {
+                setPercentage((prev) => Math.min(prev + 1, progress)); // Увеличиваем процент
             }
         }, 50); // Интервал обновления процентов
-
+  
+        // Длина круга (радиус 50px)
+        const circleLength = 2 * Math.PI * 50; // Рассчитываем длину круга
+        setCircleProgress((progress / 100) * circleLength); // Рассчитываем прогресс круга
+  
         // Очищаем интервал, когда анимация завершена
         return () => clearInterval(interval);
-    }, [percentage, correctAnswersRef.current]); // Обновляем только при изменении правильных ответов
+    }, [progress, percentage]);
 
     if (loading) return <p>Loading...</p>;
     if (!quiz || !quiz.questions || quiz.questions.length === 0) {
@@ -205,7 +197,7 @@ function QuizPage({ userId, onComplete }) {
                                         }}
                                     />
                                 </svg>
-                                <div className="percentage" style={{ opacity: percentage === progressByCorrectAnswers ? 1 : 0 }}>
+                                <div className="percentage" style={{ opacity: percentage === progress ? 1 : 0 }}>
                                     {percentage}%
                                 </div>
                             </div>
@@ -225,7 +217,7 @@ function QuizPage({ userId, onComplete }) {
                 <>
                     {/* Прогресс-бар по вопросам */}
                     <div className="progress-bar">
-                        <div className="progress-fill" style={{ width: `${progressByQuestions}%` }}></div>
+                        <div className="progress-fill" style={{ width: `${progress}%` }}></div>
                     </div>
 
                     <div className="quiz-header">
