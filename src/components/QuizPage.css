@@ -259,8 +259,6 @@
     font-weight: bold;
     text-align: center;
     color: white;
-    opacity: 0; /* Скрыто изначально */
-    transition: opacity 1s ease-in; /* Плавный переход для появления */
   }
 
   .congratulations {
