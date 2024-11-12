@@ -145,35 +145,33 @@ function QuizPage({ userId, onComplete }) {
 
     const finalProgress = (correctAnswersRef.current / quiz?.questions.length) * 100; // Прогресс на основе правильных ответов
 
+    // Стартовая установка для анимации
     useEffect(() => {
         if (quizCompleted) {
-            // Начинаем с 0% при завершении квиза
-            setPercentage(0);
-    
+            setPercentage(0); // Начинаем с 0% при завершении квиза
+
             const totalDuration = 4000; // Время анимации (например, 4 секунды)
             const steps = 100; // Количество шагов (с 0 до 100%)
             const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
-    
-            const circumference = 2 * Math.PI * 110;  // Длина окружности круга
-    
+
             // Для анимации прогресса
             const interval = setInterval(() => {
-                setPercentage(prev => {
+                setPercentage((prev) => {
                     const newPercentage = Math.min(prev + 1, finalProgress); // Увеличиваем процент плавно
                     if (newPercentage === finalProgress) clearInterval(interval); // Останавливаем интервал
-    
+
                     // Вычисляем новый offset для круга
                     const progressDashoffset = circumference - (newPercentage / 100) * circumference;
                     setCircleProgress(progressDashoffset); // Обновляем прогресс круга
-    
+
                     return newPercentage;
                 });
             }, stepDuration); // Интервал обновления процентов
-    
+
             // Очистка интервала, когда анимация завершена
             return () => clearInterval(interval);
         }
-    }, [quizCompleted, finalProgress]); // Запускать хук при завершении квиза
+    }, [quizCompleted, finalProgress, circumference]); // Запускать хук при завершении квиза
 
     
 
