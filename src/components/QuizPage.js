@@ -11,7 +11,7 @@ function QuizPage({ userId, onComplete }) {
     const [loading, setLoading] = useState(true);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState(null);
-    const [currentTime, setCurrentTime] = useState(0); // Время для таймера
+    const [timer, setTimer] = useState(0); // Время для таймера
     const [intervalId, setIntervalId] = useState(null);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [isRewardVisible, setIsRewardVisible] = useState(false); // Состояние для видимости блока с наградой
@@ -34,7 +34,7 @@ function QuizPage({ userId, onComplete }) {
 
             if (data.quizzes && data.quizzes[0].questions) {
                 setQuiz({ ...data.quizzes[0], questions: data.quizzes[0].questions });
-                setCurrentTime(data.quizzes[0].timerInSeconds); // Задаем начальное время из данных
+                setTimer(data.quizzes[0].timerInSeconds); // Задаем начальное время из данных
             } else {
                 console.error('Quiz has no questions.');
             }
@@ -49,19 +49,19 @@ function QuizPage({ userId, onComplete }) {
         fetchQuizData();
     }, [quizId, userId]);
 
-    // Уменьшение времени каждый тик
     useEffect(() => {
-        if (currentTime > 0) {
-            const timer = setInterval(() => {
-                setCurrentTime((prevTime) => prevTime - 1);
-            }, 1000);
-
-            return () => clearInterval(timer); // Очищаем интервал при размонтировании компонента
-        } else {
+        if (timer > 0) {
+            const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
+            setIntervalId(id);
+        } else if (timer === 0 && intervalId) {
+            clearInterval(intervalId);
             setQuizCompleted(true); // Завершаем квиз, когда таймер достигает 0
             onComplete(); // Дополнительно вызываем onComplete
         }
-    }, [currentTime, onComplete]); // Перезапускаем useEffect каждый раз, когда currentTime обновляется
+
+        // Очистка интервала при размонтировании компонента
+        return () => clearInterval(intervalId);
+    }, [timer, intervalId, onComplete]);
 
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
@@ -207,8 +207,8 @@ function QuizPage({ userId, onComplete }) {
 
     const currentQuestion = quiz.questions[currentQuestionIndex];
 
-    const minutes = String(Math.floor(currentTime / 60)).padStart(2, '0');
-    const seconds = String(currentTime % 60).padStart(2, '0');
+    const minutes = String(Math.floor(timer / 60)).padStart(2, '0');
+    const seconds = String(timer % 60).padStart(2, '0');
       
     return (
         <div className="quiz-page">
