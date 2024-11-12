@@ -146,14 +146,11 @@ function QuizPage({ userId, onComplete }) {
     // Длина окружности
     const circumference = 2 * Math.PI * radius;
 
-    // Смещение для начала с верхней точки (вверх на 25%)
-    const circleProgressStartOffset = circumference * 0.25;
-
     // Стартовая установка для анимации
     useEffect(() => {
         if (quizCompleted) {
             setPercentage(0); // Начинаем с 0% при завершении квиза
-            setCircleProgress(circleProgressStartOffset); // Начинаем с верхней точки круга
+           
 
             const totalDuration = 4000; // Время анимации (например, 4 секунды)
             const steps = 100; // Количество шагов (с 0 до 100%)
