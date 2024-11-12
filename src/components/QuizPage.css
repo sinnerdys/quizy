@@ -218,11 +218,20 @@
     height: 100%;
   }
   
-  circle {
-    fill: none;
-    stroke: #0E2258; /* Цвет фона круга */
-    stroke-width: 15;
-  }
+/* Стиль для фонового круга (не меняется при анимации) */
+.circle-background {
+  fill: none;
+  stroke: #0E2258; /* Цвет фона круга */
+  stroke-width: 15;
+}
+
+/* Стиль для прогрессирующего круга (меняется при анимации) */
+.circle-progress {
+  fill: none;
+  stroke: #34519C; /* Цвет прогресса */
+  stroke-width: 15;
+  transition: stroke-dashoffset 0.2s ease-out; /* Плавная анимация */
+}
   
   /* Обновленная анимация круга */
   .svg-circle {

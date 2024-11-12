@@ -150,7 +150,7 @@ function QuizPage({ userId, onComplete }) {
         if (quizCompleted) {
             setPercentage(0); // Начинаем с 0% при завершении квиза
 
-            const totalDuration = 4000; // Время анимации (например, 4 секунды)
+            const totalDuration = 3000; // Время анимации (например, 4 секунды)
             const steps = 100; // Количество шагов (с 0 до 100%)
             const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
 
@@ -210,15 +210,13 @@ function QuizPage({ userId, onComplete }) {
                 cx="120"
                 cy="120"
                 r="110"
-                stroke="#0E2258"
-                strokeWidth="15"
+                className="circle-background"  // Применяем класс для фона
             />
             <circle
                 cx="120"
                 cy="120"
                 r="110"
-                stroke="#34519C"
-                strokeWidth="15"
+                className="circle-progress"  // Применяем класс для прогресса
                 strokeDasharray={circumference}
                 strokeDashoffset={circleProgress}  // Используем обновленный progress
                 style={{
