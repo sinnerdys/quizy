@@ -176,7 +176,7 @@ function QuizPage({ userId, onComplete }) {
 
                 // Очистка интервала, когда анимация завершена
                 return () => clearInterval(interval);
-            }, 2000); // Задержка 2 секунды перед началом анимации
+            }, 1000); // Задержка 2 секунды перед началом анимации
 
             // Очистка таймера
             return () => clearTimeout(timeout);
