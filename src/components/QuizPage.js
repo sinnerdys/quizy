@@ -55,13 +55,10 @@ function QuizPage({ userId, onComplete }) {
             setIntervalId(id);
         } else if (timer === 0 && intervalId) {
             clearInterval(intervalId);
-            setQuizCompleted(true); // Завершаем квиз, когда таймер достигает 0
-            onComplete(); // Дополнительно вызываем onComplete
+            onComplete();
         }
-
-        // Очистка интервала при размонтировании компонента
         return () => clearInterval(intervalId);
-    }, [timer, intervalId, onComplete]);
+    }, [timer]);
 
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
