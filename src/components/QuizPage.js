@@ -22,6 +22,11 @@ function QuizPage({ userId, onComplete }) {
     // Используем useRef для отслеживания правильных ответов
     const correctAnswersRef = useRef(0);  // Ссылка для отслеживания количества правильных ответов
     const [reward, setReward] = useState(0);
+
+        // Радиус круга
+        const radius = 110;
+        // Длина окружности
+        const circumference = 2 * Math.PI * radius;
   
 
     const fetchQuizData = async () => {
