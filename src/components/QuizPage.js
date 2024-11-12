@@ -145,14 +145,22 @@ function QuizPage({ userId, onComplete }) {
             // Начинаем с 0% при завершении квиза
             setPercentage(0);
     
-            const totalDuration = 10000; // 10 секунд для анимации
+            const totalDuration = 4000; // Время анимации (например, 4 секунды)
             const steps = 100; // Количество шагов (с 0 до 100%)
             const stepDuration = totalDuration / steps; // Время на каждый шаг (в миллисекундах)
     
+            const circumference = 2 * Math.PI * 110;  // Длина окружности круга
+    
+            // Для анимации прогресса
             const interval = setInterval(() => {
                 setPercentage(prev => {
                     const newPercentage = Math.min(prev + 1, finalProgress); // Увеличиваем процент плавно
                     if (newPercentage === finalProgress) clearInterval(interval); // Останавливаем интервал
+    
+                    // Вычисляем новый offset для круга
+                    const progressDashoffset = circumference - (newPercentage / 100) * circumference;
+                    setCircleProgress(progressDashoffset); // Обновляем прогресс круга
+    
                     return newPercentage;
                 });
             }, stepDuration); // Интервал обновления процентов
@@ -160,7 +168,9 @@ function QuizPage({ userId, onComplete }) {
             // Очистка интервала, когда анимация завершена
             return () => clearInterval(interval);
         }
-    }, [quizCompleted, finalProgress]);  // Запускать хук при завершении квиза
+    }, [quizCompleted, finalProgress]); // Запускать хук при завершении квиза
+
+    
 
 
     if (loading) return <p>Loading...</p>;
@@ -192,21 +202,27 @@ function QuizPage({ userId, onComplete }) {
                         {/* Круговой прогресс-бар */}
                         <div className="progress-circle">
                             <div className="circle">
-                                <svg className="svg-circle" width="240" height="240">
-                                    <circle cx="120" cy="120" r="110" stroke="#0E2258" strokeWidth="15" />
-                                    <circle
-                                        cx="120"
-                                        cy="120"
-                                        r="110"
-                                        stroke="#34519C"
-                                        strokeWidth="15"
-                                        strokeDasharray={circleProgress}
-                                        strokeDashoffset={circleProgress}
-                                        style={{
-                                            transition: 'stroke-dashoffset 5s ease-out', // Плавное изменение круга
-                                        }}
-                                    />
-                                </svg>
+                            <svg className="svg-circle" width="240" height="240">
+            <circle
+                cx="120"
+                cy="120"
+                r="110"
+                stroke="#0E2258"
+                strokeWidth="15"
+            />
+            <circle
+                cx="120"
+                cy="120"
+                r="110"
+                stroke="#34519C"
+                strokeWidth="15"
+                strokeDasharray={circumference}
+                strokeDashoffset={circleProgress}  // Используем обновленный progress
+                style={{
+                    transition: 'stroke-dashoffset 0.2s ease-out', // Плавное изменение круга
+                }}
+            />
+        </svg>
                                 <div className="percentage" style={{ opacity: percentage === finalProgress ? 1 : 1 }}>
                                     {percentage}%
                                 </div>

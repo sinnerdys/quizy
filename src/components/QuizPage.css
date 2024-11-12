@@ -224,14 +224,6 @@
     stroke-width: 15;
   }
   
-  circle:nth-child(2) {
-    fill: none;
-    stroke: #34519C; /* Цвет прогресса */
-    stroke-width: 15;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 5s ease-out; /* Плавная анимация */
-  }
-  
   /* Обновленная анимация круга */
   .svg-circle {
     display: block;
@@ -241,13 +233,6 @@
     transform: translate(0, 0); /* Центрирование круга */
   }
   
-  .circle svg circle:nth-child(2) {
-    fill: none;
-    stroke: #34519C;
-    stroke-width: 15;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 5s ease-out; /* Плавное изменение круга */
-  }
   
   /* Для процентов */
   .percentage {
