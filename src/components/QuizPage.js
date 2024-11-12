@@ -220,7 +220,8 @@ function QuizPage({ userId, onComplete }) {
                 strokeDasharray={circumference}
                 strokeDashoffset={circleProgress}  // Используем обновленный progress
                 style={{
-                    transition: 'stroke-dashoffset 0.2s ease-out', // Плавное изменение круга
+                    transition: 'stroke-dashoffset 0.2s ease-out', 
+                    transform: 'rotate(-90deg)'  // Поворот круга, чтобы начальная точка была сверху // Плавное изменение круга
                 }}
             />
         </svg>
