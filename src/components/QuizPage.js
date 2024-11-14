@@ -51,7 +51,7 @@ function QuizPage({ userId, onComplete }) {
 
     useEffect(() => {
         if (timer > 0) {
-            const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
+            const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 2000);
             setIntervalId(id);
         } else if (timer === 0 && intervalId) {
             clearInterval(intervalId);
