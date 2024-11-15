@@ -70,8 +70,12 @@ function QuizPage({ userId, onComplete }) {
             clearInterval(intervalId);
             setQuizCompleted(true); // Переход на экран завершения
             setIsTimeUp(true); // Устанавливаем состояние, чтобы показать сообщение, что время вышло
+    
+            // Вычисляем награду при завершении по таймеру
+            const rewardPerQuestion = quiz.reward / quiz.questions.length;
+            setReward(correctAnswersRef.current * rewardPerQuestion);
         }
-    }, [timer]);
+    }, [timer, intervalId, quiz]);
 
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
