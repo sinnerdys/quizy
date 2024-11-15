@@ -83,6 +83,12 @@ function Quizes({ userId }) {
     setSelectedQuiz(null);
   };
 
+  // Добавляем функцию для открытия страницы квиза
+  const openQuizPage = (quizId) => {
+    navigate(`/quiz/${quizId}`);
+    setSelectedQuiz(null);
+  };
+
   if (loading) return <p>Loading...</p>;
 
   // Вычисляем прогресс
