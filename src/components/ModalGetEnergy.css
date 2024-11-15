@@ -1,14 +1,15 @@
 .modal-get-energy-overlay {
     position: fixed;
-    bottom: 0;
+    top: 0;
     left: 0;
-    width: 100%;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
     z-index: 1000;
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
 
@@ -27,6 +28,7 @@
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1100;
     transform: translateY(100%);
+    opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
@@ -70,6 +72,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-color: #1B2D4F;
+    color: #ADC3FF;
+    cursor: pointer;
+}
+
+.energy-option:hover {
+    background-color: #284286;
 }
 
 .energy-pack {
@@ -83,13 +92,13 @@
     height: 30px;
 }
 
-.energy-cost {
+.price {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-.confirm-button {
+.confirm-pay-button {
     width: 100%;
     padding: 15px;
     background-color: #007BB5;
@@ -98,8 +107,9 @@
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
+    margin-top: 20px;
 }
- 
-.confirm-button:hover {
+
+.confirm-pay-button:hover {
     background-color: #005f8a;
 }

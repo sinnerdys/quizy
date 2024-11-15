@@ -5,8 +5,8 @@ import LightningIcon from '../assets/lightning.png'; // Импорт изобр�
 
 function ModalGetEnergy({ onClose }) {
   useEffect(() => {
-    const overlay = document.querySelector('.modal-energy-overlay');
-    const modal = document.querySelector('.modal-energy');
+    const overlay = document.querySelector('.modal-get-energy-overlay');
+    const modal = document.querySelector('.modal-get-energy');
 
     if (overlay && modal) {
       setTimeout(() => {
@@ -33,7 +33,7 @@ function ModalGetEnergy({ onClose }) {
   }, [onClose]);
 
   return (
-    <div className="modal-energy-overlay">
+    <div className="modal-get-energy-overlay">
       <div className="modal-get-energy">
         <button className="close-button" onClick={onClose}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icon-tabler-x">
@@ -43,10 +43,10 @@ function ModalGetEnergy({ onClose }) {
           </svg>
         </button>
         <div className="modal-icon-container">
-        <img src={LightningIcon} alt="Energy Icon" className="modal-energy-logo" />
-      </div>
-      <h2 className="modal-title">Get more energy</h2>
-      <p className="modal-subtitle">Next <a href="#">free energy</a> recharge in: 12:00:00</p>
+          <img src={LightningIcon} alt="Energy Icon" className="modal-energy-logo" />
+        </div>
+        <h2 className="modal-title">Get more energy</h2>
+        <p className="modal-subtitle">Next <a href="#">free energy</a> recharge in: 12:00:00</p>
         <div className="energy-options">
           <button className="energy-option">
             <div className="energy-pack">
