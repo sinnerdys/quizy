@@ -26,11 +26,15 @@ function Quizes({ userId }) {
       }
       const data = await response.json();
   
-      console.log('Fetched quizzes:', data.quizzes);  // Добавляем логирование для проверки данных
+      console.log('Fetched quizzes:', data.quizzes);  // Добавляем логирование, чтобы проверить полученные данные
   
       // Фильтруем квизы только те, которые должны отображаться (display === true)
-      const filteredQuizzes = data.quizzes.filter((quiz) => quiz.display);
-      console.log('Filtered quizzes:', filteredQuizzes);  // Проверяем, прошли ли квизы фильтрацию
+      const filteredQuizzes = data.quizzes.filter((quiz) => {
+        console.log(`Quiz display value:`, quiz.display);  // Логируем значение display для каждого квиза
+        return quiz.display;
+      });
+  
+      console.log('Filtered quizzes:', filteredQuizzes);  // Логируем, чтобы проверить, какие квизы прошли фильтрацию
   
       const sortedQuizzes = filteredQuizzes.sort((a, b) => a.completed - b.completed);
       setQuizzes(sortedQuizzes);
