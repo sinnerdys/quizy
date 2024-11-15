@@ -50,18 +50,26 @@ function QuizPage({ userId, onComplete }) {
     }, [quizId, userId]);
 
     useEffect(() => {
+        fetchQuizData();
+    }, [quizId, userId]);
+
+    useEffect(() => {
         if (timer > 0) {
+            // Устанавливаем интервал и сохраняем идентификатор
             const id = setInterval(() => {
                 setTimer((prevTimer) => prevTimer - 1);
             }, 1000);
-    
-            // Очищаем интервал, чтобы предотвратить множественные интервалы
+            setIntervalId(id);
+            
+            // Очищаем интервал при изменении таймера или размонтировании компонента
             return () => clearInterval(id);
-        } else if (timer === 0) {
+        } else if (timer === 0 && intervalId) {
+            // Когда таймер достигает нуля, очищаем интервал и вызываем onComplete
+            clearInterval(intervalId);
             onComplete();
         }
     }, [timer]);
-    
+
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
         setSelectedOption(selectedOption); // Просто устанавливаем выбранный вариант
