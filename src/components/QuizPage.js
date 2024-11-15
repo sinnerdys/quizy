@@ -54,22 +54,14 @@ function QuizPage({ userId, onComplete }) {
             const id = setInterval(() => {
                 setTimer((prevTimer) => prevTimer - 1);
             }, 1000);
-            
-            // Сохраняем идентификатор интервала для последующего очищения
-            setIntervalId(id);
-        } else if (timer === 0 && intervalId) {
-            clearInterval(intervalId);
+    
+            // Очищаем интервал, чтобы предотвратить множественные интервалы
+            return () => clearInterval(id);
+        } else if (timer === 0) {
             onComplete();
         }
-    
-        // Очищаем интервал, если компонент размонтируется или таймер изменится
-        return () => {
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
-        };
     }, [timer]);
-
+    
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
         setSelectedOption(selectedOption); // Просто устанавливаем выбранный вариант
