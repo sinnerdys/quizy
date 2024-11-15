@@ -29,6 +29,7 @@ function ModalQuiz({ quiz, onClose, onStart, userId, setEnergy }) { // Доба�
       }
     } catch (error) {
       console.error('Error starting quiz:', error);
+      alert('Failed to start quiz. Please try again.');
     }
   };
 

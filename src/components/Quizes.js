@@ -83,11 +83,6 @@ function Quizes({ userId }) {
     setSelectedQuiz(null);
   };
 
-  const openQuizPage = (quizId) => {
-    navigate(`/quiz/${quizId}`);
-    setSelectedQuiz(null);
-  };
-
   if (loading) return <p>Loading...</p>;
 
   // Вычисляем прогресс
@@ -144,7 +139,7 @@ function Quizes({ userId }) {
           onClose={closeQuizModal}
           onStart={() => openQuizPage(selectedQuiz.id)}
           userId={userId}
-          setEnergy={setEnergy} // Передаем функцию для обновления энергии в компонент ModalQuiz
+          setEnergy={setEnergy}
         />
       )}
     </div>
