@@ -43,7 +43,7 @@ function ModalGetEnergy({ onClose }) {
           </svg>
         </button>
         <div className="modal-icon-container">
-        <img src={EnergyIcon} alt="Energy Icon" className="modal-energy-logo" />
+        <img src={LightningIcon} alt="Energy Icon" className="modal-energy-logo" />
       </div>
       <h2 className="modal-title">Get more energy</h2>
       <p className="modal-subtitle">Next <a href="#">free energy</a> recharge in: 12:00:00</p>
