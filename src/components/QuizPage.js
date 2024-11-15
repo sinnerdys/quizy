@@ -16,6 +16,7 @@ function QuizPage({ userId, onComplete }) {
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [isRewardVisible, setIsRewardVisible] = useState(false); // Состояние для видимости блока с наградой
     const [progressAnimationCompleted, setProgressAnimationCompleted] = useState(false);
+    const [isTimeUp, setIsTimeUp] = useState(false); // Добавлено состояние, чтобы отслеживать завершение по времени
 
     // Добавим состояния для процентов и прогресса круга
     const [percentage, setPercentage] = useState(0);
@@ -65,9 +66,10 @@ function QuizPage({ userId, onComplete }) {
             // Очищаем интервал при изменении таймера или размонтировании компонента
             return () => clearInterval(id);
         } else if (timer === 0 && intervalId) {
-            // Когда таймер достигает нуля, очищаем интервал и вызываем onComplete
+            // Когда таймер достигает нуля, очищаем интервал и переключаем на завершение квиза
             clearInterval(intervalId);
-            onComplete();
+            setQuizCompleted(true); // Переход на экран завершения
+            setIsTimeUp(true); // Устанавливаем состояние, чтобы показать сообщение, что время вышло
         }
     }, [timer]);
 
@@ -269,7 +271,12 @@ function QuizPage({ userId, onComplete }) {
               
                         {/* Поздравительный текст */}
                         <div className="congratulations">
-                            <h3 className="congratulations-text-title">Congratulations, you’ve completed this quiz! 🎉</h3>
+                        <h3 className="congratulations-text-title">
+                        {isTimeUp 
+                            ? "Oh no, time's up! Better luck next time! ⏰" // Сообщение, если время вышло
+                            : "Congratulations, you’ve completed this quiz! 🎉" // Сообщение, если квиз был завершен вручную
+                        }
+                        </h3>
                             <p className="congratulations-text">Let’s keep testing your knowledge by playing more quizzes!</p>
                         </div>
               
