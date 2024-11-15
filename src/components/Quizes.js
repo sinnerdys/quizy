@@ -26,7 +26,9 @@ function Quizes({ userId }) {
       }
       const data = await response.json();
 
-      const sortedQuizzes = data.quizzes ? data.quizzes.sort((a, b) => a.completed - b.completed) : [];
+      // Фильтруем квизы только те, которые должны отображаться (display === true)
+      const filteredQuizzes = data.quizzes.filter((quiz) => quiz.display);
+      const sortedQuizzes = filteredQuizzes.sort((a, b) => a.completed - b.completed);
       setQuizzes(sortedQuizzes);
       setLoading(false);
     } catch (error) {
