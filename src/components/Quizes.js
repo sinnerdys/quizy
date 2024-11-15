@@ -10,6 +10,7 @@ function Quizes({ userId }) {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const [completedCount, setCompletedCount] = useState(0); // Добавляем состояние для количества завершенных квизов
   const navigate = useNavigate();
 
   const fetchUserQuizzes = async () => {
@@ -18,26 +19,31 @@ function Quizes({ userId }) {
       setLoading(false);
       return;
     }
-  
+
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch quizzes');
       }
       const data = await response.json();
-  
+
       console.log('Fetched quizzes:', data.quizzes);  // Добавляем логирование, чтобы проверить полученные данные
-  
+
       // Фильтруем квизы только те, которые должны отображаться (display === true)
       const filteredQuizzes = data.quizzes.filter((quiz) => {
         console.log(`Quiz display value:`, quiz.display);  // Логируем значение display для каждого квиза
         return quiz.display;
       });
-  
+
       console.log('Filtered quizzes:', filteredQuizzes);  // Логируем, чтобы проверить, какие квизы прошли фильтрацию
-  
+
       const sortedQuizzes = filteredQuizzes.sort((a, b) => a.completed - b.completed);
       setQuizzes(sortedQuizzes);
+
+      // Подсчитываем количество завершенных квизов
+      const completedQuizzesCount = sortedQuizzes.filter((quiz) => quiz.completed).length;
+      setCompletedCount(completedQuizzesCount);
+
       setLoading(false);
     } catch (error) {
       console.error('Error fetching user quizzes:', error);
@@ -64,6 +70,10 @@ function Quizes({ userId }) {
 
   if (loading) return <p>Loading...</p>;
 
+  // Вычисляем прогресс
+  const totalQuizzes = quizzes.length;
+  const progressPercentage = totalQuizzes > 0 ? (completedCount / totalQuizzes) * 100 : 0;
+
   return (
     <div className="quizes-section">
       <h3>Quizes</h3>
@@ -77,9 +87,9 @@ function Quizes({ userId }) {
             <button className="energy-button">+</button>
           </div>
         </div>
-        <span className="progress-status">10/10 quizzes completed</span>
+        <span className="progress-status">{completedCount}/{totalQuizzes} quizzes completed</span>
         <div className="progress-bar">
-          <div className="progress-fill" style={{ width: '100%' }}></div>
+          <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
         </div>
       </div>
 
