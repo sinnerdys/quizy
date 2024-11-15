@@ -15,6 +15,7 @@ function QuizPage({ userId, onComplete }) {
     const [intervalId, setIntervalId] = useState(null);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [isRewardVisible, setIsRewardVisible] = useState(false); // Состояние для видимости блока с наградой
+    const [progressAnimationCompleted, setProgressAnimationCompleted] = useState(false);
 
     // Добавим состояния для процентов и прогресса круга
     const [percentage, setPercentage] = useState(0);
@@ -174,7 +175,10 @@ function QuizPage({ userId, onComplete }) {
                 const interval = setInterval(() => {
                     setPercentage((prev) => {
                         const newPercentage = Math.min(prev + 1, finalProgress); // Увеличиваем процент плавно
-                        if (newPercentage === finalProgress) clearInterval(interval); // Останавливаем интервал
+                        if (newPercentage === finalProgress) {
+                            clearInterval(interval); // Останавливаем интервал
+                            setProgressAnimationCompleted(true); // Устанавливаем состояние завершения анимации
+                        }
 
                         // Вычисляем новый offset для круга
                         const progressDashoffset = circumference - (newPercentage / 100) * circumference;
@@ -193,18 +197,17 @@ function QuizPage({ userId, onComplete }) {
         }
     }, [quizCompleted, finalProgress, circumference]); // Запускать хук при завершении квиза
 
+    // Задержка перед тем, как блок с наградой станет видимым
+    useEffect(() => {
+        if (progressAnimationCompleted) {
+            const rewardTimeout = setTimeout(() => {
+                setIsRewardVisible(true); // Показываем блок награды после завершения анимации
+            }, 1000); // Например, через 1 секунду после завершения анимации
 
-        // Задержка на 5 секунд перед тем, как блок с наградой станет видимым
-        useEffect(() => {
-            if (quizCompleted) {
-                const rewardTimeout = setTimeout(() => {
-                    setIsRewardVisible(true); // Показываем блок награды через 5 секунд
-                }, 5500); // 5000 миллисекунд = 5 секунд
-    
-                // Очистка таймера
-                return () => clearTimeout(rewardTimeout);
-            }
-        }, [quizCompleted]); // Этот эффект срабатывает при завершении квиза
+            // Очистка таймера
+            return () => clearTimeout(rewardTimeout);
+        }
+    }, [progressAnimationCompleted]); // Этот эффект срабатывает при завершении анимации прогресса
 
     
     if (loading) return <p>Loading...</p>;
@@ -282,10 +285,6 @@ function QuizPage({ userId, onComplete }) {
                     </div>
 
                     <div className="quiz-header">
-                        <div className="reward-display-quiz">
-                            <img src={logo} alt="QUIZY Logo" className="token-icon-quiz" />
-                            <span>0 $QUIZY</span>
-                        </div>
                         <h2>{quiz.title}</h2>
                         <p>{quiz.description}</p>
                     </div>
