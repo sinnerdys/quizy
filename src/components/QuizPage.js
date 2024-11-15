@@ -50,13 +50,20 @@ function QuizPage({ userId, onComplete }) {
     }, [quizId, userId]);
 
     useEffect(() => {
-        if (timer > 0) {
-            const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 2000);
-            setIntervalId(id);
-        } else if (timer === 0 && intervalId) {
+        // Очищаем интервал перед установкой нового
+        if (intervalId) {
             clearInterval(intervalId);
+        }
+    
+        // Если таймер больше 0, создаем новый интервал
+        if (timer > 0) {
+            const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
+            setIntervalId(id);
+        } else if (timer === 0) {
             onComplete();
         }
+    
+        // Очищаем интервал при размонтировании компонента или обновлении таймера
         return () => clearInterval(intervalId);
     }, [timer]);
 
