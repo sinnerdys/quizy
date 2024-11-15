@@ -1,124 +1,95 @@
-.modal-energy-overlay {
+.modal-get-energy-overlay {
     position: fixed;
-    top: 0;
+    bottom: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    height: auto;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-.modal-energy-overlay.open {
+.modal-get-energy-overlay.open {
     opacity: 1;
 }
 
-.modal-energy {
+.modal-get-energy {
     background-color: #091533;
-    padding: 30px;
-    border-radius: 20px;
+    padding: 20px;
+    border-radius: 30px 30px 0 0;
     width: 100%;
-    max-width: 400px;
+    max-width: 600px;
     text-align: center;
     position: relative;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
     z-index: 1100;
     transform: translateY(100%);
-    opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
-.modal-energy.open {
+.modal-get-energy.open {
     transform: translateY(0);
     opacity: 1;
 }
 
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
+.modal-icon-container {
+    margin-bottom: 10px;
 }
 
-.energy-icon {
-    width: 30px;
-    height: 30px;
+.modal-energy-logo {
+    width: 40px;
+    height: 40px;
 }
 
-.modal-energy h2 {
+.modal-title {
     font-size: 24px;
     color: white;
-    margin: 0;
+    margin-bottom: 10px;
 }
 
-.modal-energy p {
+.modal-subtitle {
     font-size: 16px;
     color: #ADC3FF;
     margin-bottom: 20px;
 }
 
-.free-energy-link {
-    color: #007BB5;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
 .energy-options {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
 .energy-option {
-    background-color: #1D2C58;
-    color: white;
-    border: none;
+    border: 2px solid #284286;
     padding: 15px;
-    border-radius: 12px;
-    font-size: 16px;
+    border-radius: 10px;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.energy-option:hover {
-    background-color: #284286;
-}
-
-.energy-icon-container {
+.energy-pack {
     display: flex;
     align-items: center;
-    gap: 5px;
-    background-color: #1E3A68;
-    padding: 8px;
-    border-radius: 8px;
+    gap: 10px;
 }
 
-.energy-icon-small {
-    width: 20px;
-    height: 20px;
+.energy-pack img {
+    width: 30px;
+    height: 30px;
 }
 
-.price {
+.energy-cost {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-.star-image {
-    width: 20px;
-    height: 20px;
-}
-
-.confirm-pay-button {
+.confirm-button {
     width: 100%;
     padding: 15px;
     background-color: #007BB5;
@@ -127,20 +98,8 @@
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
-
-.confirm-pay-button:hover {
-    background-color: #005f8c;
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
+ 
+.confirm-button:hover {
+    background-color: #005f8a;
 }
