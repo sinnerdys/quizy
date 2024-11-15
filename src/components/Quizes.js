@@ -18,16 +18,20 @@ function Quizes({ userId }) {
       setLoading(false);
       return;
     }
-
+  
     try {
       const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch quizzes');
       }
       const data = await response.json();
-
+  
+      console.log('Fetched quizzes:', data.quizzes);  // Добавляем логирование для проверки данных
+  
       // Фильтруем квизы только те, которые должны отображаться (display === true)
       const filteredQuizzes = data.quizzes.filter((quiz) => quiz.display);
+      console.log('Filtered quizzes:', filteredQuizzes);  // Проверяем, прошли ли квизы фильтрацию
+  
       const sortedQuizzes = filteredQuizzes.sort((a, b) => a.completed - b.completed);
       setQuizzes(sortedQuizzes);
       setLoading(false);
