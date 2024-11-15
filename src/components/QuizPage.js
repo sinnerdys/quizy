@@ -57,17 +57,15 @@ function QuizPage({ userId, onComplete }) {
 
     useEffect(() => {
         if (timer > 0) {
-            // Устанавливаем интервал и сохраняем идентификатор
+            // Устанавливаем интервал для уменьшения таймера на одну секунду каждую секунду
             const id = setInterval(() => {
                 setTimer((prevTimer) => prevTimer - 1);
             }, 1000);
-            setIntervalId(id);
-            
-            // Очищаем интервал при изменении таймера или размонтировании компонента
+    
+            // Очищаем интервал, если компонент размонтируется или значение таймера изменится
             return () => clearInterval(id);
-        } else if (timer === 0 && intervalId) {
+        } else if (timer === 0) {
             // Когда таймер достигает нуля, очищаем интервал и переключаем на завершение квиза
-            clearInterval(intervalId);
             setQuizCompleted(true); // Переход на экран завершения
             setIsTimeUp(true); // Устанавливаем состояние, чтобы показать сообщение, что время вышло
     
@@ -75,7 +73,7 @@ function QuizPage({ userId, onComplete }) {
             const rewardPerQuestion = quiz.reward / quiz.questions.length;
             setReward(correctAnswersRef.current * rewardPerQuestion);
         }
-    }, [timer, intervalId, quiz]);
+    }, [timer, quiz]);
 
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
