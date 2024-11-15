@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Quizes.css';
 import ModalQuiz from './ModalQuiz';
+import ModalGetEnergy from './ModalGetEnergy'; // Импортируем модальное окно энергии
 import TimeIcon from '../assets/timer.png';
 import token from '../assets/TokenImage.png';
 import completedIcon from '../assets/completedIcon.png'; // Импортируем иконку завершения
@@ -11,6 +12,7 @@ function Quizes({ userId }) {
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [completedCount, setCompletedCount] = useState(0); // Добавляем состояние для количества завершенных квизов
+  const [showEnergyModal, setShowEnergyModal] = useState(false); // Добавляем состояние для модального окна энергии
   const [energy, setEnergy] = useState(0); // Добавляем состояние для энергии
   const navigate = useNavigate();
 
@@ -89,6 +91,16 @@ function Quizes({ userId }) {
       setSelectedQuiz(null);
     };
   
+  // Функция для открытия модального окна энергии
+  const openEnergyModal = () => {
+    setShowEnergyModal(true);
+  };
+
+  // Функция для закрытия модального окна энергии
+  const closeEnergyModal = () => {
+    setShowEnergyModal(false);
+  };
+
 
   if (loading) return <p>Loading...</p>;
 
@@ -106,7 +118,9 @@ function Quizes({ userId }) {
           <span>Your progress:</span>
           <div className="energy-container">
             ⚡ {energy}
-            <button className="energy-button" disabled={energy >= 1}>+</button>
+            <button className="energy-button" onClick={openEnergyModal} disabled={energy >= 1}>
+              +
+            </button>
           </div>
         </div>
         <span className="progress-status">{completedCount}/{totalQuizzes} quizzes completed</span>
@@ -148,6 +162,10 @@ function Quizes({ userId }) {
           userId={userId}
           setEnergy={setEnergy}
         />
+      )}
+            {/* Модальное окно для получения энергии */}
+            {showEnergyModal && (
+        <ModalGetEnergy onClose={closeEnergyModal} />
       )}
     </div>
   );
