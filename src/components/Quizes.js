@@ -11,6 +11,7 @@ function Quizes({ userId }) {
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [completedCount, setCompletedCount] = useState(0); // Добавляем состояние для количества завершенных квизов
+  const [energy, setEnergy] = useState(0); // Добавляем состояние для энергии
   const navigate = useNavigate();
 
   const fetchUserQuizzes = async () => {
@@ -51,8 +52,27 @@ function Quizes({ userId }) {
     }
   };
 
+  const fetchUserEnergy = async () => {
+    if (!userId) {
+      console.error('User ID is undefined');
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getEnergyInfo?userId=${userId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch energy');
+      }
+      const data = await response.json();
+      setEnergy(data.energy);
+    } catch (error) {
+      console.error('Error fetching user energy:', error);
+    }
+  };
+
   useEffect(() => {
     fetchUserQuizzes();
+    fetchUserEnergy();
   }, [userId]);
 
   const openQuizModal = (quiz) => {
@@ -83,12 +103,12 @@ function Quizes({ userId }) {
         <div className="progress-header">
           <span>Your progress:</span>
           <div className="energy-container">
-            ⚡ 1
-            <button className="energy-button">+</button>
+            ⚡ {energy}
+            <button className="energy-button" disabled={energy >= 1}>+</button>
           </div>
         </div>
         <span className="progress-status">{completedCount}/{totalQuizzes} quizzes completed</span>
-        <div className="progress-bar">
+        <div className="progress-bar-quizes">
           <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
         </div>
       </div>
@@ -123,6 +143,8 @@ function Quizes({ userId }) {
           quiz={selectedQuiz}
           onClose={closeQuizModal}
           onStart={() => openQuizPage(selectedQuiz.id)}
+          userId={userId}
+          setEnergy={setEnergy} // Передаем функцию для обновления энергии в компонент ModalQuiz
         />
       )}
     </div>
