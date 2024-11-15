@@ -1,9 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ModalQuiz.css'; // Стили для модального окна
 import TimeIcon from '../assets/timer.png';
 import token from '../assets/TokenImage.png';
 
-function ModalQuiz({ quiz, onClose, onStart, userId, setEnergy }) { // Добавляем userId и setEnergy для управления энергией
+function ModalQuiz({ quiz, onClose, onStart, userId, setEnergy }) {
+  useEffect(() => {
+    const overlay = document.querySelector('.modal-quiz-overlay');
+    const modal = document.querySelector('.modal-quiz');
+
+    if (overlay && modal) {
+      setTimeout(() => {
+        overlay.classList.add('open');
+        modal.classList.add('open');
+      }, 10);
+    }
+
+    const handleClickOutside = (event) => {
+      if (event.target === overlay) {
+        onClose();
+      }
+    };
+
+    overlay.addEventListener('click', handleClickOutside);
+
+    return () => {
+      overlay.removeEventListener('click', handleClickOutside);
+      if (overlay && modal) {
+        overlay.classList.remove('open');
+        modal.classList.remove('open');
+      }
+    };
+  }, [onClose]);
 
   const handleStartQuiz = async () => {
     try {
@@ -29,7 +56,6 @@ function ModalQuiz({ quiz, onClose, onStart, userId, setEnergy }) { // Доба�
       }
     } catch (error) {
       console.error('Error starting quiz:', error);
-      alert('Failed to start quiz. Please try again.');
     }
   };
 
