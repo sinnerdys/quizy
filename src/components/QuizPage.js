@@ -50,21 +50,24 @@ function QuizPage({ userId, onComplete }) {
     }, [quizId, userId]);
 
     useEffect(() => {
-        // Очищаем интервал перед установкой нового
-        if (intervalId) {
-            clearInterval(intervalId);
-        }
-    
-        // Если таймер больше 0, создаем новый интервал
         if (timer > 0) {
-            const id = setInterval(() => setTimer((prevTimer) => prevTimer - 1), 1000);
+            const id = setInterval(() => {
+                setTimer((prevTimer) => prevTimer - 1);
+            }, 1000);
+            
+            // Сохраняем идентификатор интервала для последующего очищения
             setIntervalId(id);
-        } else if (timer === 0) {
+        } else if (timer === 0 && intervalId) {
+            clearInterval(intervalId);
             onComplete();
         }
     
-        // Очищаем интервал при размонтировании компонента или обновлении таймера
-        return () => clearInterval(intervalId);
+        // Очищаем интервал, если компонент размонтируется или таймер изменится
+        return () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
     }, [timer]);
 
     const handleOptionSelect = (selectedOption) => {
