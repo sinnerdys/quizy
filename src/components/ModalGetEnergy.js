@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ModalGetEnergy.css'; // Подключаем файл стилей
 import TelegramStarImage from '../assets/telegram_star.png'; // Импорт изображения звезды
-import TelegramStarImageOption from '../assets/telegram_star_light.png'; // Импорт изображения звезды
+import TelegramStarImageOption from '../assets/telegram_star_light.png'; // Импорт изображения звезды для кнопок
 import LightningIcon from '../assets/lightning.png'; // Импорт изображения молнии
 
 function ModalGetEnergy({ onClose }) {
+  const [selectedPack, setSelectedPack] = useState(null);
+
   useEffect(() => {
     const overlay = document.querySelector('.modal-get-energy-overlay');
     const modal = document.querySelector('.modal-get-energy');
@@ -33,6 +35,10 @@ function ModalGetEnergy({ onClose }) {
     };
   }, [onClose]);
 
+  const handleSelectPack = (packIndex) => {
+    setSelectedPack(packIndex);
+  };
+
   return (
     <div className="modal-get-energy-overlay">
       <div className="modal-get-energy">
@@ -49,41 +55,28 @@ function ModalGetEnergy({ onClose }) {
         <h2 className="modal-title">Get more energy</h2>
         <p className="modal-subtitle">Next free energy recharge in: <strong>12:00:00</strong></p>
         <div className="energy-options">
-          <button className="energy-option">
-            <div className="energy-pack">
-              <img src={LightningIcon} alt="Lightning" />
-              <span>1</span>
-            </div>
-            <span className="energy-info">Single Energy</span>
-            <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> 100</span>
-          </button>
-          <button className="energy-option">
-            <div className="energy-pack">
-              <img src={LightningIcon} alt="Lightning" />
-              <span>3</span>
-            </div>
-            <span className="energy-info">Small Energy Pack</span>
-            <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> 250</span>
-          </button>
-          <button className="energy-option">
-            <div className="energy-pack">
-              <img src={LightningIcon} alt="Lightning" />
-              <span>7</span>
-            </div>
-            <span className="energy-info">Medium Energy Pack</span>
-            <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> 500</span>
-          </button>
-          <button className="energy-option">
-            <div className="energy-pack">
-              <img src={LightningIcon} alt="Lightning" />
-              <span>15</span>
-            </div>
-            <span className="energy-info">Large Energy Pack</span>
-            <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> 800</span>
-          </button>
+          {[
+            { count: 1, name: 'Single Energy', price: 100 },
+            { count: 3, name: 'Small Energy Pack', price: 250 },
+            { count: 7, name: 'Medium Energy Pack', price: 500 },
+            { count: 15, name: 'Large Energy Pack', price: 800 },
+          ].map((pack, index) => (
+            <button
+              key={index}
+              className={`energy-option ${selectedPack === index ? 'selected' : ''}`}
+              onClick={() => handleSelectPack(index)}
+            >
+              <div className="energy-pack">
+                <img src={LightningIcon} alt="Lightning" />
+                <span>{pack.count}</span>
+              </div>
+              <span className="energy-info">{pack.name}</span>
+              <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> {pack.price}</span>
+            </button>
+          ))}
         </div>
-        <button className="confirm-pay-button">
-          Confirm And Pay <img src={TelegramStarImage} alt="Telegram Star" className="star-image" /> 200
+        <button className="confirm-pay-button" disabled={selectedPack === null}>
+          Confirm And Pay <img src={TelegramStarImage} alt="Telegram Star" className="star-image" /> {selectedPack !== null ? [100, 250, 500, 800][selectedPack] : '200'}
         </button>
       </div>
     </div>

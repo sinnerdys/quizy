@@ -42,13 +42,15 @@
 }
 
 .modal-energy-logo {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: 15px;
 }
 
 .modal-title {
     font-size: 24px;
     color: white;
+    margin-bottom: 10px;
 }
 
 .modal-subtitle {
@@ -74,6 +76,12 @@
     background-color: transparent;
     color: white;
     cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.energy-option.selected {
+    background-color: #007BB5;
+    border-color: #005f8a;
 }
 
 .energy-pack {
@@ -82,13 +90,19 @@
     gap: 5px;
     padding: 6px;
     background-color: #284286;
-    width: 15%;
+    width: 50px; /* Установлена фиксированная ширина */
     border-radius: 8px;
+    justify-content: center; /* Центрирование содержимого */
 }
 
 .energy-pack img {
     width: 20px;
     height: 20px;
+}
+
+.energy-info {
+    text-align: left;
+    flex-grow: 1; /* Это позволит тексту занимать всю доступную ширину между блоком энергии и ценой */
 }
 
 .price {
@@ -107,8 +121,14 @@
     font-size: 16px;
     cursor: pointer;
     margin-top: 20px;
+    transition: background-color 0.2s ease;
 }
 
 .confirm-pay-button:hover {
     background-color: #005f8a;
+}
+
+.confirm-pay-button:disabled {
+    background-color: #284286;
+    cursor: not-allowed;
 }
