@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import './ModalGetEnergy.css'; // Подключаем файл стилей
 import TelegramStarImage from '../assets/telegram_star.png'; // Импорт изображения звезды
+import TelegramStarImageOption from '../assets/telegram_star_light.png'; // Импорт изображения звезды
 import LightningIcon from '../assets/lightning.png'; // Импорт изображения молнии
 
 function ModalGetEnergy({ onClose }) {
@@ -46,7 +47,7 @@ function ModalGetEnergy({ onClose }) {
           <img src={LightningIcon} alt="Energy Icon" className="modal-energy-logo" />
         </div>
         <h2 className="modal-title">Get more energy</h2>
-        <p className="modal-subtitle">Next <a href="#">free energy</a> recharge in: 12:00:00</p>
+        <p className="modal-subtitle">Next free energy recharge in: <strong>12:00:00</strong></p>
         <div className="energy-options">
           <button className="energy-option">
             <div className="energy-pack">
@@ -54,7 +55,7 @@ function ModalGetEnergy({ onClose }) {
               <span>1</span>
             </div>
             <span className="energy-info">Single Energy</span>
-            <span className="price"><img src={TelegramStarImage} alt="Telegram Star" className="star-image" /> 100</span>
+            <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> 100</span>
           </button>
           <button className="energy-option">
             <div className="energy-pack">
@@ -62,7 +63,7 @@ function ModalGetEnergy({ onClose }) {
               <span>3</span>
             </div>
             <span className="energy-info">Small Energy Pack</span>
-            <span className="price"><img src={TelegramStarImage} alt="Telegram Star" className="star-image" /> 250</span>
+            <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> 250</span>
           </button>
           <button className="energy-option">
             <div className="energy-pack">
@@ -70,7 +71,7 @@ function ModalGetEnergy({ onClose }) {
               <span>7</span>
             </div>
             <span className="energy-info">Medium Energy Pack</span>
-            <span className="price"><img src={TelegramStarImage} alt="Telegram Star" className="star-image" /> 500</span>
+            <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> 500</span>
           </button>
           <button className="energy-option">
             <div className="energy-pack">
@@ -78,7 +79,7 @@ function ModalGetEnergy({ onClose }) {
               <span>15</span>
             </div>
             <span className="energy-info">Large Energy Pack</span>
-            <span className="price"><img src={TelegramStarImage} alt="Telegram Star" className="star-image" /> 800</span>
+            <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> 800</span>
           </button>
         </div>
         <button className="confirm-pay-button">
