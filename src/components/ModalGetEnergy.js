@@ -7,6 +7,7 @@ import LightningIcon from '../assets/lightning.png'; // Импорт изобр�
 function ModalGetEnergy({ userId, onClose }) {
   const [selectedPack, setSelectedPack] = useState(null);
   const [nextEnergyIn, setNextEnergyIn] = useState(null);
+  const [energy, setEnergy] = useState(0);
 
   useEffect(() => {
     const overlay = document.querySelector('.modal-get-energy-overlay');
@@ -50,6 +51,7 @@ function ModalGetEnergy({ userId, onClose }) {
       }
       const data = await response.json();
       setNextEnergyIn(data.nextEnergyIn);
+      setEnergy(data.energy);
     } catch (error) {
       console.error('Error fetching energy info:', error);
     }
@@ -59,22 +61,26 @@ function ModalGetEnergy({ userId, onClose }) {
     setSelectedPack(packIndex);
   };
 
-    // Добавляем useEffect для обновления таймера каждую секунду
-    useEffect(() => {
-        if (nextEnergyIn !== null) {
-          const interval = setInterval(() => {
-            setNextEnergyIn((prevTime) => {
-              if (prevTime <= 1000) {
-                clearInterval(interval);
-                return 0;
-              }
-              return prevTime - 1000;
-            });
-          }, 1000);
-    
-          return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
-        }
-      }, [nextEnergyIn]);
+  // Добавляем useEffect для обновления таймера каждую секунду
+  useEffect(() => {
+    if (nextEnergyIn !== null && nextEnergyIn > 0 && energy === 0) {
+      const interval = setInterval(() => {
+        setNextEnergyIn((prevTime) => {
+          if (prevTime <= 1000) {
+            clearInterval(interval);
+            fetchEnergyInfo(); // Сброс таймера и обновление информации при достижении 0
+            return 0;
+          }
+          return prevTime - 1000;
+        });
+      }, 1000);
+
+      return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
+    } else if (nextEnergyIn === 0 && energy === 0) {
+      // Если энергия достигла 0, обновляем информацию
+      fetchEnergyInfo();
+    }
+  }, [nextEnergyIn, energy]);
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
@@ -98,9 +104,11 @@ function ModalGetEnergy({ userId, onClose }) {
           <img src={LightningIcon} alt="Energy Icon" className="modal-energy-logo" />
         </div>
         <h2 className="modal-title">Get more energy</h2>
-        <p className="modal-subtitle">
-          Next free energy recharge in: <strong>{nextEnergyIn !== null ? formatTime(nextEnergyIn) : 'Loading...'}</strong>
-        </p>
+        {energy === 0 && nextEnergyIn !== null && (
+          <p className="modal-subtitle">
+            Next free energy recharge in: <strong>{formatTime(nextEnergyIn)}</strong>
+          </p>
+        )}
         <div className="energy-options">
           {[
             { count: 1, name: 'Single Energy', price: 100 },
