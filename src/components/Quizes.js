@@ -173,7 +173,7 @@ function Quizes({ userId }) {
       )}
             {/* Модальное окно для получения энергии */}
             {showEnergyModal && (
-        <ModalGetEnergy onClose={closeEnergyModal} />
+        <ModalGetEnergy userId={userId} onClose={closeEnergyModal} />
       )}
     </div>
   );
