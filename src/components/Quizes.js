@@ -126,7 +126,7 @@ function Quizes({ userId }) {
           <span>Your progress:</span>
           <div className="energy-container">
             ⚡ {energy}
-            <button className="energy-button" onClick={openEnergyModal} disabled={energy >= 1}>
+            <button className="energy-button" onClick={openEnergyModal}>
               +
             </button>
           </div>
