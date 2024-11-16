@@ -91,7 +91,8 @@ function ModalGetEnergy({ userId, onClose }) {
           throw new Error('Failed to fetch energy packs');
         }
         const data = await response.json();
-        setEnergyPacks(Object.values(data)); // Преобразуем объект в массив для удобной работы
+        const validPacks = Object.values(data).filter((pack) => pack !== null); // Фильтруем null значения
+        setEnergyPacks(validPacks);
       } catch (error) {
         console.error('Error fetching energy packs:', error);
       }
@@ -129,22 +130,24 @@ function ModalGetEnergy({ userId, onClose }) {
         )}
        <div className="energy-options">
   {energyPacks.length > 0 ? (
-    energyPacks.map((pack, index) => (
-      <button
-        key={index}
-        className={`energy-option ${selectedPack === index ? 'selected' : ''}`}
-        onClick={() => handleSelectPack(index)}
-      >
-        <div className="energy-pack">
-          <img src={LightningIcon} alt="Lightning" />
-          <span>{pack.count}</span>
-        </div>
-        <span className="energy-info">{pack.name}</span>
-        <span className="price">
-          <img src={TelegramStarImageOption} alt="Telegram Star" className="star-image-option" /> {pack.price}
-        </span>
-      </button>
-    ))
+    energyPacks.map((pack, index) =>
+      pack ? (
+        <button
+          key={index}
+          className={`energy-option ${selectedPack === index ? 'selected' : ''}`}
+          onClick={() => handleSelectPack(index)}
+        >
+          <div className="energy-pack">
+            <img src={LightningIcon} alt="Lightning" />
+            <span>{pack.count}</span>
+          </div>
+          <span className="energy-info">{pack.name}</span>
+          <span className="price">
+            <img src={TelegramStarImageOption} alt="Telegram Star" className="star-image-option" /> {pack.price}
+          </span>
+        </button>
+      ) : null
+    )
   ) : (
     <p>Loading energy packs...</p> // Показать сообщение при загрузке пакетов
   )}
