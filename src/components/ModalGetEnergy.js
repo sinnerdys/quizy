@@ -59,6 +59,23 @@ function ModalGetEnergy({ userId, onClose }) {
     setSelectedPack(packIndex);
   };
 
+    // Добавляем useEffect для обновления таймера каждую секунду
+    useEffect(() => {
+        if (nextEnergyIn !== null) {
+          const interval = setInterval(() => {
+            setNextEnergyIn((prevTime) => {
+              if (prevTime <= 1000) {
+                clearInterval(interval);
+                return 0;
+              }
+              return prevTime - 1000;
+            });
+          }, 1000);
+    
+          return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
+        }
+      }, [nextEnergyIn]);
+
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
