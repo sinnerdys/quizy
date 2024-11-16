@@ -14,6 +14,7 @@ function Quizes({ userId }) {
   const [completedCount, setCompletedCount] = useState(0); // Добавляем состояние для количества завершенных квизов
   const [showEnergyModal, setShowEnergyModal] = useState(false); // Добавляем состояние для модального окна энергии
   const [energy, setEnergy] = useState(0); // Добавляем состояние для энергии
+  const [energyPacks, setEnergyPacks] = useState([]); // Добавляем состояние для пакетов энергии
   const navigate = useNavigate();
 
   const fetchUserQuizzes = async () => {
@@ -72,9 +73,24 @@ function Quizes({ userId }) {
     }
   };
 
+  const fetchEnergyPacks = async () => {
+    try {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getEnergyPacks`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch energy packs');
+      }
+      const data = await response.json();
+      const validPacks = Object.values(data).filter((pack) => pack !== null); // Фильтруем null значения
+      setEnergyPacks(validPacks);
+    } catch (error) {
+      console.error('Error fetching energy packs:', error);
+    }
+  };
+
   useEffect(() => {
     fetchUserQuizzes();
     fetchUserEnergy();
+    fetchEnergyPacks();
   
     // Интервал обновления данных об энергии каждую секунду
     const energyInterval = setInterval(() => {
@@ -173,7 +189,7 @@ function Quizes({ userId }) {
       )}
             {/* Модальное окно для получения энергии */}
             {showEnergyModal && (
-        <ModalGetEnergy userId={userId} onClose={closeEnergyModal} />
+        <ModalGetEnergy userId={userId} onClose={closeEnergyModal} energyPacks={energyPacks} />
       )}
     </div>
   );

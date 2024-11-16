@@ -4,11 +4,10 @@ import TelegramStarImage from '../assets/telegram_star.png'; // Импорт и�
 import TelegramStarImageOption from '../assets/telegram_star_light.png'; // Импорт изображения звезды для кнопок
 import LightningIcon from '../assets/lightning.png'; // Импорт изображения молнии
 
-function ModalGetEnergy({ userId, onClose }) {
+function ModalGetEnergy({ userId, onClose, energyPacks }) {
   const [selectedPack, setSelectedPack] = useState(null);
   const [nextEnergyIn, setNextEnergyIn] = useState(null);
   const [energy, setEnergy] = useState(0);
-  const [energyPacks, setEnergyPacks] = useState([]);
 
   useEffect(() => {
     const overlay = document.querySelector('.modal-get-energy-overlay');
@@ -82,24 +81,6 @@ function ModalGetEnergy({ userId, onClose }) {
       fetchEnergyInfo();
     }
   }, [nextEnergyIn, energy]);
-
-  useEffect(() => {
-    const fetchEnergyPacks = async () => {
-      try {
-        const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getEnergyPacks`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch energy packs');
-        }
-        const data = await response.json();
-        const validPacks = Object.values(data).filter((pack) => pack !== null); // Фильтруем null значения
-        setEnergyPacks(validPacks);
-      } catch (error) {
-        console.error('Error fetching energy packs:', error);
-      }
-    };
-  
-    fetchEnergyPacks();
-  }, []);
 
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
