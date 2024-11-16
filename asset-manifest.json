@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/quizy/static/css/main.961e0895.css",
+    "main.css": "/quizy/static/css/main.304f5d11.css",
     "main.js": "/quizy/static/js/main.b8294dc0.js",
     "static/media/bg_rewards.png": "/quizy/static/media/bg_rewards.9d40926a90cbba1d2df2.png",
     "static/media/arrow_wheel.png": "/quizy/static/media/arrow_wheel.ea48127353a61a39e0e8.png",
@@ -11,11 +11,11 @@
     "static/media/home.svg": "/quizy/static/media/home.caf8baa6574304c14ec93dd30731f15c.svg",
     "index.html": "/quizy/index.html",
     "static/media/time.svg": "/quizy/static/media/time.750e48a431e74324164f83254b41e9ca.svg",
-    "main.961e0895.css.map": "/quizy/static/css/main.961e0895.css.map",
+    "main.304f5d11.css.map": "/quizy/static/css/main.304f5d11.css.map",
     "main.b8294dc0.js.map": "/quizy/static/js/main.b8294dc0.js.map"
   },
   "entrypoints": [
-    "static/css/main.961e0895.css",
+    "static/css/main.304f5d11.css",
     "static/js/main.b8294dc0.js"
   ]
 }
