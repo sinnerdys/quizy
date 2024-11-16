@@ -8,6 +8,7 @@ function ModalGetEnergy({ userId, onClose }) {
   const [selectedPack, setSelectedPack] = useState(null);
   const [nextEnergyIn, setNextEnergyIn] = useState(null);
   const [energy, setEnergy] = useState(0);
+  const [energyPacks, setEnergyPacks] = useState([]);
 
   useEffect(() => {
     const overlay = document.querySelector('.modal-get-energy-overlay');
@@ -82,6 +83,23 @@ function ModalGetEnergy({ userId, onClose }) {
     }
   }, [nextEnergyIn, energy]);
 
+  useEffect(() => {
+    const fetchEnergyPacks = async () => {
+      try {
+        const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getEnergyPacks`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch energy packs');
+        }
+        const data = await response.json();
+        setEnergyPacks(Object.values(data)); // Преобразуем объект в массив для удобной работы
+      } catch (error) {
+        console.error('Error fetching energy packs:', error);
+      }
+    };
+  
+    fetchEnergyPacks();
+  }, []);
+
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
@@ -109,30 +127,33 @@ function ModalGetEnergy({ userId, onClose }) {
             Next free energy recharge in: <strong>{formatTime(nextEnergyIn)}</strong>
           </p>
         )}
-        <div className="energy-options">
-          {[
-            { count: 1, name: 'Single Energy', price: 100 },
-            { count: 3, name: 'Small Energy Pack', price: 250 },
-            { count: 7, name: 'Medium Energy Pack', price: 500 },
-            { count: 15, name: 'Large Energy Pack', price: 800 },
-          ].map((pack, index) => (
-            <button
-              key={index}
-              className={`energy-option ${selectedPack === index ? 'selected' : ''}`}
-              onClick={() => handleSelectPack(index)}
-            >
-              <div className="energy-pack">
-                <img src={LightningIcon} alt="Lightning" />
-                <span>{pack.count}</span>
-              </div>
-              <span className="energy-info">{pack.name}</span>
-              <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image-option" /> {pack.price}</span>
-            </button>
-          ))}
+       <div className="energy-options">
+  {energyPacks.length > 0 ? (
+    energyPacks.map((pack, index) => (
+      <button
+        key={index}
+        className={`energy-option ${selectedPack === index ? 'selected' : ''}`}
+        onClick={() => handleSelectPack(index)}
+      >
+        <div className="energy-pack">
+          <img src={LightningIcon} alt="Lightning" />
+          <span>{pack.count}</span>
         </div>
-        <button className="confirm-pay-button" disabled={selectedPack === null}>
-          Confirm And Pay <img src={TelegramStarImage} alt="Telegram Star" className="star-image" /> {selectedPack !== null ? [100, 250, 500, 800][selectedPack] : '200'}
-        </button>
+        <span className="energy-info">{pack.name}</span>
+        <span className="price">
+          <img src={TelegramStarImageOption} alt="Telegram Star" className="star-image-option" /> {pack.price}
+        </span>
+      </button>
+    ))
+  ) : (
+    <p>Loading energy packs...</p> // Показать сообщение при загрузке пакетов
+  )}
+</div>
+<button className="confirm-pay-button" disabled={selectedPack === null}>
+  Confirm And Pay{' '}
+  <img src={TelegramStarImage} alt="Telegram Star" className="star-image" />{' '}
+  {selectedPack !== null ? energyPacks[selectedPack].price : ''}
+</button>
       </div>
     </div>
   );
