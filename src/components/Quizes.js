@@ -75,7 +75,15 @@ function Quizes({ userId }) {
   useEffect(() => {
     fetchUserQuizzes();
     fetchUserEnergy();
+  
+    // Интервал обновления данных об энергии каждую секунду
+    const energyInterval = setInterval(() => {
+      fetchUserEnergy();
+    }, 1000); // 1 секунда
+  
+    return () => clearInterval(energyInterval); // Очищаем интервал при размонтировании компонента
   }, [userId]);
+
 
   const openQuizModal = (quiz) => {
     setSelectedQuiz(quiz);
