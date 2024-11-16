@@ -103,7 +103,6 @@
   .quiz-avatar img {
     width: 40px;
     height: 40px;
-    border-radius: 50%; /* добавьте это, если хотите, чтобы изображение было круглым */
   }
   
   .quiz-info {
