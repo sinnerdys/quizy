@@ -4,8 +4,9 @@ import TelegramStarImage from '../assets/telegram_star.png'; // Импорт и�
 import TelegramStarImageOption from '../assets/telegram_star_light.png'; // Импорт изображения звезды для кнопок
 import LightningIcon from '../assets/lightning.png'; // Импорт изображения молнии
 
-function ModalGetEnergy({ onClose }) {
+function ModalGetEnergy({ userId, onClose }) {
   const [selectedPack, setSelectedPack] = useState(null);
+  const [nextEnergyIn, setNextEnergyIn] = useState(null);
 
   useEffect(() => {
     const overlay = document.querySelector('.modal-get-energy-overlay');
@@ -35,8 +36,35 @@ function ModalGetEnergy({ onClose }) {
     };
   }, [onClose]);
 
+  useEffect(() => {
+    if (userId) {
+      fetchEnergyInfo();
+    }
+  }, [userId]);
+
+  const fetchEnergyInfo = async () => {
+    try {
+      const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getEnergyInfo?userId=${userId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch energy info');
+      }
+      const data = await response.json();
+      setNextEnergyIn(data.nextEnergyIn);
+    } catch (error) {
+      console.error('Error fetching energy info:', error);
+    }
+  };
+
   const handleSelectPack = (packIndex) => {
     setSelectedPack(packIndex);
+  };
+
+  const formatTime = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+    const seconds = String(totalSeconds % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
   };
 
   return (
@@ -53,7 +81,9 @@ function ModalGetEnergy({ onClose }) {
           <img src={LightningIcon} alt="Energy Icon" className="modal-energy-logo" />
         </div>
         <h2 className="modal-title">Get more energy</h2>
-        <p className="modal-subtitle">Next free energy recharge in: <strong>12:00:00</strong></p>
+        <p className="modal-subtitle">
+          Next free energy recharge in: <strong>{nextEnergyIn !== null ? formatTime(nextEnergyIn) : 'Loading...'}</strong>
+        </p>
         <div className="energy-options">
           {[
             { count: 1, name: 'Single Energy', price: 100 },
