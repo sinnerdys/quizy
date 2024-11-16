@@ -71,7 +71,7 @@ function ModalGetEnergy({ onClose }) {
                 <span>{pack.count}</span>
               </div>
               <span className="energy-info">{pack.name}</span>
-              <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image" /> {pack.price}</span>
+              <span className="price"><img src={TelegramStarImageOption} alt="Telegram Star" className="star-image-option" /> {pack.price}</span>
             </button>
           ))}
         </div>
