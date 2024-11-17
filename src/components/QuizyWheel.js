@@ -37,17 +37,16 @@ const QuizyWheel = ({ tickets, nextTicketIn, fetchTicketInfo }) => {  // Пол�
 
   const fetchPrizes = async () => {
     try {
-      const response = await fetch('https://quizy-d6ffb-default-rtdb.firebaseio.com/prizes.json');
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/fetchPrizes');
       const data = await response.json();
-
-      if (data) {
-        const fetchedPrizes = Object.keys(data).map((key) => data[key].value);
-        setPrizes(fetchedPrizes.reverse());
+  
+      if (data.prizes) {
+        setPrizes(data.prizes);
       } else {
         setPrizes([]);
       }
     } catch (error) {
-      console.error('Error fetching prizes:', error);
+      console.error('Error fetching prizes from backend:', error);
     }
   };
 
