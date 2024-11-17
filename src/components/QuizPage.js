@@ -57,22 +57,26 @@ function QuizPage({ userId, onComplete }) {
 
     useEffect(() => {
         if (quizCompleted) {
-            // Если квиз завершён, сразу выходим и не запускаем таймер
+            // Если квиз завершён, таймер не должен запускаться
             return;
         }
     
         if (timer > 0) {
+            // Устанавливаем интервал и сохраняем его идентификатор
             const id = setInterval(() => {
                 setTimer((prevTimer) => prevTimer - 1);
             }, 1000);
+            setIntervalId(id);
     
-            return () => clearInterval(id); // Очищаем интервал при размонтировании или обновлении
-        } else if (timer === 0) {
-            // Когда таймер достигает нуля
-            setQuizCompleted(true);
-            setIsTimeUp(true);
+            // Очищаем интервал при изменении таймера или размонтировании компонента
+            return () => clearInterval(id);
+        } else if (timer === 0 && intervalId) {
+            // Таймер достиг нуля, очищаем интервал и переключаем на завершение квиза
+            clearInterval(intervalId);
+            setQuizCompleted(true); // Переход на экран завершения
+            setIsTimeUp(true); // Сообщение, что время вышло
     
-            // Вычисляем награду при завершении по таймеру
+            // Вычисляем награду
             const rewardPerQuestion = quiz.reward / quiz.questions.length;
             setReward(correctAnswersRef.current * rewardPerQuestion);
         }
