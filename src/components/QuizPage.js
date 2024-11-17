@@ -70,17 +70,17 @@ function QuizPage({ userId, onComplete }) {
     
             // Очищаем интервал при изменении таймера или размонтировании компонента
             return () => clearInterval(id);
-        } else if (timer === 0 && intervalId) {
+        } else if (timer === 0) {
             // Когда таймер достигает нуля, очищаем интервал
             clearInterval(intervalId);
-            setQuizCompleted(true);
-            setIsTimeUp(true);
+            setQuizCompleted(true); // Переход на экран завершения
+            setIsTimeUp(true); // Устанавливаем состояние, чтобы показать сообщение, что время вышло
     
             // Вычисляем награду при завершении по таймеру
             const rewardPerQuestion = quiz.reward / quiz.questions.length;
             setReward(correctAnswersRef.current * rewardPerQuestion);
         }
-    }, [timer, quizCompleted, intervalId]);
+    }, [timer, quizCompleted, intervalId, quiz]);
 
     const handleOptionSelect = (selectedOption) => {
         console.log('Selected option:', selectedOption);  // Логируем выбранный вариант
