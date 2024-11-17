@@ -96,7 +96,7 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
 
   const handleBuyEnergy = async () => {
     const tg = window.Telegram.WebApp;
-    const userId = tg.initDataUnsafe?.user?.id || '';
+    const userId = tg.initDataUnsafe?.user?.id || ''; // Получение userId из Telegram WebApp
   
     if (!userId) {
       console.error('Не удалось получить ID пользователя');
@@ -109,33 +109,21 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
     }
   
     try {
-      // Получаем инвойс с бэкенда
+      // Отправка запроса на создание инвойса
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createEnergyInvoice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId, packId: energyPacks[selectedPack].id }), // Используем ID выбранного пакета
+        body: JSON.stringify({
+          userId, // Передача userId
+          packId: selectedPack + 1, // Преобразование индекса selectedPack в packId (Firebase использует 1-based индексы)
+        }),
       });
   
       const result = await response.json();
   
       if (result.success) {
-        // Открываем инвойс с использованием ссылки
-        if (tg.openInvoice && typeof tg.openInvoice === 'function') {
-          tg.openInvoice(result.invoiceLink, async (status) => {
-            console.log('Invoice status:', status);
-            if (status === 'paid') {
-              // Обновляем информацию об энергии после успешной оплаты
-              await fetchEnergyInfo();
-  
-              // Закрываем поп-ап после успешного обновления информации
-              onClose();
-            } else {
-              console.log('Платеж не завершен или был отменен.');
-            }
-          });
-        } else {
-          console.error('Telegram Payments API не поддерживается в этом контексте.');
-        }
+        console.log('Инвойс создан:', result.invoiceLink);
+        // Открытие инвойса
       } else {
         console.error('Ошибка получения инвойса:', result.error);
       }
@@ -143,6 +131,7 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
       console.error('Ошибка создания инвойса:', error);
     }
   };
+  
   
 
   return (
