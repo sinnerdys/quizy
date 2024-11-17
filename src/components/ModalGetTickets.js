@@ -157,8 +157,6 @@ function ModalGetTickets({ onClose, fetchTicketInfo }) {
     }
   };
   
-  
-
   // Обработчик закрытия окна
   useEffect(() => {
     const overlay = document.querySelector('.modal-get-tickets-overlay');
