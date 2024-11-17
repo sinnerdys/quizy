@@ -200,7 +200,7 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
   disabled={selectedPack === null} 
   onClick={handleBuyEnergy} // Привязываем обработчик к кнопке
 >
-  Confirm And Pay{' '}
+  Buy for{' '}
   <img src={TelegramStarImage} alt="Telegram Star" className="star-image" />{' '}
   {selectedPack !== null ? energyPacks[selectedPack].price : ''}
 </button>

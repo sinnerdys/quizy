@@ -124,32 +124,31 @@ function ModalGetTickets({ onClose, fetchTicketInfo }) {
     }
   
     try {
-      // Получаем инвойс с бэкенда
-      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createInvoiceLink', {
+      // Отправляем запрос на создание инвойса
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createTicketInvoice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }),
+        body: JSON.stringify({ userId }), // Передаём только userId
       });
   
       const result = await response.json();
   
       if (result.success) {
-        // Открываем инвойс с использованием ссылки
+        console.log('Инвойс создан:', result.invoiceLink);
+  
+        // Проверяем поддержку Telegram Payments API и открываем инвойс
         if (tg.openInvoice && typeof tg.openInvoice === 'function') {
           tg.openInvoice(result.invoiceLink, async (status) => {
-            console.log('Invoice status:', status);
+            console.log('Статус оплаты:', status);
             if (status === 'paid') {
-              // Обновляем информацию о билетах после успешной оплаты
-              await fetchTicketInfo();
-  
-              // Закрываем поп-ап после успешного обновления информации
-              onClose();
+              await fetchTicketInfo(); // Обновляем информацию о билетах
+              onClose(); // Закрываем окно после успешной оплаты
             } else {
-              console.log('Платеж не завершен или был отменен.');
+              console.log('Оплата не завершена или отменена.');
             }
           });
         } else {
-          console.error('Telegram Payments API не поддерживается в этом контексте.');
+          console.error('Telegram Payments API не поддерживается.');
         }
       } else {
         console.error('Ошибка получения инвойса:', result.error);
