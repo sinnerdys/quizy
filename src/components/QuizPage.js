@@ -83,31 +83,26 @@ function QuizPage({ userId, onComplete }) {
     };
     
     const handleNextQuestion = () => {
-        console.log('Selected option before next question:', selectedOption);  // Логируем выбранный вариант перед переходом к следующему вопросу
         if (selectedOption === null) {
-            return;  // Останавливаем выполнение, если нет выбора
+            return; // Останавливаем выполнение, если нет выбора
         }
     
         const correctOption = quiz.questions[currentQuestionIndex].correctOption;
-        console.log('Correct option for current question:', correctOption);
     
-        // Проверяем правильность ответа при переходе к следующему вопросу
         if (String(correctOption) === String(selectedOption)) {
-            correctAnswersRef.current += 1; // Увеличиваем количество правильных ответов через ref
-            console.log('Correct answer selected, correctAnswersCount:', correctAnswersRef.current); // Логируем правильные ответы
+            correctAnswersRef.current += 1;
         }
     
-        // Переход к следующему вопросу
         if (currentQuestionIndex < quiz.questions.length - 1) {
             setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setSelectedOption(null);  // Сброс выбранной опции после перехода
+            setSelectedOption(null); // Сброс выбранной опции после перехода
         } else {
-            // Когда все вопросы пройдены, вычисляем награду
+            // Завершаем квиз
             setQuizCompleted(true);
+            clearInterval(intervalId); // Останавливаем таймер
+            setTimer(0); // Сбрасываем таймер
             const rewardPerQuestion = quiz.reward / quiz.questions.length;
-            console.log('Reward per question:', rewardPerQuestion);
-            console.log('Correct answers count:', correctAnswersRef.current);  // Логируем количество правильных ответов из ref
-            setReward(correctAnswersRef.current * rewardPerQuestion);  // Используем значение из ref
+            setReward(correctAnswersRef.current * rewardPerQuestion);
         }
     };
 
