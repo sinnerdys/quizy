@@ -61,7 +61,6 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
     setSelectedPack(packIndex);
   };
 
-  // Добавляем useEffect для обновления таймера каждую секунду
   useEffect(() => {
     if (nextEnergyIn !== null && nextEnergyIn > 0 && energy === 0) {
       const interval = setInterval(() => {
@@ -77,7 +76,6 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
 
       return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
     } else if (nextEnergyIn === 0 && energy === 0) {
-      // Если энергия достигла 0, обновляем информацию
       fetchEnergyInfo();
     }
   }, [nextEnergyIn, energy]);
@@ -89,6 +87,12 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
     const seconds = String(totalSeconds % 60).padStart(2, '0');
     return `${hours}:${minutes}:${seconds}`;
   };
+
+  useEffect(() => {
+    if (energyPacks.length > 0) {
+      setSelectedPack(0); // Устанавливаем первый пакет по умолчанию
+    }
+  }, [energyPacks]);
 
   return (
     <div className="modal-get-energy-overlay">
@@ -109,35 +113,35 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
             Next free energy recharge in: <strong>{formatTime(nextEnergyIn)}</strong>
           </p>
         )}
-       <div className="energy-options">
-  {energyPacks.length > 0 ? (
-    energyPacks.map((pack, index) =>
-      pack ? (
-        <button
-          key={index}
-          className={`energy-option ${selectedPack === index ? 'selected' : ''}`}
-          onClick={() => handleSelectPack(index)}
-        >
-          <div className="energy-pack">
-            <img src={LightningIcon} alt="Lightning" />
-            <span>{pack.count}</span>
-          </div>
-          <span className="energy-info">{pack.name}</span>
-          <span className="price">
-            <img src={TelegramStarImageOption} alt="Telegram Star" className="star-image-option" /> {pack.price}
-          </span>
+        <div className="energy-options">
+          {energyPacks.length > 0 ? (
+            energyPacks.map((pack, index) =>
+              pack ? (
+                <button
+                  key={index}
+                  className={`energy-option ${selectedPack === index ? 'selected' : ''}`}
+                  onClick={() => handleSelectPack(index)}
+                >
+                  <div className="energy-pack">
+                    <img src={LightningIcon} alt="Lightning" />
+                    <span>{pack.count}</span>
+                  </div>
+                  <span className="energy-info">{pack.name}</span>
+                  <span className="price">
+                    <img src={TelegramStarImageOption} alt="Telegram Star" className="star-image-option" /> {pack.price}
+                  </span>
+                </button>
+              ) : null
+            )
+          ) : (
+            <p>Loading energy packs...</p>
+          )}
+        </div>
+        <button className="confirm-pay-button" disabled={selectedPack === null}>
+          Confirm And Pay{' '}
+          <img src={TelegramStarImage} alt="Telegram Star" className="star-image" />{' '}
+          {selectedPack !== null ? energyPacks[selectedPack].price : ''}
         </button>
-      ) : null
-    )
-  ) : (
-    <p>Loading energy packs...</p> // Показать сообщение при загрузке пакетов
-  )}
-</div>
-<button className="confirm-pay-button" disabled={selectedPack === null}>
-  Confirm And Pay{' '}
-  <img src={TelegramStarImage} alt="Telegram Star" className="star-image" />{' '}
-  {selectedPack !== null ? energyPacks[selectedPack].price : ''}
-</button>
       </div>
     </div>
   );
