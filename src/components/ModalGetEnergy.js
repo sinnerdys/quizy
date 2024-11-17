@@ -94,6 +94,57 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
     }
   }, [energyPacks]);
 
+  const handleBuyEnergy = async () => {
+    const tg = window.Telegram.WebApp;
+    const userId = tg.initDataUnsafe?.user?.id || '';
+  
+    if (!userId) {
+      console.error('Не удалось получить ID пользователя');
+      return;
+    }
+  
+    if (selectedPack === null) {
+      console.error('Не выбран пакет энергии');
+      return;
+    }
+  
+    try {
+      // Получаем инвойс с бэкенда
+      const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createEnergyInvoice', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, packId: energyPacks[selectedPack].id }), // Используем ID выбранного пакета
+      });
+  
+      const result = await response.json();
+  
+      if (result.success) {
+        // Открываем инвойс с использованием ссылки
+        if (tg.openInvoice && typeof tg.openInvoice === 'function') {
+          tg.openInvoice(result.invoiceLink, async (status) => {
+            console.log('Invoice status:', status);
+            if (status === 'paid') {
+              // Обновляем информацию об энергии после успешной оплаты
+              await fetchEnergyInfo();
+  
+              // Закрываем поп-ап после успешного обновления информации
+              onClose();
+            } else {
+              console.log('Платеж не завершен или был отменен.');
+            }
+          });
+        } else {
+          console.error('Telegram Payments API не поддерживается в этом контексте.');
+        }
+      } else {
+        console.error('Ошибка получения инвойса:', result.error);
+      }
+    } catch (error) {
+      console.error('Ошибка создания инвойса:', error);
+    }
+  };
+  
+
   return (
     <div className="modal-get-energy-overlay">
       <div className="modal-get-energy">
@@ -137,11 +188,16 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
             <p>Loading energy packs...</p>
           )}
         </div>
-        <button className="confirm-pay-button" disabled={selectedPack === null}>
-          Confirm And Pay{' '}
-          <img src={TelegramStarImage} alt="Telegram Star" className="star-image" />{' '}
-          {selectedPack !== null ? energyPacks[selectedPack].price : ''}
-        </button>
+        <button 
+  className="confirm-pay-button" 
+  disabled={selectedPack === null} 
+  onClick={handleBuyEnergy} // Привязываем обработчик к кнопке
+>
+  Confirm And Pay{' '}
+  <img src={TelegramStarImage} alt="Telegram Star" className="star-image" />{' '}
+  {selectedPack !== null ? energyPacks[selectedPack].price : ''}
+</button>
+
       </div>
     </div>
   );
