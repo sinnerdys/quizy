@@ -95,7 +95,7 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
   }, [energyPacks]);
 
   const handleBuyEnergy = async () => {
-    const tg = window.Telegram.WebApp;
+    const tg = window.Telegram.WebApp; // Telegram WebApp объект
     const userId = tg.initDataUnsafe?.user?.id || ''; // Получение userId из Telegram WebApp
   
     if (!userId) {
@@ -123,7 +123,25 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
   
       if (result.success) {
         console.log('Инвойс создан:', result.invoiceLink);
-        // Открытие инвойса
+  
+        // Проверка поддержки `tg.openInvoice` и вызов функции для открытия инвойса
+        if (tg.openInvoice && typeof tg.openInvoice === 'function') {
+          tg.openInvoice(result.invoiceLink, async (status) => {
+            console.log('Invoice status:', status);
+            if (status === 'paid') {
+              console.log('Оплата успешна');
+              // Обновляем информацию о энергии
+              await fetchEnergyInfo();
+  
+              // Закрываем модальное окно после успешной оплаты
+              onClose();
+            } else {
+              console.log('Платеж не завершен или был отменен.');
+            }
+          });
+        } else {
+          console.error('Telegram Payments API не поддерживается в этом контексте.');
+        }
       } else {
         console.error('Ошибка получения инвойса:', result.error);
       }
