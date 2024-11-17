@@ -128,7 +128,7 @@ function ModalGetTickets({ onClose, fetchTicketInfo }) {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createTicketInvoice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }), // Передаём только userId
+        body: JSON.stringify({ userId }),
       });
   
       const result = await response.json();
@@ -136,13 +136,12 @@ function ModalGetTickets({ onClose, fetchTicketInfo }) {
       if (result.success) {
         console.log('Инвойс создан:', result.invoiceLink);
   
-        // Проверяем поддержку Telegram Payments API и открываем инвойс
         if (tg.openInvoice && typeof tg.openInvoice === 'function') {
           tg.openInvoice(result.invoiceLink, async (status) => {
             console.log('Статус оплаты:', status);
             if (status === 'paid') {
               await fetchTicketInfo(); // Обновляем информацию о билетах
-              onClose(); // Закрываем окно после успешной оплаты
+              onClose(); // Закрываем окно
             } else {
               console.log('Оплата не завершена или отменена.');
             }
@@ -157,6 +156,7 @@ function ModalGetTickets({ onClose, fetchTicketInfo }) {
       console.error('Ошибка создания инвойса:', error);
     }
   };
+  
   
 
   // Обработчик закрытия окна
