@@ -128,7 +128,10 @@ function ModalGetTickets({ onClose, fetchTicketInfo }) {
       const response = await fetch('https://us-central1-quizy-d6ffb.cloudfunctions.net/createTicketInvoice', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId }),
+        body: JSON.stringify({
+          userId, // Передаём userId
+          packId: 1, // Указываем фиксированный packId (например, 1)
+        }),
       });
   
       const result = await response.json();
@@ -156,6 +159,7 @@ function ModalGetTickets({ onClose, fetchTicketInfo }) {
       console.error('Ошибка создания инвойса:', error);
     }
   };
+  
   
   // Обработчик закрытия окна
   useEffect(() => {
