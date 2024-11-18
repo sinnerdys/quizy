@@ -11,6 +11,7 @@ function Quizes({ userId }) {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
+  const [selectedQuizId, setSelectedQuizId] = useState(null);
   const [completedCount, setCompletedCount] = useState(0); // Добавляем состояние для количества завершенных квизов
   const [showEnergyModal, setShowEnergyModal] = useState(false); // Добавляем состояние для модального окна энергии
   const [energy, setEnergy] = useState(0); // Добавляем состояние для энергии
@@ -102,10 +103,12 @@ function Quizes({ userId }) {
 
 
   const openQuizModal = (quiz) => {
+    setSelectedQuizId(quiz.id);
     setSelectedQuiz(quiz);
   };
 
   const closeQuizModal = () => {
+    setSelectedQuizId(null);
     setSelectedQuiz(null);
   };
 
@@ -113,7 +116,18 @@ function Quizes({ userId }) {
     const openQuizPage = (quizId) => {
       navigate(`/quiz/${quizId}`);
       setSelectedQuiz(null);
+      setSelectedQuizId(null); // Очищаем ID выбранного квиза
     };
+
+  // Синхронизация `selectedQuizId` с `quizzes`
+useEffect(() => {
+  if (selectedQuizId) {
+    const selected = quizzes.find((quiz) => quiz.id === selectedQuizId);
+    if (selected) {
+      setSelectedQuiz(selected);
+    }
+  }
+}, [selectedQuizId, quizzes]);
   
   // Функция для открытия модального окна энергии
   const openEnergyModal = () => {
@@ -193,7 +207,7 @@ function Quizes({ userId }) {
         <ModalQuiz
           quiz={selectedQuiz}
           onClose={closeQuizModal}
-          onStart={(quizId) => openQuizPage(quizId)} // Ожидаем ID в качестве аргумента
+          onStart={() => openQuizPage(selectedQuizId)} // Используем selectedQuizId
           userId={userId}
           setEnergy={setEnergy}
         />
