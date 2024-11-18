@@ -1,5 +1,7 @@
 .quizes-section {
     padding: 20px;
+    height: 100vh; /* Высота экрана */
+    overflow-y: auto; /* Скролл для всей страницы */
   }
   
   /* Заголовок и описание */

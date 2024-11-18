@@ -166,11 +166,18 @@ function ModalGetEnergy({ userId, onClose, energyPacks }) {
           <img src={LightningIcon} alt="Energy Icon" className="modal-energy-logo" />
         </div>
         <h2 className="modal-title">Get more energy</h2>
-        {energy === 0 && nextEnergyIn !== null && (
-          <p className="modal-subtitle">
-            Next free energy recharge in: <strong>{formatTime(nextEnergyIn)}</strong>
-          </p>
-        )}
+{energy > 0 ? (
+  <p className="modal-subtitle">
+    Energy restores for free every 12 hours.
+  </p>
+) : (
+  nextEnergyIn !== null && (
+    <p className="modal-subtitle">
+      Next free energy recharge in: <strong>{formatTime(nextEnergyIn)}</strong>
+    </p>
+  )
+)}
+
         <div className="energy-options">
           {energyPacks.length > 0 ? (
             energyPacks.map((pack, index) =>
