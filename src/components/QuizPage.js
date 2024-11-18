@@ -30,15 +30,16 @@ function QuizPage({ userId, onComplete }) {
 
     const fetchQuizData = async () => {
         try {
-            const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}&quizId=${quizId}`);
+            const response = await fetch(`https://us-central1-quizy-d6ffb.cloudfunctions.net/getQuizzes?userId=${userId}`);
             const data = await response.json();
             console.log('Fetched quiz data:', data);
-
-            if (data.quizzes && data.quizzes[0].questions) {
-                setQuiz({ ...data.quizzes[0], questions: data.quizzes[0].questions });
-                setTimer(data.quizzes[0].timerInSeconds); // Задаем начальное время из данных
+    
+            const selectedQuiz = data.quizzes.find((q) => q.id === quizId);
+            if (selectedQuiz) {
+                setQuiz({ ...selectedQuiz, questions: selectedQuiz.questions });
+                setTimer(selectedQuiz.timerInSeconds);
             } else {
-                console.error('Quiz has no questions.');
+                console.error('Quiz not found.');
             }
             setLoading(false);
         } catch (error) {
@@ -51,9 +52,6 @@ function QuizPage({ userId, onComplete }) {
         fetchQuizData();
     }, [quizId, userId]);
 
-    useEffect(() => {
-        fetchQuizData();
-    }, [quizId, userId]);
 
     useEffect(() => {
         if (quizCompleted) {
