@@ -1,6 +1,6 @@
 .quizes-section {
     padding: 20px;
-    height: 100vh; /* Высота экрана */
+    height: 90vh; /* Высота экрана */
     overflow-y: auto; /* Скролл для всей страницы */
   }
   
