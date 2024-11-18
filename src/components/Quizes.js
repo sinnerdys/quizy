@@ -193,7 +193,7 @@ function Quizes({ userId }) {
         <ModalQuiz
           quiz={selectedQuiz}
           onClose={closeQuizModal}
-          onStart={() => openQuizPage(selectedQuiz.id)}
+          onStart={(quizId) => openQuizPage(quizId)} // Ожидаем ID в качестве аргумента
           userId={userId}
           setEnergy={setEnergy}
         />

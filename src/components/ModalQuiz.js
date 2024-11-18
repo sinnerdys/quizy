@@ -50,7 +50,7 @@ function ModalQuiz({ quiz, onClose, onStart, userId, setEnergy }) {
       if (data.success) {
         // Обновляем энергию на фронтенде
         setEnergy((prevEnergy) => prevEnergy - 1);
-        onStart(); // Начинаем квиз после успешного уменьшения энергии
+        onStart(quiz.id); // Передаем ID текущего квиза
       } else {
         alert(data.error);
       }
