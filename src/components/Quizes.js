@@ -125,6 +125,23 @@ function Quizes({ userId }) {
     setShowEnergyModal(false);
   };
 
+  useEffect(() => {
+    const section = document.querySelector('.quizes-section');
+  
+    if (showEnergyModal || selectedQuiz !== null) {
+      // Блокируем скролл страницы
+      document.body.classList.add('body-no-scroll');
+  
+      // Убираем фиксированную высоту для секции
+      section?.classList.add('no-height');
+    } else {
+      // Восстанавливаем прокрутку
+      document.body.classList.remove('body-no-scroll');
+  
+      // Восстанавливаем фиксированную высоту
+      section?.classList.remove('no-height');
+    }
+  }, [showEnergyModal, selectedQuiz]);
 
   if (loading) return <p>Loading...</p>;
 

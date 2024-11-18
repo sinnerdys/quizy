@@ -172,3 +172,12 @@
     height: 20px;
   }
   
+ /* Отключаем скролл страницы */
+.body-no-scroll {
+  overflow: hidden;
+}
+
+/* Отключаем фиксированную высоту */
+.quizes-section.no-height {
+  height: auto;
+}
