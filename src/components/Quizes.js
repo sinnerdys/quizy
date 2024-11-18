@@ -129,16 +129,10 @@ function Quizes({ userId }) {
     const section = document.querySelector('.quizes-section');
   
     if (showEnergyModal || selectedQuiz !== null) {
-      // Блокируем скролл страницы
-      document.body.classList.add('body-no-scroll');
-  
-      // Убираем фиксированную высоту для секции
+      // Убираем фиксированную высоту
       section?.classList.add('no-height');
     } else {
-      // Восстанавливаем прокрутку
-      document.body.classList.remove('body-no-scroll');
-  
-      // Восстанавливаем фиксированную высоту
+      // Возвращаем фиксированную высоту
       section?.classList.remove('no-height');
     }
   }, [showEnergyModal, selectedQuiz]);
