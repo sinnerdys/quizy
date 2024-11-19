@@ -1,21 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom'; // Для веба
-import { Vibration } from 'react-native'; // Для мобильных платформ
-import HapticFeedback from 'react-native-haptic-feedback'; // Для тактильной обратной связи на iOS/Android
+import { Vibration, Platform } from 'react-native'; // Для мобильных платформ
 
 const VibratingNavLink = ({ children, to, className, activeClassName, duration = 50 }) => {
   const triggerVibration = () => {
-    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    if (Platform.OS === 'web') {
       // Вибрация для веба
-      navigator.vibrate(duration);
-    } else if (typeof HapticFeedback !== 'undefined') {
-      // Тактильная обратная связь для iOS/Android через HapticFeedback
-      HapticFeedback.trigger('impactLight', {
-        enableVibrateFallback: true, // Включает вибрацию, если Taptic Engine недоступен
-        ignoreAndroidSystemSettings: false, // Игнорирует системные настройки вибрации
-      });
-    } else if (typeof Vibration !== 'undefined') {
-      // Вибрация через React Native для Android
+      if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+        navigator.vibrate(duration);
+      }
+    } else {
+      // Вибрация для React Native (iOS/Android)
       Vibration.vibrate(duration);
     }
   };

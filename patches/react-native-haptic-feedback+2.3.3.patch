@@ -1,0 +1,23 @@
+diff --git a/node_modules/react-native-haptic-feedback/lib/module/index.js b/node_modules/react-native-haptic-feedback/lib/module/index.js
+index aeca1d7..bea8e1c 100644
+--- a/node_modules/react-native-haptic-feedback/lib/module/index.js
++++ b/node_modules/react-native-haptic-feedback/lib/module/index.js
+@@ -1,7 +1,7 @@
+ "use strict";
+ 
+-import NativeHapticFeedback from './codegenSpec/NativeHapticFeedback';
+-import { HapticFeedbackTypes } from "./types";
++import NativeHapticFeedback from './codegenSpec/NativeHapticFeedback.js'; // Добавлено .js
++import { HapticFeedbackTypes } from "./types.js"; // Добавлено .js
+ const defaultOptions = {
+   enableVibrateFallback: false,
+   ignoreAndroidSystemSettings: false
+@@ -18,7 +18,7 @@ const RNHapticFeedback = {
+     }
+   }
+ };
+-export * from "./types";
++export * from "./types.js"; // Добавлено .js
+ export const {
+   trigger
+ } = RNHapticFeedback;
