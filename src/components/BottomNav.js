@@ -8,34 +8,65 @@ import gamesIcon from '../assets/icons/games.svg';
 import wheelIcon from '../assets/icons/wheel.svg';
 
 function BottomNav() {
+  const triggerVibration = (duration = 50) => {
+    if ('vibrate' in navigator) {
+      navigator.vibrate(duration);
+    }
+  };
+
   return (
     <div className="bottom-nav">
-      <NavLink to="/" className="nav-link" activeClassName="active">
-      <div className="menu-icon active-icon-bg">
+      <NavLink
+        to="/"
+        className="nav-link"
+        activeClassName="active"
+        onClick={() => triggerVibration(50)}
+      >
+        <div className="menu-icon active-icon-bg">
           <img src={homeIcon} alt="Home" className="icon-svg" />
         </div>
         <span>Home</span>
       </NavLink>
-      <NavLink to="/leaderboard" className="nav-link" activeClassName="active">
-      <div className="menu-icon active-icon-bg">
+      <NavLink
+        to="/leaderboard"
+        className="nav-link"
+        activeClassName="active"
+        onClick={() => triggerVibration(50)}
+      >
+        <div className="menu-icon active-icon-bg">
           <img src={leaderboardIcon} alt="Leaderboard" className="icon-svg" />
         </div>
         <span>Leaderboard</span>
       </NavLink>
-      <NavLink to="/quizes" className="nav-link" activeClassName="active">
-      <div className="menu-icon active-icon-bg">
+      <NavLink
+        to="/quizes"
+        className="nav-link"
+        activeClassName="active"
+        onClick={() => triggerVibration(50)}
+      >
+        <div className="menu-icon active-icon-bg">
           <img src={gamesIcon} alt="Games" className="icon-svg" />
         </div>
         <span>Quizes</span>
       </NavLink>
-      <NavLink to="/friends" className="nav-link" activeClassName="active">
-      <div className="menu-icon active-icon-bg">
+      <NavLink
+        to="/friends"
+        className="nav-link"
+        activeClassName="active"
+        onClick={() => triggerVibration(50)}
+      >
+        <div className="menu-icon active-icon-bg">
           <img src={friendsIcon} alt="Friends" className="icon-svg" />
         </div>
         <span>Friends</span>
       </NavLink>
-      <NavLink to="/wheel" className="nav-link" activeClassName="active">
-      <div className="menu-icon active-icon-bg">
+      <NavLink
+        to="/wheel"
+        className="nav-link"
+        activeClassName="active"
+        onClick={() => triggerVibration(50)}
+      >
+        <div className="menu-icon active-icon-bg">
           <img src={wheelIcon} alt="Wheel" className="icon-svg" />
         </div>
         <span>Wheel</span>
