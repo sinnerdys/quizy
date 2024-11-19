@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import './BottomNav.css'; // стили для нижней навигации
+import VibratingNavLink from './VibratingNavLink'; // Импортируйте новый компонент
+import './BottomNav.css';
 import homeIcon from '../assets/icons/home.svg';
 import leaderboardIcon from '../assets/icons/leaderboard.svg';
 import friendsIcon from '../assets/icons/friends.svg';
@@ -8,69 +8,38 @@ import gamesIcon from '../assets/icons/games.svg';
 import wheelIcon from '../assets/icons/wheel.svg';
 
 function BottomNav() {
-  const triggerVibration = (duration = 50) => {
-    if ('vibrate' in navigator) {
-      navigator.vibrate(duration);
-    }
-  };
-
   return (
     <div className="bottom-nav">
-      <NavLink
-        to="/"
-        className="nav-link"
-        activeClassName="active"
-        onClick={() => triggerVibration(50)}
-      >
+      <VibratingNavLink to="/" className="nav-link" activeClassName="active">
         <div className="menu-icon active-icon-bg">
           <img src={homeIcon} alt="Home" className="icon-svg" />
         </div>
         <span>Home</span>
-      </NavLink>
-      <NavLink
-        to="/leaderboard"
-        className="nav-link"
-        activeClassName="active"
-        onClick={() => triggerVibration(50)}
-      >
+      </VibratingNavLink>
+      <VibratingNavLink to="/leaderboard" className="nav-link" activeClassName="active">
         <div className="menu-icon active-icon-bg">
           <img src={leaderboardIcon} alt="Leaderboard" className="icon-svg" />
         </div>
         <span>Leaderboard</span>
-      </NavLink>
-      <NavLink
-        to="/quizes"
-        className="nav-link"
-        activeClassName="active"
-        onClick={() => triggerVibration(50)}
-      >
+      </VibratingNavLink>
+      <VibratingNavLink to="/quizes" className="nav-link" activeClassName="active">
         <div className="menu-icon active-icon-bg">
           <img src={gamesIcon} alt="Games" className="icon-svg" />
         </div>
         <span>Quizes</span>
-      </NavLink>
-      <NavLink
-        to="/friends"
-        className="nav-link"
-        activeClassName="active"
-        onClick={() => triggerVibration(50)}
-      >
+      </VibratingNavLink>
+      <VibratingNavLink to="/friends" className="nav-link" activeClassName="active">
         <div className="menu-icon active-icon-bg">
           <img src={friendsIcon} alt="Friends" className="icon-svg" />
         </div>
         <span>Friends</span>
-      </NavLink>
-      <NavLink
-        to="/wheel"
-        className="nav-link"
-        activeClassName="active"
-        onClick={() => triggerVibration(50)}
-      >
+      </VibratingNavLink>
+      <VibratingNavLink to="/wheel" className="nav-link" activeClassName="active">
         <div className="menu-icon active-icon-bg">
           <img src={wheelIcon} alt="Wheel" className="icon-svg" />
         </div>
         <span>Wheel</span>
-      </NavLink>
+      </VibratingNavLink>
     </div>
   );
 }
