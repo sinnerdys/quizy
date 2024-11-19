@@ -1,16 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom'; // Для веба
-import { Vibration, Platform } from 'react-native'; // Для мобильных платформ
+import { Vibration } from 'react-native'; // Для мобильных платформ
 
 const VibratingNavLink = ({ children, to, className, activeClassName, duration = 50 }) => {
   const triggerVibration = () => {
-    if (Platform.OS === 'web') {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
       // Вибрация для веба
-      if ('vibrate' in navigator) {
-        navigator.vibrate(duration);
-      }
-    } else {
-      // Вибрация для iOS и Android
+      navigator.vibrate(duration);
+    } else if (typeof Vibration !== 'undefined') {
+      // Вибрация для React Native (iOS/Android)
       Vibration.vibrate(duration);
     }
   };
