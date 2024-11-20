@@ -17,6 +17,7 @@ function QuizPage({ userId, onComplete }) {
     const [isRewardVisible, setIsRewardVisible] = useState(false); // Состояние для видимости блока с наградой
     const [progressAnimationCompleted, setProgressAnimationCompleted] = useState(false);
     const [isTimeUp, setIsTimeUp] = useState(false); // Добавлено состояние, чтобы отслеживать завершение по времени
+    const [isClaimButtonEnabled, setIsClaimButtonEnabled] = useState(false);
 
     // Добавим состояния для процентов и прогресса круга
     const [percentage, setPercentage] = useState(0);
@@ -215,12 +216,13 @@ function QuizPage({ userId, onComplete }) {
         if (progressAnimationCompleted) {
             const rewardTimeout = setTimeout(() => {
                 setIsRewardVisible(true); // Показываем блок награды после завершения анимации
+                setIsClaimButtonEnabled(true); // Активируем кнопку
             }, 1000); // Например, через 1 секунду после завершения анимации
-
+    
             // Очистка таймера
             return () => clearTimeout(rewardTimeout);
         }
-    }, [progressAnimationCompleted]); // Этот эффект срабатывает при завершении анимации прогресса
+    }, [progressAnimationCompleted]);
 
     
     if (loading) return <p>Loading...</p>;
@@ -292,7 +294,13 @@ function QuizPage({ userId, onComplete }) {
                         </div>
               
                         {/* Кнопка для получения награды */}
-                        <button className="claim-reward-button" onClick={handleCompleteQuiz}>Claim reward</button>
+                        <button 
+    className="claim-reward-button" 
+    onClick={handleCompleteQuiz} 
+    disabled={!isClaimButtonEnabled}
+>
+    Claim reward
+</button>
                     </div>
                 </div>
             ) : (
