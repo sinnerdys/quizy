@@ -5,9 +5,11 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #112558;
+  /* background-color: #112558; */
+  background: rgb(40,72,157);
+  background: linear-gradient(90deg, rgba(40,72,157,1) 0%, rgba(16,44,115,1) 100%);
   padding: 10px 0;
-  border-top: 1px solid #1A3069;
+  /* border-top: 1px solid #1A3069; */
   z-index: 999; /* Нижняя панель всегда на переднем плане */
   touch-action: none; /* Отключаем реакцию на свайпы и перетаскивания на панели */
   overflow: hidden; /* Полностью запрещаем прокрутку в нижнем меню */
@@ -48,7 +50,9 @@
 }
 
 .nav-link.active .active-icon-bg {
-  background-color: #1A3069; /* Фон для активной иконки */
+  /* background-color: #1A3069; /* Фон для активной иконки */
+  background: rgb(56,85,167);
+  background: linear-gradient(90deg, rgba(56,85,167,1) 0%, rgba(43,79,183,1) 100%);
   border-radius: 8px; /* Скругленные углы */
 }
 
