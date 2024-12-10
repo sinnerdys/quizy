@@ -8,13 +8,14 @@ body {
 }
 
 .header {
-  background-color: #284286;
-  border-radius: 8px;
-  font-size: 16px;
-  width: 80%;
-  padding: 10px;
+  /* background-color: #284286; */
+  background: rgb(134,165,246);
+  background: linear-gradient(90deg, rgba(134,165,246,1) 0%, rgba(58,111,248,1) 100%);
+  font-size: 18px;
+  width: 100%;
   margin: 0 auto;
-  margin-bottom: 30px;
+  text-align: center;
+  padding: 20px;
 }
 
 /* Контейнеры */
@@ -38,12 +39,12 @@ body {
 
 /* Баланс */
 .balance {
-  padding: 15px;
   border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 .balance h2 {
-  font-size: 32px;
+  font-size: 30px;
   margin: 0;
 }
 
@@ -68,13 +69,15 @@ body {
 }
 
 .task-item {
-  border: #284286 2px solid; /* Прерывистый бордер */
+   /* border: #284286 2px solid; /* Прерывистый бордер */ 
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: rgb(24,64,166);
+  background: linear-gradient(90deg, rgba(24,64,166,1) 0%, rgba(48,82,176,1) 100%);
 }
 
 .task-info {
@@ -115,7 +118,9 @@ body {
 }
 
 .task-button {
-  background-color: #284286;
+  /* background-color: #284286; */
+  background: rgb(45,93,219);
+background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -125,12 +130,13 @@ body {
 
 /* Стили завершенных заданий */
 .task-completed {
-  border-color: #284286;
+  /* border-color: #284286;
   border-style: dashed; /* Прерывистый бордер для завершенного задания */
+  opacity: .5;
 }
 
 .task-completed .task-button {
-  background-color: #182C5F; /* Цвет кнопки для завершенных заданий */
+  /* background-color: #182C5F; /* Цвет кнопки для завершенных заданий */
   width: 75px;
   height: 40px;
 }

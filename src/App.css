@@ -7,9 +7,15 @@
 
 body {
   font-family: 'Inter', sans-serif;
+  /*
   background: rgb(12,38,106);
-  background: linear-gradient(180deg, rgba(12,38,106,1) 0%, rgba(12,29,71,1) 100%); /*
+  background: linear-gradient(180deg, rgba(12,38,106,1) 0%, rgba(12,29,71,1) 100%); */
+  
+  /*
   background-color: #0D1C44; */
+
+  background: rgb(42,77,168);
+  background: linear-gradient(180deg, rgba(42,77,168,1) 0%, rgba(4,32,101,1) 100%);
   color: white;
   margin: 0;
   padding: 0;
