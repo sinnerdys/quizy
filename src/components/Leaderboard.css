@@ -88,8 +88,8 @@
   margin-bottom: 10px;
   border-radius: 8px;
   /* border: #284286 2px solid; */
-  background: rgb(56,85,167);
-  background: linear-gradient(90deg, rgba(56,85,167,1) 0%, rgba(43,79,183,1) 100%);
+  background: rgb(24,64,166);
+  background: linear-gradient(90deg, rgba(24,64,166,1) 0%, rgba(48,82,176,1) 100%);
 }
 
 .player-name, .player-tokens {
