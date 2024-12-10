@@ -72,7 +72,7 @@ body {
    /* border: #284286 2px solid; /* Прерывистый бордер */ 
   padding: 15px;
   margin-bottom: 10px;
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;

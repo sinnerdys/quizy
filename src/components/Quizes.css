@@ -48,11 +48,12 @@
   }
   
   .energy-button {
-    background-color: #213C84;
+    background: rgb(45,93,219);
+background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
     color: white;
     border: none;
     padding: 8px 14px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     margin-left: 6px;
     font-weight: 600;
@@ -90,10 +91,11 @@
     display: flex;
     align-items: center;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 12px;
     margin-bottom: 10px;
     border-radius: 8px;
-    border: #284286 2px solid;
+    background: rgb(24,64,166);
+    background: linear-gradient(90deg, rgba(24,64,166,1) 0%, rgba(48,82,176,1) 100%);
   }
   
   .quiz-avatar {
@@ -142,7 +144,8 @@
   }
   
   .quiz-button {
-    background-color: #284286;
+    background: rgb(45,93,219);
+background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
     color: white;
     border: none;
     padding: 10px 20px;
