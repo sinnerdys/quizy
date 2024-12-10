@@ -30,8 +30,8 @@ function App() {
   useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       window.Telegram.WebApp.expand();
-      window.Telegram.WebApp.setHeaderColor('#112558');
-      window.Telegram.WebApp.setBackgroundColor('#112558');
+      window.Telegram.WebApp.setHeaderColor('#27469B');
+      window.Telegram.WebApp.setBackgroundColor('#27469B');
       window.Telegram.WebApp.disableVerticalSwipes();
 
       const telegramUser = window.Telegram.WebApp.initDataUnsafe.user;

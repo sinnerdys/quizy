@@ -82,66 +82,90 @@ const QuizyWheel = ({ tickets, nextTicketIn, fetchTicketInfo }) => {  // Пол�
       console.error('Canvas not supported by your browser.');
       return;
     }
-
+  
     const ctx = canvas.getContext('2d');
-    const centerX = canvas.width / 2 / window.devicePixelRatio; // Учитываем масштаб
+    const centerX = canvas.width / 2 / window.devicePixelRatio;
     const centerY = canvas.height / 2 / window.devicePixelRatio;
     const radius = 165;
-
+  
     const sectorAngleRadians = (2 * Math.PI) / prizes.length;
-
-    // Создание объекта для изображения
+  
+    const createSectorGradient = (startAngle, endAngle) => {
+      const gradient = ctx.createLinearGradient(
+        centerX + Math.cos(startAngle) * radius,
+        centerY + Math.sin(startAngle) * radius,
+        centerX + Math.cos(endAngle) * radius,
+        centerY + Math.sin(endAngle) * radius
+      );
+      gradient.addColorStop(0, 'rgba(28,57,132,1)'); // Начальный цвет
+      gradient.addColorStop(1, 'rgba(39,71,155,1)'); // Конечный цвет
+      return gradient;
+    };
+  
+    const createBorderGradient = () => {
+      const gradient = ctx.createLinearGradient(centerX - radius, centerY, centerX + radius, centerY);
+      gradient.addColorStop(0, 'rgba(134,165,246,1)'); // Начальный цвет
+      gradient.addColorStop(1, 'rgba(58,111,248,1)'); // Конечный цвет
+      return gradient;
+    };
+  
+    const createCenterGradient = () => {
+      const gradient = ctx.createLinearGradient(centerX - 30, centerY, centerX + 30, centerY);
+      gradient.addColorStop(0, 'rgba(134,165,246,1)'); // Начальный цвет
+      gradient.addColorStop(1, 'rgba(58,111,248,1)'); // Конечный цвет
+      return gradient;
+    };
+  
     const tokenImage = new Image();
     tokenImage.src = TokenImage;
-
-    // Отрисовка происходит после загрузки изображения
+  
     tokenImage.onload = () => {
       for (let i = 0; i < prizes.length; i++) {
         const startAngle = i * sectorAngleRadians - sectorAngleRadians / 2;
         const endAngle = startAngle + sectorAngleRadians;
-
-        // Рисуем сектора
-        ctx.fillStyle = '#152A60';
+  
+        // Сектора с градиентом
+        ctx.fillStyle = createSectorGradient(startAngle, endAngle);
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
         ctx.arc(centerX, centerY, radius, startAngle, endAngle);
         ctx.closePath();
         ctx.fill();
-
-        ctx.strokeStyle = '#4365C0';
+  
+        ctx.strokeStyle = '#4365C0'; // Или добавьте другой стиль для сектора
         ctx.lineWidth = 2;
         ctx.stroke();
-
-        // Рисуем текст с призом
+  
+        // Текст с призами
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(startAngle + sectorAngleRadians / 2);
         ctx.textAlign = 'right';
         ctx.fillStyle = '#FFFFFF';
         ctx.font = '18px Arial';
-        ctx.fillText(prizes[i], radius - 34, 10); // Разместим текст немного левее
-
-        // Рисуем изображение токена рядом с текстом
-        const imageWidth = 14; // Ширина изображения
-        const imageHeight = 22; // Высота изображения (можете экспериментировать)
-        const imageX = radius - 30; // Позиция изображения по горизонтали
-        const imageY = -imageHeight / 2 + 3; // Центрируем по вертикали относительно текста
-        ctx.drawImage(tokenImage, imageX, imageY, imageWidth, imageHeight); // Рисуем изображение токена
-
+        ctx.fillText(prizes[i], radius - 34, 10);
+  
+        // Изображение токена
+        const imageWidth = 14;
+        const imageHeight = 22;
+        const imageX = radius - 30;
+        const imageY = -imageHeight / 2 + 3;
+        ctx.drawImage(tokenImage, imageX, imageY, imageWidth, imageHeight);
+  
         ctx.restore();
       }
-
-      // Обводка колеса
+  
+      // Градиентная обводка
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-      ctx.strokeStyle = '#4365C0';
+      ctx.strokeStyle = createBorderGradient();
       ctx.lineWidth = 4;
       ctx.stroke();
-
-      // Рисуем центральный круг
+  
+      // Центральный круг с градиентом
       ctx.beginPath();
       ctx.arc(centerX, centerY, 30, 0, 2 * Math.PI);
-      ctx.fillStyle = '#4365C0';
+      ctx.fillStyle = createCenterGradient();
       ctx.fill();
     };
   };

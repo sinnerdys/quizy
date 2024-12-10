@@ -5,7 +5,6 @@
     align-items: center;
     justify-content: flex-start;
     height: 100vh;
-    background-color: #0a1d3f;
     color: white;
     padding: 20px;
 }
@@ -88,7 +87,8 @@
 .spin-button {
     width: 100%;
     padding: 15px;
-    background-color: #284286;
+    background: rgb(45,93,219);
+    background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
     color: white;
     border: none;
     border-radius: 10px;
@@ -98,7 +98,8 @@
 }
 
 .spin-button:disabled {
-    background-color: #182C5F;
+    background: rgb(39,71,157);
+    background: linear-gradient(90deg, rgba(39,71,157,1) 0%, rgba(23,53,133,1) 100%);
     cursor: not-allowed;
 }
 
