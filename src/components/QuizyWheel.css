@@ -7,6 +7,10 @@
     height: 100vh;
     color: white;
     padding: 20px;
+    background-image: url('../assets/bg_rewards.png'); /* Фоновое изображение */
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 /* Заголовок */
