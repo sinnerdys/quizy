@@ -120,7 +120,7 @@ body {
 .task-button {
   /* background-color: #284286; */
   background: rgb(45,93,219);
-background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
+  background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -166,7 +166,8 @@ background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%
   top: 15px; /* Отступ сверху */
   left: 10px; /* Отступ слева */
   right: 10px; /* Отступ справа */
-  background-color: #182c5f;
+  background: rgb(75,117,224);
+  background: linear-gradient(90deg, rgba(75,117,224,1) 0%, rgba(89,129,235,1) 100%);
   color: white;
   padding: 15px 20px; /* Паддинг для контента внутри */
   border-radius: 8px;

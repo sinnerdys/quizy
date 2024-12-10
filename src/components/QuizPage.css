@@ -21,7 +21,8 @@
   
   .progress-fill {
     height: 8px;
-    background-color: #34519C;
+    background: rgb(45,93,219);
+    background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
     transition: width 0.3s ease;
   }
   

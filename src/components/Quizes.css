@@ -19,7 +19,8 @@
   
   /* Контейнер прогресса */
   .progress-container {
-    background-color: #172D68;
+    background: rgb(56,85,167);
+    background: linear-gradient(90deg, rgba(56,85,167,1) 0%, rgba(43,79,183,1) 100%);
     padding: 15px;
     border-radius: 8px;
     margin: 20px 0;
@@ -49,7 +50,7 @@
   
   .energy-button {
     background: rgb(45,93,219);
-background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
+    background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
     color: white;
     border: none;
     padding: 8px 14px;
@@ -63,7 +64,7 @@ background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%
   .progress-bar-quizes {
     margin-top: 6px;
     width: 100%;
-    height: 10px;
+    height: 8px;
     background-color: #213C84;
     border-radius: 4px;
   }

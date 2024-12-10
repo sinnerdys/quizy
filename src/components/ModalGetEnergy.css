@@ -18,7 +18,8 @@
 }
 
 .modal-get-energy {
-    background-color: #091533;
+    background: rgb(16,44,115);
+    background: linear-gradient(0deg, rgba(16,44,115,1) 0%, rgba(40,72,157,1) 100%);
     padding: 20px;
     border-radius: 30px 30px 0 0;
     width: 100%;
@@ -67,7 +68,7 @@
 }
 
 .energy-option {
-    border: 2px solid #284286;
+    /* border: 2px solid #284286; */
     padding: 15px;
     border-radius: 10px;
     display: flex;
@@ -77,11 +78,12 @@
     color: white;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    background: rgb(56,85,167);
+    background: linear-gradient(90deg, rgba(56,85,167,1) 0%, rgba(43,79,183,1) 100%);
 }
 
 .energy-option.selected {
-    background-color: #102458;
-    border-color: #8DADFE;
+    border: 2px solid rgb(134, 165, 246);
 }
 
 .energy-pack {
@@ -89,7 +91,8 @@
     align-items: center;
     gap: 2px;
     padding: 6px;
-    background-color: #284286;
+    background: rgb(45,93,219);
+    background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
     width: 60px; /* Установлена фиксированная ширина */
     border-radius: 8px;
     justify-content: center; /* Центрирование содержимого */
@@ -117,7 +120,8 @@
 .confirm-pay-button {
     width: 100%;
     padding: 15px;
-    background-color: #007BB5;
+    background: rgb(48,119,233);
+    background: linear-gradient(90deg, rgba(48,119,233,1) 0%, rgba(52,169,237,1) 100%);
     color: white;
     border: none;
     border-radius: 8px;
