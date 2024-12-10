@@ -133,7 +133,7 @@ const QuizyWheel = ({ tickets, nextTicketIn, fetchTicketInfo }) => {  // Пол�
         ctx.fill();
   
         ctx.strokeStyle = '#4365C0'; // Или добавьте другой стиль для сектора
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 4;
         ctx.stroke();
   
         // Текст с призами
@@ -159,7 +159,7 @@ const QuizyWheel = ({ tickets, nextTicketIn, fetchTicketInfo }) => {  // Пол�
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
       ctx.strokeStyle = createBorderGradient();
-      ctx.lineWidth = 4;
+      ctx.lineWidth = 5;
       ctx.stroke();
   
       // Центральный круг с градиентом
