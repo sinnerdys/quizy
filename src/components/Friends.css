@@ -176,6 +176,7 @@
     left: 0;
     bottom: 90px; /* Зафиксируем кнопку точно внизу */
     z-index: 1000;
+    box-shadow: 0px 4px 15px rgba(4, 32, 101, 0.5);
   }
   
   .invite-button {
@@ -183,6 +184,7 @@
     padding: 15px;
     background: rgb(45,93,219);
     background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
+    box-shadow: 0px 4px 15px rgba(4, 32, 101, 0.5);
     color: white;
     font-size: 16px;
     border: none;
