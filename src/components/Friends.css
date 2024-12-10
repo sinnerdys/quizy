@@ -18,7 +18,8 @@
   flex-direction: column;
   gap: 0; /* Объединяем блоки без зазора */
   margin-bottom: 20px;
-  border: 2px dashed #284286;
+  background: rgb(56,85,167);
+  background: linear-gradient(90deg, rgba(56,85,167,1) 0%, rgba(43,79,183,1) 100%);
   border-radius: 8px;
   padding: 15px;
 }
@@ -35,7 +36,8 @@
 }
 
 .invite-icon {
-  background-color: #284286;
+  background: rgb(45,93,219);
+  background: linear-gradient(0deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
   color: white;
   font-size: 18px;
   width: 35px;
@@ -66,9 +68,9 @@
 
 
 .friends {
-    padding: 20px;
+    padding: 20px 20px 0px 20px;
     text-align: center;
-    height: 100vh; /* Высота экрана */
+    height: 78vh; /* Высота экрана */
     overflow-y: auto; /* Скролл для всей страницы */
 }
 
@@ -97,7 +99,6 @@
 .friends-list-section {
   text-align: left;
   flex-grow: 1; /* Раздел будет занимать все оставшееся место */
-  padding-bottom: 130px; /* Отступ снизу, чтобы кнопка не перекрывала список */
 }
 
 .friends-list-section h3 {
@@ -118,7 +119,8 @@
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
-  border: #284286 2px solid;
+  background: rgb(24,64,166);
+  background: linear-gradient(90deg, rgba(24,64,166,1) 0%, rgba(48,82,176,1) 100%);
 }
 
 .friend-info {
@@ -129,7 +131,8 @@
 .friend-icon {
   width: 35px;
   height: 35px;
-  background-color: #2F4FA4;
+  background: rgb(45,93,219);
+  background: linear-gradient(0deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -152,7 +155,7 @@
 
 .reward-text {
     font-size: 16px;
-    color: white;
+    color: #ADC3FF;
     margin-right: 5px;
   }
   
@@ -171,14 +174,15 @@
     position: fixed;
     left: 0;
     padding: 20px;
-    bottom: 70px; /* Зафиксируем кнопку точно внизу */
+    bottom: 75px; /* Зафиксируем кнопку точно внизу */
     background-color: #0D1C44; /* Фон, чтобы не было перекрытия контентом */
   }
   
   .invite-button {
     width: 100%;
     padding: 15px;
-    background-color: #284286;
+    background: rgb(45,93,219);
+    background: linear-gradient(45deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
     color: white;
     font-size: 16px;
     border: none;
@@ -235,6 +239,6 @@
 
 .divider {
   border: none;
-  border-top: 2px dashed #284286; /* Пунктирная линия */
+  border-top: 2px dashed #ADC3FF; /* Пунктирная линия */
   margin: 15px 0;
 }
