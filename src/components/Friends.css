@@ -175,7 +175,7 @@
     left: 0;
     padding: 20px;
     bottom: 75px; /* Зафиксируем кнопку точно внизу */
-    background-color: #0D1C44; /* Фон, чтобы не было перекрытия контентом */
+    z-index: 1000;
   }
   
   .invite-button {
