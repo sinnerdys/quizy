@@ -20,7 +20,9 @@
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 8px;
-  background-color: #192955;
+  /* background-color: #192955; */
+  background: rgb(56,85,167);
+  background: linear-gradient(90deg, rgba(56,85,167,1) 0%, rgba(43,79,183,1) 100%);
 }
 
 .user-info {
@@ -31,7 +33,9 @@
 .user-icon {
   width: 35px;
   height: 35px;
-  background-color: #2F4FA4;
+  /* background-color: #2F4FA4; */
+  background: rgb(45,93,219);
+  background: linear-gradient(0deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -83,7 +87,9 @@
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 8px;
-  border: #284286 2px solid;
+  /* border: #284286 2px solid; */
+  background: rgb(56,85,167);
+  background: linear-gradient(90deg, rgba(56,85,167,1) 0%, rgba(43,79,183,1) 100%);
 }
 
 .player-name, .player-tokens {
@@ -98,7 +104,9 @@
 .player-icon {
   width: 35px;
   height: 35px;
-  background-color: #2F4FA4;
+  /* background-color: #2F4FA4; */
+  background: rgb(45,93,219);
+  background: linear-gradient(0deg, rgba(45,93,219,1) 0%, rgba(86,120,208,1) 100%);
   border-radius: 50%;
   display: flex;
   justify-content: center;
